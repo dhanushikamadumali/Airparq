@@ -1,0 +1,15 @@
+.page_btn
+{
+    background-color:#0E2242;
+    color:#fff;
+
+}
+.page_btn:hover{
+    background-color: #08273B;
+    color:#fff;
+}
+.deletebtn{
+    color:#ff0000;
+    margin-left: 10px;
+
+}
