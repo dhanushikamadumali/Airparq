@@ -36,7 +36,6 @@
             >
               <i class="fas fa-home"></i>
               <p>Dashboard</p>
-              <span class="caret"></span>
             </a>
 
           </li>
@@ -47,33 +46,21 @@
             <h4 class="text-section">BOOKINGS AND REPORTS</h4>
           </li>
           <li class="nav-item">
-            <a data-bs-toggle="collapse" href="#base">
+            <a href="{{route('allbooking')}}">
               <i class="fas fa-layer-group"></i>
               <p>Booking</p>
-              <span class="caret"></span>
             </a>
-            <div class="collapse" id="base">
-              <ul class="nav nav-collapse">
-                <li>
-                  <a href="components/avatars.html">
-                    <span class="sub-item">All Bookings</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
           </li>
           <li class="nav-item">
             <a href="{{route('allpromolist')}}">
               <i class="fas fa-th-list"></i>
               <p>Promo code</p>
-              <span class="caret"></span>
             </a>
           </li>
           <li class="nav-item">
-            <a data-bs-toggle="collapse" href="">
+            <a  href="{{route('allterminal')}}">
               <i class="fas fa-pen-square"></i>
               <p>Price</p>
-              <span class="caret"></span>
             </a>
           </li>
           <li class="nav-item">
@@ -85,13 +72,13 @@
             <div class="collapse" id="tables">
               <ul class="nav nav-collapse">
                 <li>
-                  <a href="tables/tables.html">
-                    <span class="sub-item">Basic Table</span>
+                  <a href="{{route('todayreport')}}">
+                    <span class="sub-item">Today Booking</span>
                   </a>
                 </li>
                 <li>
-                  <a href="tables/datatables.html">
-                    <span class="sub-item">Datatables</span>
+                  <a href="{{route('currentmonthreport')}}">
+                    <span class="sub-item">Current Month Booking</span>
                   </a>
                 </li>
               </ul>
@@ -104,22 +91,7 @@
                 </span>
                 <h4 class="text-section">SETTINGS</h4>
               </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#base">
-                  <i class="fas fa-layer-group"></i>
-                  <p>Booking</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="base">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="components/avatars.html">
-                        <span class="sub-item">All Bookings</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
+
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="">
                   <i class="fas fa-th-list"></i>
@@ -128,30 +100,30 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="">
+                <a href="{{route('allcontact')}}">
                   <i class="fas fa-pen-square"></i>
                   <p>Contact</p>
-                  <span class="caret"></span>
                 </a>
               </li>
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#tables">
+                <a data-bs-toggle="collapse" href="#tables1">
                   <i class="fas fa-table"></i>
                   <p>Setting</p>
                   <span class="caret"></span>
                 </a>
-                <div class="collapse" id="tables">
+                <div class="collapse" id="tables1">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="tables/tables.html">
+                      <a href="{{route('csetting')}}">
                         <span class="sub-item">Company</span>
                       </a>
                     </li>
                     <li>
-                      <a href="tables/datatables.html">
-                        <span class="sub-item">Email</span>
+                      <a href="{{route('role')}}">
+                        <span class="sub-item">Role</span>
                       </a>
                     </li>
+
                     <li>
                       <a href="tables/datatables.html">
                         <span class="sub-item">Stripe</span>

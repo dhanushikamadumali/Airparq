@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('base_price')->nullable();
             $table->decimal('per_day_price');
             $table->string('description');
-            $table->integer('status');
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('terminal');
+        Schema::dropIfExists('terminals');
     }
 };

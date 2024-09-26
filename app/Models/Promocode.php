@@ -15,4 +15,8 @@ class Promocode extends Pivot
                 'discount_amount',
                 'discount_type',
              ];
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

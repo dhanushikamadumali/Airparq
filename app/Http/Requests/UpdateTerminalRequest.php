@@ -22,7 +22,12 @@ class UpdateTerminalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'base_price' => 'numeric',
+            'per_day_price' => 'required|numeric',
+            'description'=> 'string',
+            'status' => 'nullable|integer'
         ];
     }
 }

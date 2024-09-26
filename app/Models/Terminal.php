@@ -16,7 +16,5 @@ class Terminal extends Pivot
         'per_day_price',
         'description',
         'status'
-
-
     ];
 }

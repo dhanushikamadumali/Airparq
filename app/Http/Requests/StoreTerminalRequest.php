@@ -23,11 +23,11 @@ class StoreTerminalRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'image' => 'required|image',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'base_price' => 'numeric',
             'per_day_price' => 'required|numeric',
             'description'=> 'string',
-            'status' => 'integer'
+            'status' => 'nullable|integer'
 
         ];
     }

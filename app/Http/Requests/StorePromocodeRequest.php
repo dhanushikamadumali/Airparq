@@ -25,7 +25,6 @@ class StorePromocodeRequest extends FormRequest
             'promo_code' => 'required|string',
             'discount_amount' => 'required|numeric',
             'discount_type' => 'required|string',
-
         ];
     }
 }

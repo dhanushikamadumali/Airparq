@@ -115,5 +115,340 @@
             ]);
           $("#addRowModal").modal("hide");
         });
+    /// filter date range
+         var table = $("#filterdate_rangetable").DataTable({
+            pageLength: 5,
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        var column = this;
+                        var select = $(
+                            '<select class="form-select"><option value=""></option></select>'
+                        )
+                            .appendTo($(column.footer()).empty())
+                            .on("change", function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                                column
+                                    .search(val ? "^" + val + "$" : "", true, false)
+                                    .draw();
+                            });
+
+                        column
+                            .data()
+                            .unique()
+                            .sort()
+                            .each(function (d, j) {
+                                select.append(
+                                    '<option value="' + d + '">' + d + "</option>"
+                                );
+                            });
+                    });
+            },
+        });
+
+        // Handle Filter date Button Click
+        $('#filterButton').click(function (e) {
+            e.preventDefault();
+            var from_date = $('#from_date').val();
+            var to_date = $('#to_date').val();
+            var token = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url: `getfilterbookingdate`,
+                method: 'POST',
+                data: {
+                    from_date: from_date,
+                    to_date:to_date,
+                    _token: token
+                    },
+                success: function (response) {
+                    table.clear().rows.add(response.data).draw();
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", error);
+                }
+            });
+        });
+
+
+        /// filter income booking
+         var table = $("#filterdate_incomebooktable").DataTable({
+            pageLength: 5,
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        var column = this;
+                        var select = $(
+                            '<select class="form-select"><option value=""></option></select>'
+                        )
+                            .appendTo($(column.footer()).empty())
+                            .on("change", function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                                column
+                                    .search(val ? "^" + val + "$" : "", true, false)
+                                    .draw();
+                            });
+
+                        column
+                            .data()
+                            .unique()
+                            .sort()
+                            .each(function (d, j) {
+                                select.append(
+                                    '<option value="' + d + '">' + d + "</option>"
+                                );
+                            });
+                    });
+            },
+        });
+
+        // Handle Filter income Button Click
+        $('#filterincomebookButton').click(function (e) {
+            e.preventDefault();
+            var terminal = $('#terminal').val();
+            var token = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url: `getfilterincomebooking`,
+                method: 'POST',
+                data: {
+                    terminal:terminal,
+                    _token: token
+                    },
+                success: function (response) {
+                    table.clear().rows.add(response.data).draw();
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", error);
+                }
+            });
+        });
+
+          /// filter outgoing booking
+         var table = $("#filterdate_outgoingbooktable").DataTable({
+            pageLength: 5,
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        var column = this;
+                        var select = $(
+                            '<select class="form-select"><option value=""></option></select>'
+                        )
+                            .appendTo($(column.footer()).empty())
+                            .on("change", function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                                column
+                                    .search(val ? "^" + val + "$" : "", true, false)
+                                    .draw();
+                            });
+
+                        column
+                            .data()
+                            .unique()
+                            .sort()
+                            .each(function (d, j) {
+                                select.append(
+                                    '<option value="' + d + '">' + d + "</option>"
+                                );
+                            });
+                    });
+            },
+        });
+
+        // Handle Filter income Button Click
+        $('#filteroutgoingbookButton').click(function (e) {
+            e.preventDefault();
+            var terminal = $('#terminal').val();
+            var token = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url: `getfilteroutgoingbooking`,
+                method: 'POST',
+                data: {
+                    terminal:terminal,
+                    _token: token
+                    },
+                success: function (response) {
+                    table.clear().rows.add(response.data).draw();
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", error);
+                }
+            });
+        });
       });
+
+   
+        var table = $('#today_booking').DataTable({
+            dom: 'Bfrtip', // Layout for DataTables with Buttons
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    footer: true
+                },
+                {
+                    extend: 'excelHtml5',
+                    footer: true
+                },
+                {
+                    extend: 'csvHtml5',
+                    footer: true
+                },
+                {
+                    extend: 'pdfHtml5',
+                    footer: true,
+                    customize: function (doc) {
+                        // Set a margin for the footer
+                        doc.content[1].margin = [0, 0, 0, 20];
+                    }
+                },
+                {
+                    extend: 'print',
+                    footer: true
+                }
+            ],
+
+        });
+
+
+
+    ///// today booking report
+
+
+
+
+    /// Handle Filter income Button Click
+    $('#today_booking').click(function (e) {
+        e.preventDefault();
+        var terminal = $('#terminal').val();
+        var token = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            url: `getfilteroutgoingbooking`,
+            method: 'POST',
+            data: {
+                terminal:terminal,
+                _token: token
+                },
+            success: function (response) {
+                table.clear().rows.add(response.data).draw();
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    });
+
+
+
+
+
+    let video = document.getElementById('video');
+    let photos = [];  // Array to store multiple base64 images
+    let useFrontCamera = true;
+    let currentStream;
+    let currentRowId = null;  // Keep track of the current row ID
+
+    // Show modal when camera button is clicked and set the row ID
+    $(".open_camera").click(function() {
+        currentRowId = $(this).data('row-id');  // Get row ID from the button's data attribute
+        $('#row_id').val(currentRowId);  // Store the row ID in the hidden form input
+        $('#cameraModal').modal('show');  // Show the Bootstrap modal
+        startCamera();  // Start the camera stream
+    });
+
+    // Close modal and stop the camera stream
+    $("#close-modal").click(function() {
+        $('#cameraModal').modal('hide');
+        stopCamera();
+    });
+
+    // Function to start the camera stream
+    function startCamera() {
+        if (currentStream) {
+            currentStream.getTracks().forEach(track => {
+                track.stop();
+            });
+        }
+
+        const constraints = {
+            video: {
+                facingMode: useFrontCamera ? 'user' : { exact: 'environment' }  // Front or back camera
+            }
+        };
+
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then(stream => {
+                currentStream = stream;
+                video.srcObject = stream;  // Display the video stream in the <video> element
+            })
+            .catch(error => console.error('Error accessing camera: ', error));
+    }
+
+    // Function to stop the camera stream
+    function stopCamera() {
+        if (currentStream) {
+            currentStream.getTracks().forEach(track => {
+                track.stop();
+            });
+        }
+    }
+
+    // Switch camera (front/back) on button click
+    $("#switch-camera").click(function() {
+        useFrontCamera = !useFrontCamera;  // Toggle between front and back camera
+        startCamera();  // Restart the camera with the new facing mode
+    });
+
+    // Take a snapshot from the video stream
+    $("#take-photo").click(function() {
+        let canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        let context = canvas.getContext('2d');
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        let dataUri = canvas.toDataURL('image/jpeg');  // Convert the canvas to base64
+        photos.push(dataUri);  // Store the base64 image in the photos array
+
+        // Display the captured photo in the results div
+        let imgElement = document.createElement('img');
+        imgElement.src = dataUri;
+        imgElement.classList.add('img-thumbnail', 'mr-2');  // Add some styling for display
+        document.getElementById('results').appendChild(imgElement);
+    });
+
+    $("#upload-photos").click(function() {
+        if (photos.length === 0) {
+            alert('No photos to upload!');
+            return;
+        }
+
+        let formData = {
+            row_id: currentRowId,
+            photos: JSON.stringify(photos),  // Convert the photos array to a JSON string
+            _token: $('input[name="_token"]').val()  // Include CSRF token for Laravel
+        };
+
+        $.ajax({
+            url: '/uploadvehiclephoto',  // Your route to handle the upload
+            method: 'POST',
+            data: formData,
+            success: function(response) {
+                console.log(response);
+                // Optionally, clear the results after successful upload
+                photos = [];  // Clear the array after upload
+                document.getElementById('results').innerHTML = '';  // Clear the displayed images
+                alert('Photos uploaded successfully!');
+                $('#cameraModal').modal('hide');  // Close the modal after uploading
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('An error occurred while uploading photos.');
+            }
+        });
+    });
+
+
 </script>

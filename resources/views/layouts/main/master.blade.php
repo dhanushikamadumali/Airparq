@@ -13,6 +13,9 @@
     @notifyCss
     {{-- script --}}
     <script src="{{asset('assets/js/script.js')}}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+
    {{-- css --}}
    @include('layouts.main.css')
   </head>

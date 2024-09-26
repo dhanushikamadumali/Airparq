@@ -16,19 +16,16 @@ class PromocodeController extends Controller
      */
     public function index()
     {
-            $promocodelist = Promocode::all();
-            return view('promocode.index',compact('promocodelist'));
+        $promocodelist = Promocode::all();
+        return view('promocode.index',compact('promocodelist'));
     }
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
         return view('promocode.create');
-
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -81,13 +78,11 @@ class PromocodeController extends Controller
         return Redirect::route('allpromolist');
 
     }
-
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Promocode $promocode,$id)
     {
-
         try{
             $deletepromocode = $promocode::FindOrFail(Crypt::decryptString($id));
             $deletepromocode->delete();
@@ -95,13 +90,11 @@ class PromocodeController extends Controller
                 'success' =>true,
                 'message' =>'promocode deleted succssfully'
             ]);
-
         }catch(Exception $e){
             return response()->json([
                 'success' =>false,
                 'message' =>'failed promocode deleted succssfully'
             ],500);
-
         }
     }
 }
