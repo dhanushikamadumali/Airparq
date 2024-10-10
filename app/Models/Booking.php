@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\DB;
 
 class Booking extends Pivot
 {
-    protected $table = "bookings";
+    protected $table = "booking";
     protected $primary_key = "id";
 
     protected $fillable= [
         'booking_code',
         'customer_id',
         'price',
-        'promocode_id',
+        'promocode',
         'vehicle_reg',
         'vehicle_manufacturer',
         'vehicle_model',
@@ -40,10 +40,7 @@ class Booking extends Pivot
     {
         return $this->belongsTo(Customer::class, 'customer_id');
     }
-    public function promocode()
-    {
-    return $this->belongsTo(Promocode::class, 'promocode_id');
-    }
+
 
     public static function getCustomerByBookingId(){
     return DB::table('booking')
@@ -112,5 +109,32 @@ class Booking extends Pivot
                     ->orderByDesc('booking.id')
                     ->get();
     }
+
+    // current month year booking count
+
+    public static function currentmonthbookingcount($month,$year){
+        return DB::table('booking')
+                    ->whereMonth('parking_from_date','=',$month)
+                    ->whereYear('parking_from_date','=',$year)
+                    ->count();
+    }
+
+    // today booking count
+    public static function todaybookingcount($date){
+        return DB::table('booking')
+                    ->whereDate('parking_from_date','=',$date)
+                    ->count();
+    }
+
+    // monthly booking count
+    public static function monthlybookings(){
+        return DB::table('booking')
+        ->select(DB::raw('MONTHNAME(parking_from_date) as month'), DB::raw('COUNT(*) as count'))
+        ->groupBy(DB::raw('MONTHNAME(parking_from_date)'))
+        ->get()
+        ->toArray();
+    }
+
+
 
 }

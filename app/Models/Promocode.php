@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Facades\DB;
 
 class Promocode extends Pivot
 {
@@ -15,8 +16,13 @@ class Promocode extends Pivot
                 'discount_amount',
                 'discount_type',
              ];
-    public function bookings()
-    {
-        return $this->hasMany(Booking::class);
+   
+    public static function getpromodetails($promocode){
+
+        return DB::table('promocodes')
+                ->where('promo_code', 'like', "%{$promocode}%")
+                ->get();
+
     }
+
 }

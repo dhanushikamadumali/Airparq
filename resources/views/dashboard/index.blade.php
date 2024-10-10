@@ -8,11 +8,7 @@
     >
       <div>
         <h3 class="fw-bold mb-3">Dashboard</h3>
-        <h6 class="op-7 mb-2">Free Bootstrap 5 Admin Dashboard</h6>
-      </div>
-      <div class="ms-md-auto py-2 py-md-0">
-        <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>
-        <a href="#" class="btn btn-primary btn-round">Add Customer</a>
+        <h6 class="op-7 mb-2">Admin Dashboard</h6>
       </div>
     </div>
     <div class="row">
@@ -29,8 +25,8 @@
               </div>
               <div class="col col-stats ms-3 ms-sm-0">
                 <div class="numbers">
-                  <p class="card-category">Visitors</p>
-                  <h4 class="card-title">1,294</h4>
+                  <p class="card-category">Today</p>
+                  <h4 class="card-title">{{$todaybooking}}</h4>
                 </div>
               </div>
             </div>
@@ -50,15 +46,15 @@
               </div>
               <div class="col col-stats ms-3 ms-sm-0">
                 <div class="numbers">
-                  <p class="card-category">Subscribers</p>
-                  <h4 class="card-title">1303</h4>
+                  <p class="card-category">Current Month</p>
+                  <h4 class="card-title">{{$currentyearmonth}}</h4>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-sm-6 col-md-3">
+      {{-- <div class="col-sm-6 col-md-3">
         <div class="card card-stats card-round">
           <div class="card-body">
             <div class="row align-items-center">
@@ -78,8 +74,8 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-sm-6 col-md-3">
+      </div> --}}
+      {{-- <div class="col-sm-6 col-md-3">
         <div class="card card-stats card-round">
           <div class="card-body">
             <div class="row align-items-center">
@@ -99,42 +95,24 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> --}}
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <div class="card card-round">
           <div class="card-header">
             <div class="card-head-row">
-              <div class="card-title">User Statistics</div>
-              <div class="card-tools">
-                <a
-                  href="#"
-                  class="btn btn-label-success btn-round btn-sm me-2"
-                >
-                  <span class="btn-label">
-                    <i class="fa fa-pencil"></i>
-                  </span>
-                  Export
-                </a>
-                <a href="#" class="btn btn-label-info btn-round btn-sm">
-                  <span class="btn-label">
-                    <i class="fa fa-print"></i>
-                  </span>
-                  Print
-                </a>
-              </div>
+              <div class="card-title">Monthly Bookings</div>
+
             </div>
           </div>
-          <div class="card-body">
-            <div class="chart-container" style="min-height: 375px">
-              <canvas id="statisticsChart"></canvas>
-            </div>
-            <div id="myChartLegend"></div>
-          </div>
+            <!-- Canvas for the daily sales chart -->
+
+            <!-- Legend Container (if needed) -->
+            <div id="monthlyRevenueChart"></div>
         </div>
       </div>
-      <div class="col-md-4">
+      {{-- <div class="col-md-4">
         <div class="card card-primary card-round">
           <div class="card-header">
             <div class="card-head-row">
@@ -185,9 +163,9 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> --}}
     </div>
-    <div class="row">
+    {{-- <div class="row">
       <div class="col-md-12">
         <div class="card card-round">
           <div class="card-header">
@@ -316,8 +294,8 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="row">
+    </div> --}}
+    {{-- <div class="row">
       <div class="col-md-4">
         <div class="card card-round">
           <div class="card-body">
@@ -619,7 +597,18 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> --}}
   </div>
 </div>
+
+
+
 @endsection
+
+
+
+
+
+
+
+

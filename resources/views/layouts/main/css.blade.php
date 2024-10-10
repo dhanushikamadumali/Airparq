@@ -3,6 +3,7 @@
   href="{{asset('assets/img/kaiadmin/favicon.ico')}}"
   type="image/x-icon"
 />
+
 <!-- Fonts and icons -->
 <script src="{{asset('assets/js/plugin/webfont/webfont.min.js')}}"></script>
 <script>
@@ -36,3 +37,4 @@
 
 
 
+{{-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> --}}

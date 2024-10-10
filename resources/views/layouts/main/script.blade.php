@@ -34,6 +34,9 @@
 <!-- Kaiadmin DEMO methods, don't include it in your project! -->
 <script src="{{asset('assets/js/setting-demo.js')}}"></script>
 <script src="{{asset('assets/js/demo.js')}}"></script>
+
+
+
 <script>
   $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
     type: "line",
@@ -281,7 +284,7 @@
         });
       });
 
-   
+
         var table = $('#today_booking').DataTable({
             dom: 'Bfrtip', // Layout for DataTables with Buttons
             buttons: [
@@ -432,7 +435,7 @@
         };
 
         $.ajax({
-            url: '/uploadvehiclephoto',  // Your route to handle the upload
+            url: '/admin/uploadvehiclephoto',  // Your route to handle the upload
             method: 'POST',
             data: formData,
             success: function(response) {
@@ -451,4 +454,6 @@
     });
 
 
+
 </script>
+

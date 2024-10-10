@@ -29,8 +29,7 @@
         <ul class="nav nav-secondary">
           <li class="nav-item active">
             <a
-              data-bs-toggle="collapse"
-              href="#dashboard"
+              href="{{route('dashboard')}}"
               class="collapsed"
               aria-expanded="false"
             >
@@ -93,10 +92,10 @@
               </li>
 
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="">
+                <a href="{{route('alluserlist')}}">
                   <i class="fas fa-th-list"></i>
                   <p>Users</p>
-                  <span class="caret"></span>
+
                 </a>
               </li>
               <li class="nav-item">
@@ -118,11 +117,11 @@
                         <span class="sub-item">Company</span>
                       </a>
                     </li>
-                    <li>
+                    {{-- <li>
                       <a href="{{route('role')}}">
                         <span class="sub-item">Role</span>
                       </a>
-                    </li>
+                    </li> --}}
 
                     <li>
                       <a href="tables/datatables.html">

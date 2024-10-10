@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -43,5 +44,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public static  function getAdmin()
+    {
+
+        return User::where('role','=', 'admin')->get();
+    }
+    public static  function getDriverAdmin()
+    {
+
+        return User::where('role','=', 'driver')->get();
     }
 }

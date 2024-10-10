@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Terminal;
 use Carbon\Carbon;
+use Exception;
+use App\Models\Promocode;
+use Illuminate\Support\Facades\Redirect;
+
 
 
 class BookingController extends Controller
@@ -35,7 +39,26 @@ class BookingController extends Controller
      */
     public function store(StoreBookingRequest $request)
     {
-        //
+
+        $latestBooking = Booking::orderBy('id', 'desc')->first();
+        $nextId = $latestBooking ? $latestBooking->id + 1 : 1;
+        $bookingCode = 'BOOK' . str_pad($nextId, 5, '0', STR_PAD_LEFT); // 'BOOK00001'
+
+        try{
+            $validateddata = $request->all();//all validated data
+            $validateddata['booking_code'] = $bookingCode;
+            Booking::create($validateddata);
+            notify()->success('Successfully registered promocode!','Success!',[
+                'position' => 'bottom-right'
+            ]);
+            return Redirect::route('completepage');
+        }catch(Exception $e){
+            // notify()->error('Failed to insert promocode.', 'Error', [
+            //     'position' => 'top-right' // Change this to your desired position
+            // ]);
+
+        }
+
     }
 
     /**
@@ -263,6 +286,7 @@ class BookingController extends Controller
 
          return response()->json(['success' => 'Photos uploaded successfully']);
     }
+
 
 
 

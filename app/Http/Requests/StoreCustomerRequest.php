@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+use function Laravel\Prompts\password;
+
 class StoreCustomerRequest extends FormRequest
 {
     /**
@@ -23,8 +25,9 @@ class StoreCustomerRequest extends FormRequest
     {
         return [
             'first_name' => 'required|string|max:255',
-            'last_name' => 'nullable|string|max:255',
-            'email' => 'required|email',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:customer',
+            'password' =>'required|confirmed|min:8',
             'phone_no' => 'required|string|digits:10',
         ];
     }
