@@ -11,11 +11,17 @@ class Setting extends Pivot
 
     protected $fillable = [
                         'image',
-                        'mail_host',
-                        'mail_username',
-                        'mail_password',
-                        'mail_enc',
-                        'mail_port',
+                        'smtp_host',
+                        'username',
+                        'password',
+                        'enc_type',
+                        'port',
+                        'email',
+                        'phone1',
+                        'phone2',
+                        'address',
+
+
     ];
 
 }

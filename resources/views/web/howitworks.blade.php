@@ -28,31 +28,8 @@
         </div>
     </div>
     <!-- /Preloader -->
-    <!-- Header -->
-        <header id="header" data-aos="fade">
-        <!-- Header Topbar -->
-        {{-- <div class="header-topbar">
-            <div class="container">
-                <div class="row g-0">
-                    <div class="col-6 col-xl-7 col-md-8">
-                        <div class="d-flex align-items-center">
-                            <a href="tel:+84966704132">
-                                <i class="hicon hicon-telephone me-1"></i>
-                                <span>+33 321-654-987</span>
-                            </a>
-                            <span class="vr bg-white d-none d-md-inline ms-3 me-3"></span>
-                            <a href="mailto:" class="d-none d-md-inline">
-                                <i class="hicon hicon-email-envelope me-1"></i>
-                                <span>Booking@example.com</span>
-                            </a>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div> --}}
-        <!-- /Header Topbar -->
-
+     <!-- Header -->
+    <header id="header" data-aos="fade">
         <!-- Header Navbar -->
         <div class="header-navbar" style="background-color:#FFD31C">
             <nav class="navbar navbar-expand-xl">
@@ -60,8 +37,23 @@
                     <button class="navbar-toggler me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <i class="hicon hicon-bold hicon-hamburger-menu"></i>
                     </button>
-                    <a class="navbar-brand" href="index.html" >
-                        <img src="{{asset('account/img/logos/logo.png')}}" alt="" style="width:200px;height:60px">
+                    <a class="navbar-brand" href="{{route('/')}}" >
+                          @if(empty($csetting) || empty($csetting[0]['image']))
+                            <img
+                                src="{{ asset('assets/img/logo.png') }}"
+                                alt="navbar brand"
+                                class="navbar-brand"
+                            style="width:200px;height:60px"
+                            />
+                        @else
+                            <img
+                                src="{{ asset('assets/img/' . $csetting[0]['image']) }}"
+                                alt="navbar brand"
+                                class="navbar-brand"
+                            style="width:200px;height:60px"
+                            />
+                        @endif
+
                     </a>
                     <div class="offcanvas offcanvas-navbar offcanvas-start border-end-0" tabindex="-1" id="offcanvasNavbar">
                         <div class="offcanvas-header border-bottom p-4 p-xl-0">
@@ -107,26 +99,49 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end animate slideIn" data-bs-popper="static">
                             <li>
-                                <a class="dropdown-item" href="register.html">
+                                <a class="dropdown-item" href="{{route('showregister')}}">
                                     <i class="hicon hicon-edit me-1"></i>
                                     <span>Register</span>
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="login.html">
+                                <a class="dropdown-item" href="{{route('showlogin')}}">
                                     <i class="hicon hicon-aps-lock me-1"></i>
                                     <span>Login</span>
                                 </a>
                             </li>
+
+
+                            @if(auth()->guard('account')->check())
+                                <?php $customer = auth()->guard('account')->user(); ?>
+                                <p>Welcome, {{ $customer->first_name }}</p>
+                             <li>
+
+                                </form>
+                                <div class="dropdown-user-scroll scrollbar-outer">
+                                 <a class="dropdown-item" href="{{ route('account.logout') }}"
+                                   onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('account.logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+
+                                </div>
+                            </li>
+                            @endif
+
                         </ul>
                     </div>
                 </div>
             </nav>
         </div>
         <!-- /Header Navbar -->
-
     </header>
     <!-- /Header -->
+
 
     <!-- Main -->
     <main>
@@ -201,7 +216,7 @@
                     <div class="col-12 col-xxl-3 col-xl-4 col-md-6">
                         <a href="tour-packages-1.html" class="mini-card card-hover hover-effect shadow-sm rounded">
                             <span class="card-icon">
-                                <img src="{{asset('account/img/update.png')}}" style="width:30px;height:30px" alt="">
+                                <img src="{{asset('account/img/update.png')}}" alt="" style="width:50px;height:50px">
                             </span>
                             <div class="card-content">
                                 <h3 class="h5 card-title">Drive to the Terminal</h3>
@@ -212,7 +227,7 @@
                      <div class="col-12 col-xxl-3 col-xl-4 col-md-6">
                         <a href="tour-packages-1.html" class="mini-card card-hover hover-effect shadow-sm rounded">
                             <span class="card-icon">
-                                <img src="{{asset('account/img/layout.png')}}" style="width:30px;height:30px" alt="">
+                                <img src="{{asset('account/img/layout.png')}}" style="width:50px;height:50px" alt="">
                             </span>
                             <div class="card-content">
                                 <h3 class="h5 card-title">Meet Our Professional Teaml</h3>
@@ -223,7 +238,7 @@
                      <div class="col-12 col-xxl-3 col-xl-4 col-md-6">
                         <a href="tour-packages-1.html" class="mini-card card-hover hover-effect shadow-sm rounded">
                             <span class="card-icon">
-                                <img src="{{asset('account/img/support.png')}}" style="width:30px;height:30px" alt="">
+                                <img src="{{asset('account/img/support.png')}}" style="width:50px;height:50px"alt="">
                             </span>
                             <div class="card-content">
                                 <h3 class="h5 card-title">Quick Inspection and Photos</h3>
@@ -234,7 +249,7 @@
                      <div class="col-12 col-xxl-3 col-xl-4 col-md-6">
                         <a href="tour-packages-1.html" class="mini-card card-hover hover-effect shadow-sm rounded">
                             <span class="card-icon">
-                                <img src="{{asset('account/img/valid.png')}}" style="width:30px;height:30px" alt="">
+                                <img src="{{asset('account/img/valid.png')}}" style="width:50px;height:50px" alt="">
                             </span>
                             <div class="card-content">
                                 <h3 class="h5 card-title">Proceed to Terminal</h3>
@@ -245,7 +260,7 @@
                      <div class="col-12 col-xxl-3 col-xl-4 col-md-6">
                         <a href="tour-packages-1.html" class="mini-card card-hover hover-effect shadow-sm rounded">
                             <span class="card-icon">
-                                <img src="{{asset('account/img/document.png')}}" style="width:30px;height:30px" alt="">
+                                <img src="{{asset('account/img/document.png')}}" style="width:50px;height:50px"alt="">
                             </span>
                             <div class="card-content">
                                 <h3 class="h5 card-title">Secure Parking</h3>
@@ -270,7 +285,7 @@
                         <div class="col-12 col-xxl-3 col-xl-4 col-md-6">
                             <a href="tour-packages-1.html" class="mini-card card-hover hover-effect shadow-sm rounded">
                                 <span class="card-icon">
-                                    <img src="{{asset('account/img/update.png')}}" style="width:30px;height:30px" alt="">
+                                    <img src="{{asset('account/img/update.png')}}" style="width:50px;height:50px" alt="">
                                 </span>
                                 <div class="card-content">
                                     <h3 class="h5 card-title">Car Delivery</h3>
@@ -281,7 +296,7 @@
                          <div class="col-12 col-xxl-3 col-xl-4 col-md-6">
                             <a href="tour-packages-1.html" class="mini-card card-hover hover-effect shadow-sm rounded">
                                 <span class="card-icon">
-                                    <img src="{{asset('account/img/layout.png')}}" style="width:30px;height:30px" alt="">
+                                    <img src="{{asset('account/img/layout.png')}}" style="width:50px;height:50px" alt="">
                                 </span>
                                 <div class="card-content">
                                     <h3 class="h5 card-title">Departure</h3>
@@ -359,9 +374,8 @@
     </main>
     <!-- /Main -->
 
-    <!-- Footer -->
+     <!-- Footer -->
     <footer class="footer p-top-90 p-bottom-90" data-aos="fade">
-
         <!-- Footer top -->
         <div class="footer-top">
             <div class="container">
@@ -370,14 +384,22 @@
                         <!-- Brand -->
                         <div class="footer-widget">
                             <a href="index.html" class="brand-img">
-                                <img class="me-4" src="{{asset('account/img/logos/logo.png')}}" style="width:200px;height:60px" alt="">
+                                  @if(empty($csetting) || empty($csetting[0]['image']))
+                                    <img
+                                        src="{{ asset('assets/img/logo.png') }}"
+                                        alt="navbar brand"
+                                        class="navbar-brand"
+                                    style="width:200px;height:60px"
+                                    />
+                                @else
+                                    <img
+                                        src="{{ asset('assets/img/' . $csetting[0]['image']) }}"
+                                        alt="navbar brand"
+                                        class="navbar-brand"
+                                    style="width:200px;height:60px"
+                                    />
+                                @endif
                             </a>
-                            <p class="brand-desc">
-                                <em>
-                                    Moliva Travel Agency offers unique and memorable tours, providing rich experiences in the beautiful country of Moliva.
-                                </em>
-                                <a href="about.html">[+]</a>
-                            </p>
                             <ul class="social-list">
                                 <li class="social-item">
                                     <a href="#">
@@ -438,16 +460,33 @@
                             <h2 class="h4 pb-3">Contact Info</h2>
                             <div class="contact-info">
                                 <p>
-                                    <span>No 234, Placer Loquen Marsei Niriva, Moliva.</span>
+                                    @if(!empty($csetting) || !empty($csetting[0]['address']))
+                                        <span>{{$csetting[0]['address']}}</span>
+                                    @else
+                                        <span>Defult address</span>
+                                    @endif
                                 </p>
                                 <p>
-                                    <span>+33 321-654-987 (Ext: 123).</span>
+                                    @if(!empty($csetting) || !empty($csetting[0]['phone1']))
+                                        <span>{{$csetting[0]['phone1']}}</span>
+                                    @else
+                                        <span>Defult no1</span>
+                                    @endif
                                 </p>
                                 <p>
-                                    <a href="#">Booking@example.com</a>
+                                    @if(!empty($csetting) || !empty($csetting[0]['phone2']))
+                                        <span>{{$csetting[0]['phone2']}}</span>
+                                    @else
+                                        <span>Defult no2</span>
+                                    @endif
                                 </p>
                                 <p>
-                                    <a href="#">www.example.com</a>
+                                      @if(!empty($csetting) || !empty($csetting[0]['email']))
+                                        <a href="#">{{$csetting[0]['email']}}</a>
+                                    @else
+                                        <a href="#">Defult email</a>
+                                    @endif
+
                                 </p>
                             </div>
                         </div>
@@ -456,59 +495,33 @@
                     <div class="col-12 col-xl-3 col-md-6">
                         <!-- Quick Links -->
                         <div class="footer-widget">
-                            <h2 class="h4 pb-3">Moliva Travel</h2>
+                            <h2 class="h4 pb-3">Company</h2>
                             <ul class="footer-link">
                                 <li class="link-item">
-                                    <a href="about.html">About us</a>
+                                    <a href="{{route('aboutus')}}" >About us</a>
                                 </li>
                                 <li class="link-item">
-                                    <a href="destinations-1.html">Destinations</a>
+                                    <a href="{{route('howitworks')}}" >How It Works</a>
                                 </li>
                                 <li class="link-item">
-                                    <a href="tour-packages-1.html">Moliva Tours</a>
+                                    <a href="{{route('contactus')}}">Contact Us</a>
                                 </li>
-                                <li class="link-item">
-                                    <a href="post-list.html">Travel insight</a>
-                                </li>
-                                <li class="link-item">
-                                    <a href="contact.html">Contact us</a>
-                                </li>
+
                             </ul>
                         </div>
                         <!-- /Quick Links -->
                     </div>
                     <div class="col-12 col-xl-3 col-md-6">
                         <div class="footer-widget">
-                            <h2 class="h4 pb-3">Get the app</h2>
-                            <!-- Mobile App -->
-                            <div class="mb-5 pt-3">
-                                <div class="row g-3">
-                                    <div class="col-6">
-                                        <a href="#">
-                                            <img src="{{asset('account/img/icons/i1.svg')}}" class="w-100" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a href="#">
-                                            <img src="{{asset('account/img/icons/i2.svg')}}" class="w-100" alt="">
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /Mobile App -->
-                            <!-- Social -->
-                            <div class="footer-local">
-                                <a data-bs-toggle="modal" href="#mdlLanguage" class="me-4">
-                                    <img src="{{asset('account/img/flags/en.svg')}}" height="14" alt="" class="me-2">
-                                    <span class="me-1">English</span>
-                                    <i class="hicon hicon-thin-arrow-down fsm-6"></i>
-                                </a>
-                                <a data-bs-toggle="modal" href="#mdlCurrency">
-                                    <span class="me-1">USD (US Dollar)</span>
-                                    <i class="hicon hicon-thin-arrow-down fsm-6"></i>
-                                </a>
-                            </div>
-                            <!-- /Social -->
+                            <h2 class="h4 pb-3">Polices</h2>
+                              <ul class="footer-link">
+                                <li class="link-item">
+                                    <a href="{{route('termsandcondition')}}" >Terms & Conditions</a>
+                                </li>
+                                <li class="link-item">
+                                    <a href="{{route('privacypolicy')}}" >Privacy Policy</a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -521,20 +534,9 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-md-6">
-                        <p class="mb-lg-0">© 2024 Moliva Travel Agency. All rights reserved.</p>
+                        <p class="mb-lg-0">© All rights reserved.| airparq.co.uk | Developed by Lithic Labs Ltd </p>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <div class="text-start text-md-end">
-                            <ul class="list-inline mb-lg-0">
-                                <li class="list-inline-item">
-                                    <a href="#">Privacy Policy</a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="#">Terms of Use</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>

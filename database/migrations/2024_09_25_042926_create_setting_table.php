@@ -14,11 +14,15 @@ return new class extends Migration
         Schema::create('setting', function (Blueprint $table) {
             $table->id();
             $table->string('image')->nullable();
-            $table->string('mail_host');
-            $table->string('mail_username');
-            $table->string('mail_password');
-            $table->string('mail_enc');
-            $table->string('mail_port');
+            $table->string('smtp_host');
+            $table->string('username');
+            $table->string('password');
+            $table->string('enc_type');
+            $table->string('port');
+            $table->string('email');
+            $table->string('phone1');
+            $table->string('phone2');
+            $table->string('address');
             $table->timestamps();
         });
     }

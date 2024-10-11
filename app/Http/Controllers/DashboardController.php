@@ -4,19 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use Carbon\Carbon;
+use App\Models\Setting;
 
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index(){
+
+
         $today = Carbon::today()->toDateString();
         $month = Carbon::now()->month;
         $monthcharacter = Carbon::now()->format('F');
         $year = Carbon::now()->year;
         $todaybooking = Booking::todaybookingcount($today);
         $currentyearmonth = Booking::currentmonthbookingcount($month,$year);
-        return view('dashboard.index', compact('todaybooking','currentyearmonth','monthcharacter'));
+        $csetting= Setting::select('image')->get();
+        return view('dashboard.index', compact('todaybooking','currentyearmonth','monthcharacter','csetting'));
     }
 
     public function getmontlybooking(){

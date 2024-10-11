@@ -31,7 +31,25 @@ class SettingController extends Controller
      */
     public function store(StoreSettingRequest $request)
     {
-        //
+        try{
+            if($request['image']){
+                $file = $request['image'];
+                $imageName = time().'.'.$file->extension();
+                $file->move(public_path('assets/img'),$imageName);
+                $requestdata = $request->all();
+                $requestdata['image'] = $imageName;
+            }
+            Setting::create($requestdata);
+            notify()->success('Successfully Insert Setting!','Success!',[
+                'position' => 'bottom-right'
+            ]);
+
+        }catch(Exception $e){
+            notify()->error('Failed to insert sETTING.', 'Error', [
+                'position' => 'top-right' // Change this to your desired position
+            ]);
+        }
+
     }
 
     /**
@@ -48,7 +66,12 @@ class SettingController extends Controller
     public function edit(Setting $setting)
     {
         $csetting = Setting::find(1);
-        return view('setting.edit',compact('csetting'));
+        if(!$csetting){
+            return view('setting.create');
+        }else{
+            return view('setting.edit',compact('csetting'));
+        }
+
     }
 
     /**

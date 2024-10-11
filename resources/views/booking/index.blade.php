@@ -56,15 +56,14 @@
                                     <a href="{{ route('editbooking',Crypt::encryptString($allbookinglist->id))}}">
                                         <i class="fa fa-edit p-2 editbtn"></i>
                                     </a>
-                                    <button class="open_camera btn btn-primary" data-row-id="{{ $allbookinglist->id }}">
-                                        <i class="fas fa-camera"></i> Open Camera
+                                    <button class="open_camera btn p-0 camerabtn" data-row-id="{{ $allbookinglist->id }}">
+                                        <i class="fas fa-camera"></i>
                                     </button>
-
                                     <a href="{{route('printbooking',Crypt::encryptString($allbookinglist->id))}}">
-                                    <i class="fas fa-print p-2"></i>
+                                    <i class="fas fa-print p-2 print"></i>
                                     </a>
                                     <button class="btn p-0 delete" onclick="bookingdelete('{{Crypt::encryptString($allbookinglist->id)}}')">
-                                    <i class="fa fa-times p-2 deletebtn"></i>
+                                    <i class="fa fa-times deletebtn"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -76,14 +75,9 @@
                 </div>
             </div>
         </div>
-
     </div>
-
-
-
-
-
 </div>
+
 <!-- Modal for Camera -->
 <div id="cameraModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">

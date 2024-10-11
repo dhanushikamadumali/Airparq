@@ -12,15 +12,37 @@
     <meta name="keywords" content="">
     <meta name="author" content="Themenix.com">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@1.0.4/dist/simple-notify.css" />
+    {{-- notify css --}}
+    @notifyCss
     <link href="{{asset('account/img/logos/logo.png')}}" rel="shortcut icon" type="image/png">
     <link href="{{asset('account/css/theme-1.min.css')}}" rel="stylesheet">
     <link href="{{asset('account/css/theme-2.min.css')}}" rel="stylesheet">
     <link href="{{asset('account/css/theme-3.min.css')}}" rel="stylesheet">
 </head>
+<style>
+    /* Hide Form View button on desktop */
+    #form_view {
+        display: none;
+    }
+
+    /* Show Form View button only on mobile */
+    @media (max-width: 768px) {
+        #form_view {
+            display: block; /* Show on mobile */
+        }
+
+        #booking_detailsform, {
+            display: none; /* Hide form and terminal card by default on mobile */
+        }
+    }
+</style>
 
 <!-- /Head -->
 
 <body>
+     <x-notify::notify />
 
     <!-- Preloader -->
     <div id="preloader">
@@ -30,31 +52,8 @@
     </div>
     <!-- /Preloader -->
 
-      <!-- Header -->
-        <header id="header" data-aos="fade">
-        <!-- Header Topbar -->
-        {{-- <div class="header-topbar">
-            <div class="container">
-                <div class="row g-0">
-                    <div class="col-6 col-xl-7 col-md-8">
-                        <div class="d-flex align-items-center">
-                            <a href="tel:+84966704132">
-                                <i class="hicon hicon-telephone me-1"></i>
-                                <span>+33 321-654-987</span>
-                            </a>
-                            <span class="vr bg-white d-none d-md-inline ms-3 me-3"></span>
-                            <a href="mailto:" class="d-none d-md-inline">
-                                <i class="hicon hicon-email-envelope me-1"></i>
-                                <span>Booking@example.com</span>
-                            </a>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div> --}}
-        <!-- /Header Topbar -->
-
+     <!-- Header -->
+    <header id="header" data-aos="fade">
         <!-- Header Navbar -->
         <div class="header-navbar" style="background-color:#FFD31C">
             <nav class="navbar navbar-expand-xl">
@@ -62,8 +61,23 @@
                     <button class="navbar-toggler me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <i class="hicon hicon-bold hicon-hamburger-menu"></i>
                     </button>
-                    <a class="navbar-brand" href="index.html" >
-                        <img src="{{asset('account/img/logos/logo.png')}}" alt="" style="width:200px;height:60px">
+                    <a class="navbar-brand" href="{{route('/')}}" >
+                          @if(empty($csetting) || empty($csetting[0]['image']))
+                            <img
+                                src="{{ asset('assets/img/logo.png') }}"
+                                alt="navbar brand"
+                                class="navbar-brand"
+                            style="width:200px;height:60px"
+                            />
+                        @else
+                            <img
+                                src="{{ asset('assets/img/' . $csetting[0]['image']) }}"
+                                alt="navbar brand"
+                                class="navbar-brand"
+                            style="width:200px;height:60px"
+                            />
+                        @endif
+
                     </a>
                     <div class="offcanvas offcanvas-navbar offcanvas-start border-end-0" tabindex="-1" id="offcanvasNavbar">
                         <div class="offcanvas-header border-bottom p-4 p-xl-0">
@@ -109,182 +123,49 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end animate slideIn" data-bs-popper="static">
                             <li>
-                                <a class="dropdown-item" href="register.html">
+                                <a class="dropdown-item" href="{{route('showregister')}}">
                                     <i class="hicon hicon-edit me-1"></i>
                                     <span>Register</span>
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="login.html">
+                                <a class="dropdown-item" href="{{route('showlogin')}}">
                                     <i class="hicon hicon-aps-lock me-1"></i>
                                     <span>Login</span>
                                 </a>
                             </li>
+
+
+                            @if(auth()->guard('account')->check())
+                                <?php $customer = auth()->guard('account')->user(); ?>
+                                <p>Welcome, {{ $customer->first_name }}</p>
+                             <li>
+
+                                </form>
+                                <div class="dropdown-user-scroll scrollbar-outer">
+                                 <a class="dropdown-item" href="{{ route('account.logout') }}"
+                                   onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('account.logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+
+                                </div>
+                            </li>
+                            @endif
+
                         </ul>
                     </div>
                 </div>
             </nav>
         </div>
         <!-- /Header Navbar -->
-
-        <!-- Language -->
-        {{-- <div class="modal fade" id="mdlLanguage" tabindex="-1" aria-labelledby="h3Language" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content border-0 shadow-lg">
-                    <div class="modal-header">
-                        <span class="fs-3 modal-title text-body-emphasis fw-medium" id="h3Language">Select language</span>
-                        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <ul class="list-unstyled row mb-0">
-                            <li class="col-6 col-lg-4">
-                                <a href="index-1.html?lang=en" class="link-dark link-hover">
-                                    <span class="d-flex align-items-center pt-2 pb-2">
-                                        <img src="{{asset('account/img/flags/en.svg')}}" height="16" alt="">
-                                        <span class="ms-2">English</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="col-6 col-lg-4">
-                                <a href="index-1.html?lang=en" class="link-dark link-hover">
-                                    <span class="d-flex align-items-center pt-2 pb-2">
-                                        <img src="{{asset('account/img/flags/fr.svg')}}" height="16" alt="">
-                                        <span class="ms-2">Français</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="col-6 col-lg-4">
-                                <a href="index-1.html?lang=en" class="link-dark link-hover">
-                                    <span class="d-flex align-items-center pt-2 pb-2">
-                                        <img src="{{asset('account/img/flags/es.svg')}}" height="16" alt="">
-                                        <span class="ms-2">Español</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="col-6 col-lg-4">
-                                <a href="index-1.html?lang=en" class="link-dark link-hover">
-                                    <span class="d-flex align-items-center pt-2 pb-2">
-                                        <img src="{{asset('account/img/flags/de.svg')}}" height="16" alt="">
-                                        <span class="ms-2">Deutsch</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="col-6 col-lg-4">
-                                <a href="index-1.html?lang=en" class="link-dark link-hover">
-                                    <span class="d-flex align-items-center pt-2 pb-2">
-                                        <img src="{{asset('account/img/flags/it.svg')}}" height="16" alt="">
-                                        <span class="ms-2">Italiano</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="col-6 col-lg-4">
-                                <a href="index-1.html?lang=en" class="link-dark link-hover">
-                                    <span class="d-flex align-items-center pt-2 pb-2">
-                                        <img src="{{asset('account/img/flags/nl.svg')}}" height="16" alt="">
-                                        <span class="ms-2">Nederlands</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="col-6 col-lg-4">
-                                <a href="index-1.html?lang=en" class="link-dark link-hover">
-                                    <span class="d-flex align-items-center pt-2 pb-2">
-                                        <img src="{{asset('account/img/flags/pt.svg')}}" height="16" alt="">
-                                        <span class="ms-2">Português</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="col-6 col-lg-4">
-                                <a href="index-1.html?lang=en" class="link-dark link-hover">
-                                    <span class="d-flex align-items-center pt-2 pb-2">
-                                        <img src="{{asset('account/img/flags/ru.svg')}}" height="16" alt="">
-                                        <span class="ms-2">Русский</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="col-6 col-lg-4">
-                                <a href="index-1.html?lang=en" class="link-dark link-hover">
-                                    <span class="d-flex align-items-center pt-2 pb-2">
-                                        <img src="{{asset('account/img/flags/cn.svg')}}" height="16" alt="">
-                                        <span class="ms-2">日本語</span>
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
-        <!-- /Language -->
-
-        {{-- <!-- Currency -->
-        <div class="modal fade" id="mdlCurrency" tabindex="-1" aria-labelledby="h3Currency" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content border-0 shadow-lg">
-                    <div class="modal-header">
-                        <span class="fs-3 modal-title text-body-emphasis fw-medium" id="h3Currency">Select currency</span>
-                        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <ul class="list-unstyled row mb-0">
-                            <li class="col-12 col-lg-6">
-                                <a href="index-2.html?currency=usd" class="link-dark link-hover">
-                                    <span class="d-block pt-2 pb-2"><strong>USD</strong> (United States Dollar)</span>
-                                </a>
-                            </li>
-                            <li class="col-12 col-lg-6">
-                                <a href="index-3.html?currency=eur" class="link-dark link-hover">
-                                    <span class="d-block pt-2 pb-2"><strong>EUR</strong> (Euro)</span>
-                                </a>
-                            </li>
-                            <li class="col-12 col-lg-6">
-                                <a href="index-4.html?currency=gbp" class="link-dark link-hover">
-                                    <span class="d-block pt-2 pb-2"><strong>GBP</strong> (Pound Sterling)</span>
-                                </a>
-                            </li>
-                            <li class="col-12 col-lg-6">
-                                <a href="index-5.html?currency=aud" class="link-dark link-hover">
-                                    <span class="d-block pt-2 pb-2"><strong>AUD</strong> (Australian Dollar)</span>
-                                </a>
-                            </li>
-                            <li class="col-12 col-lg-6">
-                                <a href="index-6.html?currency=nzd" class="link-dark link-hover">
-                                    <span class="d-block pt-2 pb-2"><strong>NZD</strong> (New Zealand Dollar)</span>
-                                </a>
-                            </li>
-                            <li class="col-12 col-lg-6">
-                                <a href="index-7.html?currency=cad" class="link-dark link-hover">
-                                    <span class="d-block pt-2 pb-2"><strong>CAD</strong> (Canadian Dollar)</span>
-                                </a>
-                            </li>
-                            <li class="col-12 col-lg-6">
-                                <a href="index-8.html?currency=jpy" class="link-dark link-hover">
-                                    <span class="d-block pt-2 pb-2"><strong>JPY</strong> (Japanese Yen)</span>
-                                </a>
-                            </li>
-                            <li class="col-12 col-lg-6">
-                                <a href="index-9.html?currency=cny" class="link-dark link-hover">
-                                    <span class="d-block pt-2 pb-2"><strong>CNY</strong> (Chinese Yuan)</span>
-                                </a>
-                            </li>
-                            <li class="col-12 col-lg-6">
-                                <a href="index-10.html?currency=vnd" class="link-dark link-hover">
-                                    <span class="d-block pt-2 pb-2"><strong>VND</strong> (Vietnam Dong)</span>
-                                </a>
-                            </li>
-                            <li class="col-12 col-lg-6">
-                                <a href="index-11.html?currency=sgd" class="link-dark link-hover">
-                                    <span class="d-block pt-2 pb-2"><strong>SGD</strong> (Singapore Dollar)</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /Currency --> --}}
-
     </header>
     <!-- /Header -->
+
 
     <!-- Main -->
     <main>
@@ -294,29 +175,42 @@
             <section class="container" id="step1">
                 <div class="row g-0 g-xl-8">
                       <div class="col-12 col-xl-12">
+
+                        <!-- Form View Button (only visible on mobile) -->
+                        <button type="button" id="form_view" class="btn btn-primary mnw-180">
+                            Form View
+                        </button>
+
+
                         <!-- Your Profile -->
-                        <div class="pe-xl-4 me-xl-2">
+                        <div class="pe-xl-4 me-xl-2" id="booking_detailsform">
                             <div class="card border-0 shadow-sm">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center justify-content-between border-bottom pb-4 mb-4">
                                         <h2 class="h3 text-body-emphasis mb-0">Secure Your Spot with AIRPARQ Today!</h2>
                                     </div>
-                                         <form class="search-tour-form" action="{{route('bookingdetailstep3')}}" method="post">
+                                         <form  class="search-tour-form" action="{{route('bookingdetailstep3')}}" method="post">
                                             @csrf
                                         <input type="hidden" id="selected_terminal_id" name="selected_terminal_id">
                                         <div class="search-tour-input">
                                             <div class="row g-3 g-xl-2" style="margin-bottom:20px">
-                                                 <div class="col-12">
+                                                 <div class="col-6">
                                                      <div class="input-icon-group">
                                                         <select class="form-select dropdown-select shadow-sm" id="airport" name="airport">
                                                             <option value="London Heathrow" selected="">London Heathrow</option>
                                                         </select>
                                                     </div>
                                                 </div>
+                                                 <div class="col-6">
+                                                     <div class="mb-0">
+                                                        <div class="input-icon-group">
+                                                            <input id="promocode" name="promocode" type="Text" class="form-control shadow-sm" placeholder="Promo code" data-input="" readonly="" value="{{$pCode}}">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-
-                                            <div class="row g-3 g-xl-2 mb-20" style="margin-bottom:20px">
-                                                 <div class="col-8">
+                                                 <div class="row g-3 g-xl-2" style="margin-bottom:20px">
+                                                 <div class="col-3">
                                                      <div class="mb-0">
                                                         <div class="input-icon-group tour-date">
                                                             <label class="input-icon hicon hicon-menu-calendar hicon-bold"></label>
@@ -324,7 +218,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                 <div class="col-4">
+                                                 <div class="col-3">
                                                      <div class="mb-0">
                                                         <div class="input-icon-group">
                                                         <?php
@@ -334,9 +228,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row g-3 g-xl-2 mb-20" style="margin-bottom:20px">
-                                                 <div class="col-8">
+                                                 <div class="col-3">
                                                      <div class="mb-0">
                                                         <div class="input-icon-group tour-date">
                                                             <label class="input-icon hicon hicon-menu-calendar hicon-bold"></label>
@@ -344,7 +236,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                 <div class="col-4">
+                                                 <div class="col-3">
                                                      <div class="mb-0">
                                                         <div class="input-icon-group tour-date">
                                                             <input id="parking_till_time" name="parking_till_time" type="time" class="form-control" placeholder="Time" value="{{$tTime}}">
@@ -352,33 +244,31 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row g-3 g-xl-2 mb-20" style="margin-bottom:20px">
-                                                 <div class="col-12">
-                                                     <div class="mb-0">
-                                                        <div class="input-icon-group">
-                                                            <input id="promocode" name="promocode" type="Text" class="form-control shadow-sm" placeholder="Promo code" data-input="" readonly="" value="{{$pCode}}">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                             <div class="border-top pt-4">
                                                 <button type="button" class="btn btn-primary mnw-180"  >
-                                                    Edit
+                                                    Edit Search
+                                                </button>
+                                                 <button type="submit" class="btn btn-primary mnw-180" id="nextBtn"  >
+                                                    Next
                                                 </button>
                                             </div>
                                         </div>
-
+                                    </form>
 
                                 </div>
                             </div>
                         </div>
                         <!-- /Your Profile -->
-
-                            <br/>
-                          <div class="pe-xl-4 me-xl-2">
-                         <div class="card border-0 shadow-sm">
-                        <div class="card-body">
+                        <br/>
+                        <div class="pe-xl-4 me-xl-2">
+                        <div class="card border-0 shadow-sm" id ="terminalview">
+                            <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between border-bottom pb-4 mb-4">
+                                <h2 class="h3 text-body-emphasis mb-0">Select Terminal</h2>
+                                 <button type="button" id="drop" class="btn btn-primary mnw-180">
+                                    drop
+                                </button>
+                            </div>
                             <div class="row g-10 g-xl-8">
                                  <div class="tour-grid">
                                     <div class="row">
@@ -419,12 +309,8 @@
 
                                 </div>
                             </div>
-                             <div class="border-top pt-4">
-                                <button type="submit" class="btn btn-primary mnw-180"  >
-                                    Next
-                                </button>
-                            </div>
-                             </form>
+
+
                         </div>
                         </div>
                         </div>
@@ -444,9 +330,8 @@
     </main>
     <!-- /Main -->
 
-    <!-- Footer -->
+     <!-- Footer -->
     <footer class="footer p-top-90 p-bottom-90" data-aos="fade">
-
         <!-- Footer top -->
         <div class="footer-top">
             <div class="container">
@@ -455,14 +340,22 @@
                         <!-- Brand -->
                         <div class="footer-widget">
                             <a href="index.html" class="brand-img">
-                                <img class="me-4" src="{{asset('account/img/logos/logo.png')}}" style="width:200px;height:60px" alt="">
+                                  @if(empty($csetting) || empty($csetting[0]['image']))
+                                    <img
+                                        src="{{ asset('assets/img/logo.png') }}"
+                                        alt="navbar brand"
+                                        class="navbar-brand"
+                                    style="width:200px;height:60px"
+                                    />
+                                @else
+                                    <img
+                                        src="{{ asset('assets/img/' . $csetting[0]['image']) }}"
+                                        alt="navbar brand"
+                                        class="navbar-brand"
+                                    style="width:200px;height:60px"
+                                    />
+                                @endif
                             </a>
-                            <p class="brand-desc">
-                                <em>
-                                    Moliva Travel Agency offers unique and memorable tours, providing rich experiences in the beautiful country of Moliva.
-                                </em>
-                                <a href="about.html">[+]</a>
-                            </p>
                             <ul class="social-list">
                                 <li class="social-item">
                                     <a href="#">
@@ -523,16 +416,33 @@
                             <h2 class="h4 pb-3">Contact Info</h2>
                             <div class="contact-info">
                                 <p>
-                                    <span>No 234, Placer Loquen Marsei Niriva, Moliva.</span>
+                                    @if(!empty($csetting) || !empty($csetting[0]['address']))
+                                        <span>{{$csetting[0]['address']}}</span>
+                                    @else
+                                        <span>Defult address</span>
+                                    @endif
                                 </p>
                                 <p>
-                                    <span>+33 321-654-987 (Ext: 123).</span>
+                                    @if(!empty($csetting) || !empty($csetting[0]['phone1']))
+                                        <span>{{$csetting[0]['phone1']}}</span>
+                                    @else
+                                        <span>Defult no1</span>
+                                    @endif
                                 </p>
                                 <p>
-                                    <a href="#">Booking@example.com</a>
+                                    @if(!empty($csetting) || !empty($csetting[0]['phone2']))
+                                        <span>{{$csetting[0]['phone2']}}</span>
+                                    @else
+                                        <span>Defult no2</span>
+                                    @endif
                                 </p>
                                 <p>
-                                    <a href="#">www.example.com</a>
+                                      @if(!empty($csetting) || !empty($csetting[0]['email']))
+                                        <a href="#">{{$csetting[0]['email']}}</a>
+                                    @else
+                                        <a href="#">Defult email</a>
+                                    @endif
+
                                 </p>
                             </div>
                         </div>
@@ -541,59 +451,33 @@
                     <div class="col-12 col-xl-3 col-md-6">
                         <!-- Quick Links -->
                         <div class="footer-widget">
-                            <h2 class="h4 pb-3">Moliva Travel</h2>
+                            <h2 class="h4 pb-3">Company</h2>
                             <ul class="footer-link">
                                 <li class="link-item">
-                                    <a href="about.html">About us</a>
+                                    <a href="{{route('aboutus')}}" >About us</a>
                                 </li>
                                 <li class="link-item">
-                                    <a href="destinations-1.html">Destinations</a>
+                                    <a href="{{route('howitworks')}}" >How It Works</a>
                                 </li>
                                 <li class="link-item">
-                                    <a href="tour-packages-1.html">Moliva Tours</a>
+                                    <a href="{{route('contactus')}}">Contact Us</a>
                                 </li>
-                                <li class="link-item">
-                                    <a href="post-list.html">Travel insight</a>
-                                </li>
-                                <li class="link-item">
-                                    <a href="contact.html">Contact us</a>
-                                </li>
+
                             </ul>
                         </div>
                         <!-- /Quick Links -->
                     </div>
                     <div class="col-12 col-xl-3 col-md-6">
                         <div class="footer-widget">
-                            <h2 class="h4 pb-3">Get the app</h2>
-                            <!-- Mobile App -->
-                            <div class="mb-5 pt-3">
-                                <div class="row g-3">
-                                    <div class="col-6">
-                                        <a href="#">
-                                            <img src="{{asset('account/img/icons/i1.svg')}}" class="w-100" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a href="#">
-                                            <img src="{{asset('account/img/icons/i2.svg')}}" class="w-100" alt="">
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /Mobile App -->
-                            <!-- Social -->
-                            <div class="footer-local">
-                                <a data-bs-toggle="modal" href="#mdlLanguage" class="me-4">
-                                    <img src="{{asset('account/img/flags/en.svg')}}" height="14" alt="" class="me-2">
-                                    <span class="me-1">English</span>
-                                    <i class="hicon hicon-thin-arrow-down fsm-6"></i>
-                                </a>
-                                <a data-bs-toggle="modal" href="#mdlCurrency">
-                                    <span class="me-1">USD (US Dollar)</span>
-                                    <i class="hicon hicon-thin-arrow-down fsm-6"></i>
-                                </a>
-                            </div>
-                            <!-- /Social -->
+                            <h2 class="h4 pb-3">Polices</h2>
+                              <ul class="footer-link">
+                                <li class="link-item">
+                                    <a href="{{route('termsandcondition')}}" >Terms & Conditions</a>
+                                </li>
+                                <li class="link-item">
+                                    <a href="{{route('privacypolicy')}}" >Privacy Policy</a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -606,20 +490,9 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-md-6">
-                        <p class="mb-lg-0">© 2024 Moliva Travel Agency. All rights reserved.</p>
+                        <p class="mb-lg-0">© All rights reserved.| airparq.co.uk | Developed by Lithic Labs Ltd </p>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <div class="text-start text-md-end">
-                            <ul class="list-inline mb-lg-0">
-                                <li class="list-inline-item">
-                                    <a href="#">Privacy Policy</a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="#">Terms of Use</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -634,6 +507,8 @@
     </a>
     <!-- /Scroll top -->
 
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/simple-notify@1.0.4/dist/simple-notify.min.js"></script>
     <script defer="" src="{{asset('account/js/theme-1.min.js')}}"></script>
     <script defer="" src="{{asset('account/js/theme-2.min.js')}}"></script>
     <script defer="" src="{{asset('account/js/theme-3.min.js')}}"></script>
@@ -649,9 +524,34 @@
         });
 
 
+        document.addEventListener("DOMContentLoaded", function() {
+            const formViewBtn = document.getElementById('form_view');
+            const bookingForm = document.getElementById('booking_detailsform');
+            const terminalView = document.getElementById('terminalview');
+
+            // Add click event listener to the Form View button
+            formViewBtn.addEventListener('click', function() {
+                // Toggle form view on mobile
+                if (bookingForm.style.display === "none" || bookingForm.style.display === "") {
+                    bookingForm.style.display = "block";
+                } else {
+                    bookingForm.style.display = "none";
+                }
+
+                // Toggle terminal view on mobile
+                if (terminalView.style.display === "none" || terminalView.style.display === "") {
+                    terminalView.style.display = "block";
+                } else {
+                    terminalView.style.display = "none";
+                }
+            });
+        });
+
 
 
     </script>
+     <!-- Notify JS -->
+    @notifyJs
 
 
 </body>

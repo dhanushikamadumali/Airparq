@@ -363,11 +363,11 @@
     });
 
     // Close modal and stop the camera stream
-    $("#close-modal").click(function() {
+    $("#close-modal, .close").click(function() {
         $('#cameraModal').modal('hide');
-        stopCamera();
+        stopCamera();  // Stop the camera when modal is closed
     });
-
+    
     // Function to start the camera stream
     function startCamera() {
         if (currentStream) {
@@ -394,11 +394,11 @@
     function stopCamera() {
         if (currentStream) {
             currentStream.getTracks().forEach(track => {
-                track.stop();
+                track.stop();  // Stop all media tracks (camera)
             });
+            currentStream = null;
         }
     }
-
     // Switch camera (front/back) on button click
     $("#switch-camera").click(function() {
         useFrontCamera = !useFrontCamera;  // Toggle between front and back camera
@@ -442,8 +442,8 @@
                 console.log(response);
                 // Optionally, clear the results after successful upload
                 photos = [];  // Clear the array after upload
-                document.getElementById('results').innerHTML = '';  // Clear the displayed images
-                alert('Photos uploaded successfully!');
+                //document.getElementById('results').innerHTML = '';  // Clear the displayed images
+                 window.location.reload();
                 $('#cameraModal').modal('hide');  // Close the modal after uploading
             },
             error: function(xhr, status, error) {
@@ -452,6 +452,7 @@
             }
         });
     });
+
 
 
 

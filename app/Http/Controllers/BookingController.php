@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use Exception;
 use App\Models\Promocode;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -39,26 +41,66 @@ class BookingController extends Controller
      */
     public function store(StoreBookingRequest $request)
     {
-
         $latestBooking = Booking::orderBy('id', 'desc')->first();
         $nextId = $latestBooking ? $latestBooking->id + 1 : 1;
         $bookingCode = 'BOOK' . str_pad($nextId, 5, '0', STR_PAD_LEFT); // 'BOOK00001'
 
+        $stripe = new \Stripe\StripeClient(Config::get('stripe.stripe_secret_key'));
+
+        $redirectUrl = route('completepage') . '?session_id={CHECKOUT_SESSION_ID}';
+
         try{
+            // $amountInCents =  $request->input('price') * 100;
+            $unitPriceInPence = 30; // £0.30 in pence
+
+            // Calculate the total amount (Stripe expects the amount in pence)
+            $totalAmount = $unitPriceInPence * $request->input('price') ;
+
+            $response =  $stripe->checkout->sessions->create([
+                'success_url' => $redirectUrl,
+                // 'payment_method_types' => ['link', 'card'],
+                'line_items' => [
+                    [
+                        'price_data'  => [
+                            'product_data' => [
+                                'name' => 'airparq booking',
+                            ],
+                            'unit_amount'  => $totalAmount,
+                            'currency'     => 'gbp',
+                        ],
+                        'quantity'    => 1,
+                    ],
+                ],
+                'mode' => 'payment',
+                'allow_promotion_codes' => false
+            ]);
+
             $validateddata = $request->all();//all validated data
             $validateddata['booking_code'] = $bookingCode;
             Booking::create($validateddata);
             notify()->success('Successfully registered promocode!','Success!',[
                 'position' => 'bottom-right'
             ]);
-            return Redirect::route('completepage');
+            return redirect($response['url']);
         }catch(Exception $e){
-            // notify()->error('Failed to insert promocode.', 'Error', [
-            //     'position' => 'top-right' // Change this to your desired position
-            // ]);
+            notify()->error('Failed to Booking.', 'Error', [
+                'position' => 'top-right' // Change this to your desired position
+            ]);
 
         }
 
+    }
+
+    public function stripeCheckoutSuccess(Request $request)
+    {
+        $stripe = new \Stripe\StripeClient(Config::get('stripe.stripe_secret_key'));
+
+        $session = $stripe->checkout->sessions->retrieve($request->session_id);
+        info($session);
+
+        $successMessage = "We have received your payment request and will let you know shortly.";
+
+        return view('web.completed', compact('successMessage'));
     }
 
     /**
@@ -235,56 +277,35 @@ class BookingController extends Controller
     }
 
     public function uploadvehiclephoto(Request $request,Booking $booking){
-         // Get the row ID from the request
-         $rowId = $request->input('row_id');
-
-         // Get the array of photos from the request
-        //  $photos = $request->input('photos');
-         $photos = json_decode($request->input('photos'));
-
-         $imagePaths = [];
-         foreach ($photos as $index => $base64Image) {
-            dd($photos);
-            // $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
-
-            // $fileName = 'photo_' . $rowId . '_' . time() . "_{$index}.jpg";
-
-            // \Storage::put("public/photos/{$fileName}", $imageData);
-
-            // YourModel::create([
-            //     'row_id' => $rowId,
-            //     'photo_path' => "storage/photos/{$fileName}",
-            // ]);
-        }
-
-        return response()->json(['success' => 'Photos uploaded successfully']);
-         // Check if photos are present
-        //  if (!empty($photos)) {
-        //      foreach ($photos as $photoData) {
-        //          // Create unique name for the image
-        //          $imageName = time() . rand(100, 999) . '.jpeg';
-        //          // Decode the base64 image data
-        //          $decodedImage = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $photoData));
-        //          // Save the decoded image as a file
-        //          $filePath = public_path('assets/vehicleimage/')  . $imageName;
-        //          file_put_contents($filePath, $decodedImage);
-
-        //          // Update the booking record with the new image path
-        //          $imagePaths  = $imageName;  // Assuming 'image' is the column for storing the image filename
-        //         //  $booking->save();  // Save the booking record with the updated image
 
 
+         try{
+            // Get the row ID from the request
+            $rowId = $request->input('row_id');
+            $photos = json_decode($request->input('photos'));
+            $imagePaths = [];
+            foreach ($photos as $index => $base64Image) {
 
-        //      }
+               $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
+               $fileName = $rowId . '_' . time() . "_{$index}.jpg";
+               $filePath = public_path('assets/vehicleimage/')  .$fileName;
+               file_put_contents($filePath,  $imageData);
+               $imagePaths[] = "{$fileName}";
 
-        //  }
+           }
+            Booking::where('id',($rowId))->update(['image'=>json_encode($imagePaths) ]);
+            notify()->success('Photos uploaded successfully','Upload Success', [
+               'position' => 'bottom-right',
+               'closeButton' => true,
+           ]);
+            return response()->json(['success' => 'true']);
 
-        //  $booking = $booking::findOrFail($rowId);
-        //  $booking->image = json_encode($imagePaths);  // Save JSON-encoded array
-         Booking::where('id',($rowId))->update(['image'=>json_encode($imagePaths) ]);
-        //  $booking->save();
+         }catch(Exception $e){
+            notify()->error('Failed to Upload photos.', 'Error', [
+                'position' => 'top-right' // Change this to your desired position
+            ]);
 
-         return response()->json(['success' => 'Photos uploaded successfully']);
+         }
     }
 
 

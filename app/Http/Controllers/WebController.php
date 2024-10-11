@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Exception;
 use Illuminate\Support\Facades\Session;
+use App\Models\Setting;
 
 
 class WebController extends Controller
@@ -23,13 +24,15 @@ class WebController extends Controller
      */
     public function index()
     {
-        return view('web.index');
+        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
+        return view('web.index',compact('csetting'));
     }
 
     // customer login view
 
     public function showlogin(){
-        return view('web.login');
+        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
+        return view('web.login',compact('csetting'));
     }
 
     // customer store login
@@ -50,7 +53,8 @@ class WebController extends Controller
 
     // customer register view
     public function showregister(){
-        return view('web.register');
+        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
+        return view('web.register',  compact('csetting'));
     }
 
     // insert customer
@@ -89,20 +93,23 @@ class WebController extends Controller
     }
 
     public function contactus(){
-        return view('web.contact');
+        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
+        return view('web.contact', compact('csetting'));
     }
 
     public function aboutus(){
-        return view('web.aboutus');
+        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
+        return view('web.aboutus', compact('csetting'));
     }
 
     public function howitworks(){
-        return view('web.howitworks');
+        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
+        return view('web.howitworks', compact('csetting'));
     }
     public function showbooking(){
 
         $allterminallists = Terminal::all();
-
+        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
         $fDate =  Session::get('fromDate');
         $fTime =  Session::get('fromTime');
         $tDate =  Session::get('tillDate');
@@ -111,13 +118,13 @@ class WebController extends Controller
         $pCode =  Session::get('promoCode');
         $airport =  Session::get('airport');
 
-        return view('web.booking',compact('allterminallists','fDate','fTime','tDate','tTime','tPrice','pCode','airport'));
+        return view('web.booking',compact('allterminallists','fDate','fTime','tDate','tTime','tPrice','pCode','airport','csetting'));
     }
 
     public function showcheckout(){
 
         $allterminallists = Terminal::all();
-
+        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
         $fDate =  Session::get('fromDate');
         $fTime =  Session::get('fromTime');
         $tDate =  Session::get('tillDate');
@@ -136,7 +143,7 @@ class WebController extends Controller
         $terminalid =  Session::get('terminalid');
         $terminalname =  Session::get('terminalname');
 
-        return view('web.checkout',compact('allterminallists','terminalid','fDate','fTime','tDate','tTime','tPrice','pCode','price','discount','cusfname','cuslname','cusemail','cusphoneno','terminalname','cusid','airport'));
+        return view('web.checkout',compact('allterminallists','terminalid','fDate','fTime','tDate','tTime','tPrice','pCode','price','discount','cusfname','cuslname','cusemail','cusphoneno','terminalname','cusid','airport','csetting'));
 
     }
 
@@ -231,6 +238,17 @@ class WebController extends Controller
         if(!Auth::guard('account')->check()){
             return  Redirect::route('showlogin');
         }
+          // Check if selected_terminal_id is provided
+        if (!$request->input('selected_terminal_id')) {
+            notify()->error('Terminal ID is required!', 'Missing Data', [
+                'position' => 'top-right',
+                'closeButton' => true,
+            ]);
+            // Redirect back or handle accordingly
+            return back();
+        }
+        $terminaldetails = Terminal::getterminaldetails($request->input('selected_terminal_id'));//get terminal details
+
          // If authenticated, retrieve the authenticated user details
          $customer = Auth::guard('account')->user();
          $cuid = $customer->id;
@@ -291,8 +309,6 @@ class WebController extends Controller
             }
             // If promo details are empty, totalprice will remain unchanged (equal to $price)
         }
-        $terminaldetails = Terminal::getterminaldetails($request->input('selected_terminal_id'));//get terminal details
-
 
          $fromDate = Carbon::parse($request->input('parking_from_date'))->format('Y-m-d');
          $fromTime = $request->input('from_time');
@@ -313,11 +329,21 @@ class WebController extends Controller
 
          return Redirect::route('showcheckout');
 
-
-
     }
+
     public function completepage(){
-        return view('web.completed');
+        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
+        return view('web.completed',compact('csetting'));
+    }
+
+
+    public function termsandcondition(){
+        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
+        return view('web.termsandcondition',compact('csetting'));
+    }
+    public function privacypolicy(){
+        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
+        return view('web.privacypolice',compact('csetting'));
     }
 
 }

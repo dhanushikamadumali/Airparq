@@ -3,12 +3,21 @@
       <!-- Logo Header -->
       <div class="logo-header" data-background-color="dark">
         <a href="index.html" class="logo">
-          <img
-            src="{{asset('assets/img/kaiadmin/logo_light.svg')}}"
-            alt="navbar brand"
-            class="navbar-brand"
-            height="20"
-          />
+            @if(empty($csetting) || empty($csetting[0]['image']))
+                <img
+                    src="{{ asset('assets/img/logo.png') }}"
+                    alt="navbar brand"
+                    class="navbar-brand"
+                    style="width:150px;height:50px"
+                />
+            @else
+                <img
+                    src="{{ asset('assets/img/' . $csetting[0]['image']) }}"
+                    alt="navbar brand"
+                    class="navbar-brand"
+                    style="width:150px;height:50px"
+                />
+            @endif
         </a>
         <div class="nav-toggle">
           <button class="btn btn-toggle toggle-sidebar">

@@ -11,7 +11,7 @@ class StoreSettingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,16 @@ class StoreSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'smtp_host' => 'required|string',
+            'username' => 'required|string',
+            'password' => 'required|string',
+            'enc_type' => 'required|string',
+            'port' => 'required|string',
+            'email' => 'required|email',
+            'phone1' => 'required|string',
+            'phone2' => 'required|string',
+            'address' => 'required|string',
         ];
     }
 }

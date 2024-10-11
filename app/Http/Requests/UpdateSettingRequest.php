@@ -22,12 +22,16 @@ class UpdateSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image'=> 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'mail_host' => 'required|string',
-            'mail_username' => 'required|string',
-            'mail_password' => 'required|string',
-            'mail_enc' => 'required|string',
-            'mail_port' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'smtp_host' => 'required|string',
+            'username' => 'required|string',
+            'password' => 'required|string',
+            'enc_type' => 'required|string',
+            'port' => 'required|string',
+            'email' => 'required|email',
+            'phone1' => 'required|string',
+            'phone2' => 'required|string',
+            'address' => 'required|string',
         ];
     }
 }

@@ -28,6 +28,9 @@ Route::prefix('account')->group(function () {
     Route::get('/showbooking', [App\Http\Controllers\WebController::class, 'showbooking'])->name('showbooking');
     Route::get('/showterminal', [App\Http\Controllers\WebController::class, 'showterminal'])->name('showterminal');
     Route::get('/showcheckout', [App\Http\Controllers\WebController::class, 'showcheckout'])->name('showcheckout');
+    Route::get('/privacypolicy', [App\Http\Controllers\WebController::class, 'privacypolicy'])->name('privacypolicy');
+    Route::get('/termsandcondition', [App\Http\Controllers\WebController::class, 'termsandcondition'])->name('termsandcondition');
+
 
     Route::post('/bookingdetailstep2', [App\Http\Controllers\WebController::class, 'bookingdetailstep2'])->name('bookingdetailstep2');
     Route::post('/bookingdetailstep3', [App\Http\Controllers\WebController::class, 'bookingdetailstep3'])->name('bookingdetailstep3');
@@ -108,6 +111,8 @@ Route::prefix('admin')->group(function(){
         // vehicle photo
         Route::post('/uploadvehiclephoto',[App\Http\Controllers\BookingController::class,'uploadvehiclephoto'])->name('uploadvehiclephoto');
 
+        Route::post('/upload',[App\Http\Controllers\BookingController::class, 'upload'])->name('upload');
+
         // today report
         Route::get('/todayreport',[App\Http\Controllers\ReportController::class,'todayreport'])->name('todayreport');
         Route::post('/todayreportprint',[App\Http\Controllers\ReportController::class,'todayreportprint'])->name('todayreportprint');
@@ -135,7 +140,7 @@ Route::prefix('admin')->group(function(){
         //company setting
         Route::get('/csetting',[App\Http\Controllers\SettingController::class,'edit'])->name('csetting');
         Route::put('/updatecsetting',[App\Http\Controllers\SettingController::class,'update'])->name('updatecsetting');
-
+        Route::post('/storecsetting',[App\Http\Controllers\SettingController::class,'store'])->name('storecsetting');
         // user
         Route::get('/createuser',[App\Http\Controllers\UserController::class,'create'])->name('createuser');
         Route::post('/storeuser',[App\Http\Controllers\UserController::class,'store'])->name('storeuser');
