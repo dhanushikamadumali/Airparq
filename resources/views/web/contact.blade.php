@@ -11,6 +11,7 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="Themenix.com">
+     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{asset('account/img/logos/logo.png')}}" rel="shortcut icon" type="image/png">
     <link href="{{asset('account/css/theme-1.min.css')}}" rel="stylesheet">
     <link href="{{asset('account/css/theme-2.min.css')}}" rel="stylesheet">
@@ -18,7 +19,17 @@
 </head>
 
 <!-- /Head -->
-
+<style>
+     /* Media query for mobile view (up to 768px) */
+    @media (max-width: 768px) {
+        .nav-link.active span {
+            color: #EBC51E; /* Set the color you want for mobile view */
+        }
+          .bookingbtn{
+            background-color:#FFD31C;
+        }
+    }
+</style>
 <body>
 
     <!-- Preloader -->
@@ -29,7 +40,7 @@
     </div>
     <!-- /Preloader -->
 
-     <!-- Header -->
+       <!-- Header -->
     <header id="header" data-aos="fade">
         <!-- Header Navbar -->
         <div class="header-navbar" style="background-color:#FFD31C">
@@ -58,20 +69,34 @@
                     </a>
                     <div class="offcanvas offcanvas-navbar offcanvas-start border-end-0" tabindex="-1" id="offcanvasNavbar">
                         <div class="offcanvas-header border-bottom p-4 p-xl-0">
-                            <a href="index.html" class="d-inline-block">
-                                <img src="{{asset('account/img/logos/menu-logo.png')}}" srcset="{{asset('account/img/logos/menu-logo%402x.png')}} 2x" alt="">
+                            <a class="d-inline-block" href="{{route('/')}}" >
+                                  @if(empty($csetting) || empty($csetting[0]['image']))
+                                    <img
+                                        src="{{ asset('assets/img/logo.png') }}"
+                                        alt="navbar brand"
+                                        class="navbar-brand"
+                                    style="width:200px;height:60px"
+                                    />
+                                @else
+                                    <img
+                                        src="{{ asset('assets/img/' . $csetting[0]['image']) }}"
+                                        alt="navbar brand"
+                                        class="navbar-brand"
+                                    style="width:200px;height:60px"
+                                    />
+                                @endif
                             </a>
                             <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
                         <div class="offcanvas-body p-4 p-xl-0">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link dropdown-toggle-hover active" href="{{route('/')}}" data-bs-display="static">
+                                    <a class="nav-link active" href="{{route('/')}}" data-bs-display="static">
                                         <span>Home</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link dropdown-toggle-hover" href="{{route('aboutus')}}" data-bs-display="static">
+                                    <a class="nav-link" href="{{route('aboutus')}}" data-bs-display="static">
                                         <span>About Us</span>
                                     </a>
                                 </li>
@@ -85,14 +110,15 @@
                                         <span>Contact Us</span>
                                     </a>
                                 </li>
+                                 <li class="nav-item">
+                                    <div class="hero-action" style="margin-top:20px"  >
+                                    <a href="{{route('showbookingone')}}" class="btn btn-outline-light btn-uppercase mnw-180 me-4 bookingbtn">
+                                        <span>BOOK NOW</span>
+                                    </a>
+                                    </div>
+                                </li>
                             </ul>
-
                         </div>
-                    </div>
-                     <div class="hero-action">
-                        <a href="{{route('showbooking')}}" class="btn btn-outline-light btn-uppercase mnw-180 me-4">
-                            <span>BOOK NOW</span>
-                        </a>
                     </div>
                     <div class="dropdown user-menu ms-xl-auto">
                         <button class="circle-icon circle-icon-link circle-icon-link-hover" data-bs-toggle="dropdown" data-bs-display="static">
@@ -142,7 +168,6 @@
         <!-- /Header Navbar -->
     </header>
     <!-- /Header -->
-
     <!-- Main -->
     <main>
 
@@ -184,7 +209,7 @@
                                             @else
                                                 <span>Defult address</span>
                                             @endif
-                                        
+
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -214,35 +239,34 @@
                     <div class="col-12 col-xl-6">
                         <!-- Contact Form -->
                         <div class="form-contact rounded shadow-sm">
-                            <form class="needs-validation" method="post" novalidate="">
+                                <form class="search-tour-form" action="{{route('storecontactus')}}" method="post">
+                                @csrf
                                 <div class="border-bottom pb-4 mb-4">
                                     <h2 class="text-white mb-0">Looking for any help?</h2>
                                 </div>
                                 <div class="alert d-none" role="alert" id="msg_alert"></div>
                                 <div class="form-floating mb-4">
-                                    <input id="txtYourName" type="text" name="yourname" class="form-control shadow-sm" placeholder="Your Name" required="">
+                                    <input id="txtYourName" type="text" name="name" class="form-control shadow-sm" placeholder="Your Name" required="">
                                     <label for="txtYourName">Your Name *</label>
+                                     @error('name')
+                                        <div style="color:red">{{$message}}</div>
+                                    @enderror
                                 </div>
                                 <div class="form-floating mb-4">
                                     <input id="txtEmail" type="email" name="email" class="form-control shadow-sm" placeholder="Email" required="">
                                     <label for="txtEmail">Your Email *</label>
+                                     @error('email')
+                                        <div style="color:red">{{$message}}</div>
+                                    @enderror
                                 </div>
                                 <div class="form-floating mb-4">
-                                    <input id="txtSubject" type="text" name="subject" class="form-control shadow-sm" placeholder="Subject" required="">
-                                    <label for="txtSubject">Subject *</label>
-                                </div>
-                                <div class="form-floating mb-4">
-                                    <textarea id="txtMessage" name="message" class="form-control shadow-sm" placeholder="Message" style="height: 150px" required=""></textarea>
+                                    <textarea id="txtMessage" name="comment" class="form-control shadow-sm" placeholder="Message" style="height: 150px"></textarea>
                                     <label for="txtMessage">Message *</label>
                                 </div>
                                 <button type="submit" class="btn btn-light mnw-180">
                                     <i class="hicon hicon-email-envelope"></i>
                                     <span> Send message</span>
                                 </button>
-                                <div class="row">
-                                    <div class="col-12">
-                                    </div>
-                                </div>
                             </form>
                         </div>
                         <!-- /Contact Form -->

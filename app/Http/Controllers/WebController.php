@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Redirect;
 use Exception;
 use Illuminate\Support\Facades\Session;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Log;
 
 
 class WebController extends Controller
@@ -24,8 +25,17 @@ class WebController extends Controller
      */
     public function index()
     {
+        $allpromocodelists = Promocode::all();
+        $fDate =  Session::get('fromDate');
+        $fTime =  Session::get('fromTime');
+        $tDate =  Session::get('tillDate');
+        $tTime =  Session::get('tillTime');
+        $tPrice =  Session::get('totalPrice');
+        $pCode =  Session::get('promoCode');
+        $airport =  Session::get('airport');
+
         $csetting= Setting::select('image','address','phone1','phone2','email')->get();
-        return view('web.index',compact('csetting'));
+        return view('web.index',compact('csetting','fDate','fTime','tDate','tTime','tPrice','pCode','airport','csetting','allpromocodelists'));
     }
 
     // customer login view
@@ -121,6 +131,20 @@ class WebController extends Controller
         return view('web.booking',compact('allterminallists','fDate','fTime','tDate','tTime','tPrice','pCode','airport','csetting'));
     }
 
+    public function showbookingone(){
+
+        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
+        $fDate =  Session::get('fromDate');
+        $fTime =  Session::get('fromTime');
+        $tDate =  Session::get('tillDate');
+        $tTime =  Session::get('tillTime');
+        $tPrice =  Session::get('totalPrice');
+        $pCode =  Session::get('promoCode');
+        $airport =  Session::get('airport');
+
+        return view('web.bookingone',compact('fDate','fTime','tDate','tTime','tPrice','pCode','airport','csetting'));
+    }
+
     public function showcheckout(){
 
         $allterminallists = Terminal::all();
@@ -151,9 +175,9 @@ class WebController extends Controller
 
         $validatedData = $request->validate([
             'airport' => 'required|string',
-            'parking_from_date' => 'required|date|date_format:Y-m-d',
+            'parking_from_date' => 'required|date',
             'parking_from_time' => 'required',
-            'parking_till_date' => 'required|date|date_format:Y-m-d',
+            'parking_till_date' => 'required|date',
             'parking_till_time' => 'required',
             'promocode' => 'required|string',
 
@@ -328,6 +352,116 @@ class WebController extends Controller
          Session::put('promocode', $promocode);
 
          return Redirect::route('showcheckout');
+
+    }
+    public function bookingedit(Request $request){
+
+        try {
+            // Validate the request
+            $request->validate([
+                'selected_terminal_id' => 'required',
+                'parking_from_date' => 'required|date',
+                'from_time' => 'required',
+                'parking_till_date' => 'required|date',
+                'till_time' => 'required',
+                'promocode' => 'nullable|string',
+                'airport' => 'required|string'
+            ]);
+               if(!Auth::guard('account')->check()){
+                return  Redirect::route('showlogin');
+            }
+            $terminaldetails = Terminal::getterminaldetails($request->input('selected_terminal_id'));//get terminal details
+            // If authenticated, retrieve the authenticated user details
+            $customer = Auth::guard('account')->user();
+            $cuid = $customer->id;
+
+            $cufirstname = $customer->first_name; // or $customer->fname depending on your model
+            $culastname = $customer->last_name; // or $customer->lname depending on your model
+            $cuemail = $customer->email; // or $customer->email depending on your model
+            $cuphoneno = $customer->phone_no; // or $customer->phone_no depending on your model
+
+            $countfrom = Carbon::parse($request->input('parking_from_date'));
+            $counttill = Carbon::parse($request->input('parking_till_date'));
+
+            // Calculate the difference in days and include the last day (+1)
+            $dayscount = $countfrom->diffInDays($counttill) + 1;
+             // This will output the difference in days
+            $price = 0;
+            if ($dayscount >= 1) {
+                $price += 55; // Base price for the 1st day
+            }
+            if ($dayscount >= 2 && $dayscount <= 5) {
+                $price += ($dayscount - 1) * 2; // 2 pounds for each day from 2nd to 5th day
+            } elseif ($dayscount >= 6 && $dayscount <= 14) {
+                $price += (5 - 1) * 2; // 2 pounds for each day from 2nd to 5th day
+                $price += ($dayscount - 5) * 5; // 5 pounds for each day from 6th to 14th day
+            } elseif ($dayscount >= 15) {
+                $price += (5 - 1) * 2; // 2 pounds for each day from 2nd to 5th day
+                $price += (14 - 5) * 5; // 5 pounds for each day from 6th to 14th day
+                $price += ($dayscount - 14) * 7; // 7 pounds for each day from 15th day onwards
+            }
+
+            $promocode = $request->input('promocode');
+
+            // Initialize the total price to the original price
+            $totalprice = $price;
+
+            if (!empty($promocode)) {
+                $promodetails = Promocode::getpromodetails($promocode);
+                // Check if the promo code exists and has details
+                if (!empty($promodetails) && !$promodetails->isEmpty()) {
+                    $discountamount = $promodetails[0]->discount_amount; // Get promo code discount
+                    $discounttype = $promodetails[0]->discount_type;     // Get promo code discount type
+
+                    // Calculate the discount based on the type
+                    if ($discounttype == "percent") {
+                        $discountprice = $price / 100 * $discountamount;
+                        $totalprice = $price - $discountprice;
+                    } else {
+                        $discountprice = $discountamount;
+                        $totalprice = $price - $discountprice;
+                    }
+                }else{
+                    return response()->json(['success' => false, 'errors' => 'Failed to insert promocode'], 422);
+                }
+                // If promo details are empty, totalprice will remain unchanged (equal to $price)
+            }
+             $fromDate = Carbon::parse($request->input('parking_from_date'))->format('Y-m-d');
+             $fromTime = $request->input('from_time');
+             $tillDate = $tillDate = Carbon::parse($request->input('parking_till_date'))->format('Y-m-d');
+             $tillTime = $request->input('till_time');
+
+            // Perform the price calculations and session updates (your existing logic)
+             Session::put('totalPrice', $price);
+             Session::put('discount', $discountamount ?? 0);
+             Session::put('cusid', $cuid);
+             Session::put('cusfirstname', $cufirstname);
+             Session::put('cuslastname', $culastname);
+             Session::put('cusemail', $cuemail);
+             Session::put('cusphoneno', $cuphoneno);
+             Session::put('terminalid', $request->input('selected_terminal_id'));
+             Session::put('terminalname', $terminaldetails[0]->name);
+             Session::put('airport', $request->input('airport'));
+             Session::put('promoCode', $promocode);
+             Session::put('fromDate', $fromDate);
+             Session::put('fromTime', $fromTime);
+             Session::put('tillDate', $tillDate);
+             Session::put('tillTime', $tillTime);
+
+             notify()->success('Booking updated successfully.', 'Success');
+
+            // Return a success response if everything is valid
+            return response()->json(['success' => true, 'message' => 'Booking updated successfully']);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Return validation errors as JSON
+            return response()->json(['success' => false, 'errors' => $e->errors()], 422);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['success' => false, 'message' => 'An unexpected error occurred'], 500);
+        }
+
+
 
     }
 

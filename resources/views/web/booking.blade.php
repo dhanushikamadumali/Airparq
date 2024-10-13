@@ -27,20 +27,75 @@
         display: none;
     }
 
+    /* Terminal initially takes up full view */
+    #terminalview {
+        transition: transform 1.8s ease; /* Smooth transition */
+    }
+
+    /* Terminal moves down (partially hidden) */
+    #terminalview.half-hidden {
+        transform: translateY(100%); /* Move down by 50% */
+    }
+    .mobilebtnrow{
+        display:none;
+    }
+    #drop{
+        display:none;
+    }
+
     /* Show Form View button only on mobile */
     @media (max-width: 768px) {
         #form_view {
             display: block; /* Show on mobile */
         }
-
-        #booking_detailsform, {
-            display: none; /* Hide form and terminal card by default on mobile */
+        .mobilebtnrow{
+            display:block;
         }
+        .defultbtn{
+            display:none;
+        }
+         #drop{
+            display:block;
+        }
+
+
+        /* Default hidden on mobile */
+        #terminalview {
+            display: block;
+        }
+
+        #booking_detailsform {
+            display: none; /* Hide the booking form by default */
+        }
+
+        #terminalview {
+            transform: translateY(0); /* Fully visible by default */
+        }
+
+
     }
 </style>
 
 <!-- /Head -->
+<style>
 
+       /* Media query for mobile view (up to 768px) */
+    @media (max-width: 768px) {
+        .nav-link.active span {
+            color: #EBC51E; /* Set the color you want for mobile view */
+        }
+          .bookingbtn{
+            background-color:#FFD31C;
+        }
+
+        #terminalview1 {
+            background-color: #fff;
+            z-index: 2;
+            position: relative;
+            padding: 1.5rem;
+        }
+    }
+</style>
 <body>
      <x-notify::notify />
 
@@ -52,7 +107,7 @@
     </div>
     <!-- /Preloader -->
 
-     <!-- Header -->
+      <!-- Header -->
     <header id="header" data-aos="fade">
         <!-- Header Navbar -->
         <div class="header-navbar" style="background-color:#FFD31C">
@@ -81,20 +136,34 @@
                     </a>
                     <div class="offcanvas offcanvas-navbar offcanvas-start border-end-0" tabindex="-1" id="offcanvasNavbar">
                         <div class="offcanvas-header border-bottom p-4 p-xl-0">
-                            <a href="index.html" class="d-inline-block">
-                                <img src="{{asset('account/img/logos/menu-logo.png')}}" srcset="{{asset('account/img/logos/menu-logo%402x.png')}} 2x" alt="">
+                            <a class="d-inline-block" href="{{route('/')}}" >
+                                  @if(empty($csetting) || empty($csetting[0]['image']))
+                                    <img
+                                        src="{{ asset('assets/img/logo.png') }}"
+                                        alt="navbar brand"
+                                        class="navbar-brand"
+                                    style="width:200px;height:60px"
+                                    />
+                                @else
+                                    <img
+                                        src="{{ asset('assets/img/' . $csetting[0]['image']) }}"
+                                        alt="navbar brand"
+                                        class="navbar-brand"
+                                    style="width:200px;height:60px"
+                                    />
+                                @endif
                             </a>
                             <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
                         <div class="offcanvas-body p-4 p-xl-0">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link dropdown-toggle-hover active" href="{{route('/')}}" data-bs-display="static">
+                                    <a class="nav-link active" href="{{route('/')}}" data-bs-display="static">
                                         <span>Home</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link dropdown-toggle-hover" href="{{route('aboutus')}}" data-bs-display="static">
+                                    <a class="nav-link" href="{{route('aboutus')}}" data-bs-display="static">
                                         <span>About Us</span>
                                     </a>
                                 </li>
@@ -108,14 +177,15 @@
                                         <span>Contact Us</span>
                                     </a>
                                 </li>
+                                 <li class="nav-item">
+                                    <div class="hero-action" style="margin-top:20px"  >
+                                    <a href="{{route('showbookingone')}}" class="btn btn-outline-light btn-uppercase mnw-180 me-4 bookingbtn">
+                                        <span>BOOK NOW</span>
+                                    </a>
+                                    </div>
+                                </li>
                             </ul>
-
                         </div>
-                    </div>
-                     <div class="hero-action">
-                        <a href="{{route('showbooking')}}" class="btn btn-outline-light btn-uppercase mnw-180 me-4">
-                            <span>BOOK NOW</span>
-                        </a>
                     </div>
                     <div class="dropdown user-menu ms-xl-auto">
                         <button class="circle-icon circle-icon-link circle-icon-link-hover" data-bs-toggle="dropdown" data-bs-display="static">
@@ -174,16 +244,13 @@
             <!-- Shopping cart -->
             <section class="container" id="step1">
                 <div class="row g-0 g-xl-8">
+                    <!-- Form View Button (only visible on mobile) -->
+                    <button type="button" id="form_view" class="btn btn-primary d-md-none mnw-180">
+                        Expand
+                    </button>
                       <div class="col-12 col-xl-12">
-
-                        <!-- Form View Button (only visible on mobile) -->
-                        <button type="button" id="form_view" class="btn btn-primary mnw-180">
-                            Form View
-                        </button>
-
-
-                        <!-- Your Profile -->
-                        <div class="pe-xl-4 me-xl-2" id="booking_detailsform">
+                           <!-- Booking Details Form (visible only on desktop by default) -->
+                        <div id="booking_details_form" class="d-none d-md-block">
                             <div class="card border-0 shadow-sm">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center justify-content-between border-bottom pb-4 mb-4">
@@ -194,63 +261,80 @@
                                         <input type="hidden" id="selected_terminal_id" name="selected_terminal_id">
                                         <div class="search-tour-input">
                                             <div class="row g-3 g-xl-2" style="margin-bottom:20px">
-                                                 <div class="col-6">
+                                                <div class="col-12">
                                                      <div class="input-icon-group">
                                                         <select class="form-select dropdown-select shadow-sm" id="airport" name="airport">
-                                                            <option value="London Heathrow" selected="">London Heathrow</option>
+                                                            <option value="London Heathrow" {{ $airport == 'London Heathrow' ? 'selected' : '' }}>London Heathrow</option>
+                                                            <option value="New York JFK" {{ $airport == 'New York JFK' ? 'selected' : '' }}>New York JFK</option>
+                                                            <option value="Tokyo Narita" {{ $airport == 'Tokyo Narita' ? 'selected' : '' }}>Tokyo Narita</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                 <div class="col-6">
+                                                </div>
+                                            <div class="row g-3 g-xl-2" style="margin-bottom:20px">
+                                                <div class="col-12">
                                                      <div class="mb-0">
                                                         <div class="input-icon-group">
-                                                            <input id="promocode" name="promocode" type="Text" class="form-control shadow-sm" placeholder="Promo code" data-input="" readonly="" value="{{$pCode}}">
+                                                            <input id="promocode" name="promocode" type="Text" class="form-control shadow-sm" placeholder="Promo code" data-input="" value="{{ $pCode ?? '' }}">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                                  <div class="row g-3 g-xl-2" style="margin-bottom:20px">
-                                                 <div class="col-3">
+                                                 <div class="col-6">
                                                      <div class="mb-0">
                                                         <div class="input-icon-group tour-date">
                                                             <label class="input-icon hicon hicon-menu-calendar hicon-bold"></label>
-                                                            <input id="parking_from_date" name="parking_from_date" type="date" class="form-select shadow-sm" placeholder="Parking From" value="{{$fDate}}" data-input="" readonly="">
+                                                            <input id="parking_from_date" name="parking_from_date" type="date" class="form-select shadow-sm" placeholder="Parking From" value="{{$fDate ?? ''}}" data-input="">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                 <div class="col-3">
+                                                 <div class="col-6">
                                                      <div class="mb-0">
                                                         <div class="input-icon-group">
                                                         <?php
                                                          date_default_timezone_set('Asia/Colombo'); //e timeze to Sri Lanka
                                                         ?>
-                                                            <input id="parking_from_time" name="parking_from_time" type="time" class="form-control" placeholder="Time" value="<?php echo date('H:i', strtotime('+2 hours')) ?>" min="<?php echo date('H:i', strtotime('+2 hours')) ?>" value="{{$fTime}}" >
+                                                            <input id="parking_from_time" name="parking_from_time" type="time" class="form-control" placeholder="Time" value="{{ $fTime ?? date('H:i', strtotime('+2 hours')) }}" min="{{ $fTime ?? date('H:i', strtotime('+2 hours')) }}" >
                                                         </div>
                                                     </div>
                                                 </div>
-                                                 <div class="col-3">
+
+                                            </div>
+                                            <div class="row g-3 g-xl-2" style="margin-bottom:20px">
+                                                 <div class="col-6">
                                                      <div class="mb-0">
                                                         <div class="input-icon-group tour-date">
                                                             <label class="input-icon hicon hicon-menu-calendar hicon-bold"></label>
-                                                            <input type="date" name="parking_till_date" id="parking_till_date" class="form-select shadow-sm" placeholder="Parking Till" data-input="" readonly="" value="{{$tDate}}">
+                                                            <input type="date" name="parking_till_date" id="parking_till_date" class="form-select shadow-sm" placeholder="Parking Till" data-input=""  value="{{$tDate ?? ''}}">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                 <div class="col-3">
+                                                 <div class="col-6">
                                                      <div class="mb-0">
                                                         <div class="input-icon-group tour-date">
-                                                            <input id="parking_till_time" name="parking_till_time" type="time" class="form-control" placeholder="Time" value="{{$tTime}}">
+                                                            <input id="parking_till_time" name="parking_till_time" type="time" class="form-control" placeholder="Time" value="{{$tTime ?? ''}}">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="border-top pt-4">
-                                                <button type="button" class="btn btn-primary mnw-180"  >
-                                                    Edit Search
-                                                </button>
-                                                 <button type="submit" class="btn btn-primary mnw-180" id="nextBtn"  >
-                                                    Next
-                                                </button>
+                                            <div class="row defultbtn"  style="margin-bottom:20px">
+                                                     <div class="col-3">
+                                                     <button type="button" class="btn btn-primary mnw-180 editsearch" >
+                                                        Edit Search
+                                                    </button></div>
+                                                     <div class="col-3"><button type="submit" class="btn btn-primary mnw-180" id="nextBtn"  >
+                                                        Next
+                                                    </button></div>
+                                            </div>
+                                             <div class="row mobilebtnrow" style="margin-bottom:20px">
+                                                     <div class="col-6">
+                                                     <button type="button" class="btn btn-primary mnw-180" style="margin-bottom:20px" >
+                                                        Edit Search
+                                                    </button></div>
+                                                     <div class="col-6"><button type="submit" class="btn btn-primary mnw-180" id="nextBtn"  >
+                                                        Next
+                                                    </button></div>
                                             </div>
                                         </div>
                                     </form>
@@ -260,71 +344,64 @@
                         </div>
                         <!-- /Your Profile -->
                         <br/>
-                        <div class="pe-xl-4 me-xl-2">
-                        <div class="card border-0 shadow-sm" id ="terminalview">
-                            <div class="card-body">
-                            <div class="d-flex align-items-center justify-content-between border-bottom pb-4 mb-4">
-                                <h2 class="h3 text-body-emphasis mb-0">Select Terminal</h2>
-                                 <button type="button" id="drop" class="btn btn-primary mnw-180">
-                                    drop
-                                </button>
-                            </div>
-                            <div class="row g-10 g-xl-8">
-                                 <div class="tour-grid">
-                                    <div class="row">
-                                        @foreach ($allterminallists as $terminallist )
-                                         <div class="col-12 col-xxl-3 col-xl-4 col-md-6" data-aos="fade">
-                                            <!-- Tour -->
-                                            <div class="tour-item rounded shadow-sm hover-effect mb-4">
-                                                <div class="tour-img">
-                                                    <a href="single-tour-1.html">
-                                                        <figure class="image-hover image-hover-overlay ">
-                                                            <img src="{{asset('images/'.$terminallist->image)}}" srcset="{{asset('account/img/tours/t1%402x.jpg')}} 2x" alt="">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <div class="tour-content">
-                                                    <h3 class="tour-title">
-                                                        <a href="single-tour-1.html" class="link-dark link-hover">{{$terminallist->name}}</a>
-                                                    </h3>
-                                                    <div class="inline-review">
-                                                          <div>{{$terminallist->description}}</div>
-                                                    </div>
-                                                    <div class="tour-booking">
-                                                        <div class="tour-price">
-                                                            <strong><sup>£</sup>{{$tPrice}}</strong>
 
-                                                        </div>
-                                                        <button type="button" class="btn btn-primary mnw-100 choose-terminal" value={{$terminallist->id}}>
-                                                           Choose
-                                                        </<button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /Tour -->
-                                        </div>
-                                          @endforeach
+                    <div class="pe-xl-4 me-xl-2 " id="terminalview">
+                           <button type="button" id="drop" class="btn btn-primary mnw-180 d-md-none">
+                            <i class="hicon hicon-thin-arrow-down"></i>
+                        </button>
+                              <!-- Terminal View (Card) -->
+                            <div class="card border-0 shadow-sm" >
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center justify-content-between border-bottom pb-4 mb-4">
+                                        <h2 class="h3 text-body-emphasis mb-0">Select Terminal</h2>
+
                                     </div>
-
-
+                                    <div class="row g-10 g-xl-8">
+                                        <div class="tour-grid">
+                                            <div class="row">
+                                                @foreach ($allterminallists as $terminallist)
+                                                <div class="col-12 col-xxl-3 col-xl-4 col-md-6" data-aos="fade">
+                                                    <!-- Tour -->
+                                                    <div class="tour-item rounded shadow-sm hover-effect mb-4">
+                                                        <div class="tour-img">
+                                                            <a href="single-tour-1.html">
+                                                                <figure class=" ">
+                                                                    <img src="{{asset('images/'.$terminallist->image)}}" srcset="{{asset('account/img/tours/t1%402x.jpg')}} 2x" alt="">
+                                                                </figure>
+                                                            </a>
+                                                        </div>
+                                                        <div class="tour-content">
+                                                            <h3 class="tour-title">
+                                                                <a href="single-tour-1.html" class="link-dark link-hover">{{$terminallist->name}}</a>
+                                                            </h3>
+                                                            <div class="inline-review">
+                                                                <div>{{$terminallist->description}}</div>
+                                                            </div>
+                                                            <div class="tour-booking">
+                                                                <div class="tour-price">
+                                                                    <strong><sup>£</sup>{{$tPrice ?? 55}}</strong>
+                                                                </div>
+                                                                <button type="button" class="btn btn-primary mnw-100 choose-terminal" value="{{$terminallist->id}}">
+                                                                    Choose
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /Tour -->
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
-
-                        </div>
                         </div>
                         </div>
                     </div>
-
                 </div>
                 <br/>
-
-
             </section>
             <!-- /Shopping cart -->
-
-
-
         </div>
 
     </main>
@@ -484,7 +561,6 @@
             </div>
         </div>
         <!-- /Footer top -->
-
         <!-- Footer Bottom -->
         <div class="footer-bottom">
             <div class="container">
@@ -492,27 +568,67 @@
                     <div class="col-12 col-md-6">
                         <p class="mb-lg-0">© All rights reserved.| airparq.co.uk | Developed by Lithic Labs Ltd </p>
                     </div>
-
                 </div>
             </div>
         </div>
         <!-- /Footer Bottom -->
-
     </footer>
     <!-- /Footer -->
-
     <!-- Scroll top -->
     <a href="#" class="scroll-top">
         <i class="hicon hicon-thin-arrow-up"></i>
     </a>
     <!-- /Scroll top -->
-
     <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-notify@1.0.4/dist/simple-notify.min.js"></script>
     <script defer="" src="{{asset('account/js/theme-1.min.js')}}"></script>
     <script defer="" src="{{asset('account/js/theme-2.min.js')}}"></script>
     <script defer="" src="{{asset('account/js/theme-3.min.js')}}"></script>
     <script>
+        // Get necessary elements
+        const formViewButton = document.getElementById('form_view');
+        const dropButton = document.getElementById('drop');
+        const terminalView = document.getElementById('terminalview');
+        const bookingDetailsForm = document.getElementById('booking_details_form');
+
+        // Expand button: shows the form and hides the terminal on mobile
+        formViewButton.addEventListener('click', function() {
+            // Toggle the booking form and terminal view
+            if (bookingDetailsForm.classList.contains('d-none')) {
+                bookingDetailsForm.classList.remove('d-none');  // Show form
+                terminalView.classList.add('d-none');  // Hide terminal view
+                dropButton.style.display = 'block';  // Show Drop button to bring back terminal
+                this.textContent = 'Hide Form';  // Change button text to "Hide Form"
+            } else {
+                bookingDetailsForm.classList.add('d-none');  // Hide form
+                terminalView.classList.remove('d-none');  // Show terminal view
+                this.textContent = 'Expand';  // Change button text back to "Expand"
+                // Change the icon to "up arrow" and text to "Hide Terminal"
+                dropButton.innerHTML = '<i class="hicon hicon-thin-arrow-up"></i>';
+            }
+        });
+
+        // Drop button: shows the terminal and hides the form on mobile
+        dropButton.addEventListener('click', function() {
+            // Toggle the terminal view and form view
+            if (terminalView.classList.contains('d-none')) {
+                terminalView.classList.remove('d-none');  // Show terminal view
+                bookingDetailsForm.classList.add('d-none');  // Hide form view
+                this.textContent = 'Hide Terminal';  // Change button text to "Hide Terminal"
+                formViewButton.textContent = 'Expand';  // Reset Expand button text
+            } else {
+                terminalView.classList.add('d-none');  // Hide terminal view
+                 // Change the icon to "down arrow" and text back to "Drop"
+                dropButton.innerHTML = '<i class="hicon hicon-thin-arrow-down"></i>';
+            }
+        });
+
+
+
+
+        // jQuery for handling button click
+
         document.addEventListener('DOMContentLoaded', function() {
             const chooseButtons = document.querySelectorAll('.choose-terminal');
          chooseButtons.forEach(button => {
@@ -523,29 +639,81 @@
             });
         });
 
+         document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.editsearch').addEventListener('click', function() {
+                // Collect form values
+                let parkingFromDate = document.querySelector('#parking_from_date').value;
+                let fromTime = document.querySelector('#parking_from_time').value;
+                let parkingTillDate = document.querySelector('#parking_till_date').value;
+                let tillTime = document.querySelector('#parking_till_time').value;
+                let promoCode = document.querySelector('#promocode').value;
+                let airport = document.querySelector('#airport').value;
+                let selectedTerminalId = document.querySelector('#selected_terminal_id').value;
 
-        document.addEventListener("DOMContentLoaded", function() {
-            const formViewBtn = document.getElementById('form_view');
-            const bookingForm = document.getElementById('booking_detailsform');
-            const terminalView = document.getElementById('terminalview');
+                // Prepare data for the AJAX request
+                let data = {
+                    parking_from_date: parkingFromDate,
+                    from_time: fromTime,
+                    parking_till_date: parkingTillDate,
+                    till_time: tillTime,
+                    promocode: promoCode,
+                    airport: airport,
+                    selected_terminal_id: selectedTerminalId,
+                    _token: "{{ csrf_token() }}"  // CSRF token for security
+                };
 
-            // Add click event listener to the Form View button
-            formViewBtn.addEventListener('click', function() {
-                // Toggle form view on mobile
-                if (bookingForm.style.display === "none" || bookingForm.style.display === "") {
-                    bookingForm.style.display = "block";
-                } else {
-                    bookingForm.style.display = "none";
-                }
+                // Send the AJAX request
+                fetch('{{ route("bookingedit") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // CSRF token
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                 .then(result => {
+                    if (result.success) {
+                        // Success: reload the page to reflect updated session values
+                        window.location.reload();
+                    } else if (result.errors) {
+                        // Validation error: display the errors using notify
+                        let errorMessages = '';
+                        Object.keys(result.errors).forEach(function (key) {
+                            errorMessages += result.errors[key] + ' '; // Concatenate error messages
+                        });
 
-                // Toggle terminal view on mobile
-                if (terminalView.style.display === "none" || terminalView.style.display === "") {
-                    terminalView.style.display = "block";
-                } else {
-                    terminalView.style.display = "none";
-                }
+                        Swal.fire({
+                            icon: 'error',
+                            text: errorMessages.trim(),
+                            showCancelButton: true, // This will show a close button
+                            cancelButtonText: 'Close', // Custom text for the close button
+                            cancelButtonColor: '#d33', // Optional: Customize the color of the close button
+                            showConfirmButton: false, // Hide the default "OK" button
+                            timer:3000,
+                        });
+                    } else {
+                        // Generic error handling
+                         Swal.fire({
+                            icon: 'error',
+                            title: 'Validation Error',
+                            text: result.message,
+                            showCancelButton: true, // This will show a close button
+                            cancelButtonText: 'Close', // Custom text for the close button
+                            cancelButtonColor: '#d33', // Optional: Customize the color of the close button
+                            showConfirmButton: false,// Hide the default "OK" button
+                            timer: 3000,
+                        });
+
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
             });
         });
+
+
 
 
 

@@ -23,7 +23,7 @@ class StorePromocodeRequest extends FormRequest
     {
         return [
             'promo_code' => 'required|string',
-            'discount_amount' => 'required|numeric',
+            'discount_amount' => 'required|integer',
             'discount_type' => 'required|string',
         ];
     }

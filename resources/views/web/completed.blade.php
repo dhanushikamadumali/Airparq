@@ -18,7 +18,17 @@
 </head>
 
 <!-- /Head -->
-
+<style>
+     /* Media query for mobile view (up to 768px) */
+    @media (max-width: 768px) {
+        .nav-link.active span {
+            color: #EBC51E; /* Set the color you want for mobile view */
+        }
+          .bookingbtn{
+            background-color:#FFD31C;
+        }
+    }
+</style>
 <body>
        <!-- Preloader -->
     <div id="preloader">
@@ -28,7 +38,7 @@
     </div>
     <!-- /Preloader -->
 
-     <!-- Header -->
+       <!-- Header -->
     <header id="header" data-aos="fade">
         <!-- Header Navbar -->
         <div class="header-navbar" style="background-color:#FFD31C">
@@ -57,20 +67,34 @@
                     </a>
                     <div class="offcanvas offcanvas-navbar offcanvas-start border-end-0" tabindex="-1" id="offcanvasNavbar">
                         <div class="offcanvas-header border-bottom p-4 p-xl-0">
-                            <a href="index.html" class="d-inline-block">
-                                <img src="{{asset('account/img/logos/menu-logo.png')}}" srcset="{{asset('account/img/logos/menu-logo%402x.png')}} 2x" alt="">
+                            <a class="d-inline-block" href="{{route('/')}}" >
+                                  @if(empty($csetting) || empty($csetting[0]['image']))
+                                    <img
+                                        src="{{ asset('assets/img/logo.png') }}"
+                                        alt="navbar brand"
+                                        class="navbar-brand"
+                                    style="width:200px;height:60px"
+                                    />
+                                @else
+                                    <img
+                                        src="{{ asset('assets/img/' . $csetting[0]['image']) }}"
+                                        alt="navbar brand"
+                                        class="navbar-brand"
+                                    style="width:200px;height:60px"
+                                    />
+                                @endif
                             </a>
                             <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
                         <div class="offcanvas-body p-4 p-xl-0">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link dropdown-toggle-hover active" href="{{route('/')}}" data-bs-display="static">
+                                    <a class="nav-link active" href="{{route('/')}}" data-bs-display="static">
                                         <span>Home</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link dropdown-toggle-hover" href="{{route('aboutus')}}" data-bs-display="static">
+                                    <a class="nav-link" href="{{route('aboutus')}}" data-bs-display="static">
                                         <span>About Us</span>
                                     </a>
                                 </li>
@@ -84,14 +108,15 @@
                                         <span>Contact Us</span>
                                     </a>
                                 </li>
+                                 <li class="nav-item">
+                                    <div class="hero-action" style="margin-top:20px"  >
+                                    <a href="{{route('showbookingone')}}" class="btn btn-outline-light btn-uppercase mnw-180 me-4 bookingbtn">
+                                        <span>BOOK NOW</span>
+                                    </a>
+                                    </div>
+                                </li>
                             </ul>
-
                         </div>
-                    </div>
-                     <div class="hero-action">
-                        <a href="{{route('showbooking')}}" class="btn btn-outline-light btn-uppercase mnw-180 me-4">
-                            <span>BOOK NOW</span>
-                        </a>
                     </div>
                     <div class="dropdown user-menu ms-xl-auto">
                         <button class="circle-icon circle-icon-link circle-icon-link-hover" data-bs-toggle="dropdown" data-bs-display="static">

@@ -33,7 +33,18 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request)
     {
-        //
+        try{
+            Contact::create($request->all());
+            notify()->success('Successfully insert Contact!','Success!',[
+                'position' => 'bottom-right'
+            ]);
+        }catch(Exception $e){
+            notify()->error('Failed to insert contact.', 'Error', [
+                'position' => 'top-right' // Change this to your desired position
+            ]);
+
+        }
+        return back();
     }
 
     /**

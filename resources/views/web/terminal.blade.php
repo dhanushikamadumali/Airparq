@@ -74,7 +74,7 @@
                         </div>
                     </div>
                      <div class="hero-action">
-                        <a href="{{route('showbooking')}}" class="btn btn-outline-light btn-uppercase mnw-180 me-4">
+                        <a href="{{route('showbookingone')}}" class="btn btn-outline-light btn-uppercase mnw-180 me-4">
                             <span>BOOK NOW</span>
                         </a>
                     </div>

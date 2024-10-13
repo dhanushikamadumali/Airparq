@@ -11,11 +11,69 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="Themenix.com">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@1.0.4/dist/simple-notify.css" />
+    {{-- notify css --}}
+    @notifyCss
     <link href="{{asset('account/img/logos/logo.png')}}" rel="shortcut icon" type="image/png">
     <link href="{{asset('account/css/theme-1.min.css')}}" rel="stylesheet">
     <link href="{{asset('account/css/theme-2.min.css')}}" rel="stylesheet">
     <link href="{{asset('account/css/theme-3.min.css')}}" rel="stylesheet">
 </head>
+<style>
+    /* Hide Form View button on desktop */
+    #form_view {
+        display: none;
+    }
+
+    /* Terminal initially takes up full view */
+    #terminalview {
+        transition: transform 1.8s ease; /* Smooth transition */
+    }
+
+    /* Terminal moves down (partially hidden) */
+    #terminalview.half-hidden {
+        transform: translateY(100%); /* Move down by 50% */
+    }
+    .mobilebtnrow{
+        display:none;
+    }
+    #drop{
+        display:none;
+    }
+
+    /* Show Form View button only on mobile */
+    @media (max-width: 768px) {
+        #form_view {
+            display: block; /* Show on mobile */
+        }
+        .mobilebtnrow{
+            display:block;
+        }
+        .defultbtn{
+            display:none;
+        }
+         #drop{
+            display:block;
+        }
+
+
+        /* Default hidden on mobile */
+        #terminalview {
+            display: block;
+        }
+
+        #booking_detailsform {
+            display: none; /* Hide the booking form by default */
+        }
+
+        #terminalview {
+            transform: translateY(0); /* Fully visible by default */
+        }
+
+    }
+</style>
 
 <!-- /Head -->
 <style>
@@ -30,6 +88,7 @@
     }
 </style>
 <body>
+     <x-notify::notify />
 
     <!-- Preloader -->
     <div id="preloader">
@@ -38,6 +97,7 @@
         </div>
     </div>
     <!-- /Preloader -->
+
       <!-- Header -->
     <header id="header" data-aos="fade">
         <!-- Header Navbar -->
@@ -167,146 +227,128 @@
     </header>
     <!-- /Header -->
 
+
     <!-- Main -->
     <main>
 
-        <!-- Title -->
-        <section class="hero" data-aos="fade">
-            <div class="hero-bg">
-                <img src="{{asset('account/img/hero/hero-bg4.jpg')}}" alt="">
-            </div>
-            <div class="bg-content container">
-                <div class="hero-page-title">
-                    <span class="hero-sub-title">About Us</span>
-                    <h1 class="display-3 hero-title">
-                        Discover the AIRPARQ Difference
-                    </h1>
-                </div>
+        <div class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade">
+            <!-- Shopping cart -->
+            <section class="container" id="step1">
+                <div class="row g-0 g-xl-8">
+                    <!-- Form View Button (only visible on mobile) -->
+                    <button type="button" id="form_view" class="btn btn-primary d-md-none mnw-180">
+                        Expand
+                    </button>
+                      <div class="col-12 col-xl-12">
+                           <!-- Booking Details Form (visible only on desktop by default) -->
+                        <div id="booking_details_form" class="d-none d-md-block">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center justify-content-between border-bottom pb-4 mb-4">
+                                        <h2 class="h3 text-body-emphasis mb-0">Secure Your Spot with AIRPARQ Today!</h2>
+                                    </div>
+                                      <form id="bookingForm"  class="search-tour-form" action="{{route('bookingdetailstep2')}}" method="post">
+                                        @csrf
+                                        <div class="search-tour-input">
+                                            <div class="row g-3 g-xl-2" style="margin-bottom:20px">
+                                                 <div class="col-12">
+                                                     <div class="input-icon-group">
+                                                        <select class="form-select dropdown-select shadow-sm" id="airport" name="airport">
+                                                               <option value="London Heathrow" {{ $airport == 'London Heathrow' ? 'selected' : '' }}>London Heathrow</option>
+                                                            <option value="New York JFK" {{ $airport == 'New York JFK' ? 'selected' : '' }}>New York JFK</option>
+                                                            <option value="Tokyo Narita" {{ $airport == 'Tokyo Narita' ? 'selected' : '' }}>Tokyo Narita</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row g-3 g-xl-2 mb-20" style="margin-bottom:20px">
+                                                 <div class="col-8">
+                                                     <div class="mb-0">
+                                                        <div class="input-icon-group tour-date">
+                                                            <label class="input-icon hicon hicon-menu-calendar hicon-bold"></label>
+                                                            <input id="parking_from_date" name="parking_from_date" type="date" class="form-select shadow-sm" placeholder="Parking From" value="{{$fDate ?? ''}}" data-input="">
+                                                        </div>
+                                                          @error('parking_from_date')
+                                                        <div style="color:red">{{$message}}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                 <div class="col-4">
+                                                     <div class="mb-0">
+                                                        <div class="input-icon-group">
+                                                        <?php
+                                                         date_default_timezone_set('Asia/Colombo'); //e timeze to Sri Lanka
+                                                        ?>
+                                                            <input id="parking_from_time" name="parking_from_time" type="time" class="form-control" placeholder="Time" value="{{ $fTime ?? date('H:i', strtotime('+2 hours')) }}" min="{{ $fTime ?? date('H:i', strtotime('+2 hours')) }}" >
+                                                             @error('parking_from_date')
+                                                            <div style="color:red">{{$message}}</div>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row g-3 g-xl-2 mb-20" style="margin-bottom:20px">
+                                                 <div class="col-8">
+                                                     <div class="mb-0">
+                                                        <div class="input-icon-group tour-date">
+                                                        <label class="input-icon hicon hicon-menu-calendar hicon-bold"></label>
+                                                        <input id="parking_till_date" name="parking_till_date" type="date" class="form-select shadow-sm" placeholder="Parking Till" value="{{$tDate ?? ''}}" data-input="">
+                                                        </div>
+                                                         @error(' parking_till_date')
+                                                        <div style="color:red">{{$message}}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                 <div class="col-4">
+                                                     <div class="mb-0">
+                                                        <div class="input-icon-group tour-date">
+                                                            <input id="parking_till_time" name="parking_till_time" type="time" class="form-control" placeholder="Time" value="{{$tTime ?? ''}}">
+                                                          @error(' parking_till_time')
+                                                        <div style="color:red">{{$message}}</div>
+                                                        @enderror</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row g-3 g-xl-2 mb-20" style="margin-bottom:20px">
+                                                 <div class="col-12">
+                                                     <div class="mb-0">
+                                                        <div class="input-icon-group">
+                                                            <input id="promocode" name="promocode" type="Text" class="form-control shadow-sm" placeholder="Promo code"  value="{{ $pCode ?? '' }}">
+                                                              @error('promocode')
+                                                            <div style="color:red">{{$message}}</div>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12" >
+                                                <div class="col-3">
+                                                    <button type="submit" class="btn btn-primary btn-uppercase w-100" id="booking">
+                                                        <i class="hicon hicon-mmb-my-booking hicon-md mr-1"></i>
+                                                        <span>Book now</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </form>
 
-            </div>
-        </section>
-        <!-- /Title -->
-
-
-        <!-- About -->
-        <section class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade">
-            <div class="container">
-                <div class="row g-0">
-                    <div class="col-12 col-xl-6 order-1 order-xl-0">
-                        <!-- Image -->
-                        <div class="image-info image-info-vertical me-xl-5">
-                            <div class="image-center rounded">
-                                <img src="{{asset('account/img/img24.jpg')}}" class="w-100" alt="">
+                                </div>
                             </div>
                         </div>
-                        <!-- /Image -->
-                    </div>
-                    <div class="col-12 col-xl-6 order-0 order-xl-1">
-                        <!-- Content -->
-                        <div class="pt-xl-4 mb-xl-0 mb-5">
-                            <div class="block-title">
-                                <h2 class="h1 title lh-sm">About Us</h2>
-                                 <small class="sub-title">AIRPARQ originated from a vision to transform airport parking.</small>
-                            </div>
-                            <p>
-                                Confronted with the challenges of conventional parking facilities, our founders identified an opportunity to develop a solution centred on convenience and customer contentment.
-                            </p>
-                            <p>
-                            From our establishment, our objective has been to streamline travel for all, one parking space at a time.</p>
-                            </p>
-                            <p>
-                                At AIRPARQ, our principles steer all our actions. Reliability, convenience, and customer satisfaction lie at the core of our operations. We are committed to surpassing your expectations, ensuring the peace of mind you rightly deserve when entrusting us with your vehicle.
-                            </p>
+
+
+                        <!-- /Your Profile -->
+                        <br/>
 
                         </div>
-                        <!-- /Content -->
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- /About -->
-        <!-- Tour types -->
-        <section class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade">
-            <div class="container">
-
-                <!-- Title -->
-                <div class="d-xl-flex align-items-xl-center pb-4">
-                    <div class="block-title me-auto">
-                         <small class="sub-title">Great experience</small>
-                        <h2 class="h1 title text-black">Why choose us</h2>
-                    </div>
-                </div>
-                <!-- /Title -->
-                <!-- Types -->
-                <div class="row g-3 g-xl-4">
-                    <div class="col-12 col-xl-4 col-md-6">
-                        <a href="tour-packages-1.html" class="info-card hover-effect shadow-sm rounded h-100">
-                            <div class="image-center rounded">
-                                <img src="{{asset('account/img/img21.jpg')}}" class="w-100" alt="">
-                            </div>
-                            <h3 class="h4 card-title">Who We Are?</h3>
-                            <p class="card-desc">AIRPARQ: Seamlessly Simplifying Airport Parking with Our Meet and Greet Service Experience.</p>
-                        </a>
-                    </div>
-                    <div class="col-12 col-xl-4 col-md-6">
-                        <a href="tour-packages-1.html" class="info-card hover-effect shadow-sm rounded h-100">
-                             <div class="image-center rounded">
-                                <img src="{{asset('account/img/img22.jpg')}}" class="w-100" alt="">
-                            </div>
-                            <h3 class="h4 card-title">What We Do?</h3>
-                            <p class="card-desc">We Provide Secure Parking Solutions, Allowing Travellers To Drop Off Vehicles At The Terminal.</p>
-                        </a>
-                    </div>
-                    <div class="col-12 col-xl-4 col-md-6">
-                        <a href="contact.html" class="info-card hover-effect shadow-sm rounded h-100">
-                             <div class="image-center rounded">
-                                <img src="{{asset('account/img/img23.jpg')}}" class="w-100" alt="">
-                            </div>
-                            <h3 class="h4 card-title">Our Mission</h3>
-                            <p class="card-desc"> Transforming Airport Parking for Hassle-Free Travel, Prioritising Convenience and Peace of Mind.</p>
-                        </a>
-                    </div>
-                </div>
-                <!-- /Types -->
-            </div>
-        </section>
-        <!-- /Tour types -->
-         <!-- About -->
-        <section class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade">
-            <div class="container">
-                <div class="row g-0">
-                      <div class="col-12 col-xl-6 order-0 order-xl-1">
-                          <!-- Image -->
-                        <div class="image-info image-info-vertical me-xl-5">
-                            <div class="image-center rounded">
-                                <img src="{{asset('account/img/airparq-certificate.png')}}" class="w-100" alt="">
-                            </div>
-                        </div>
-                        <!-- /Image -->
-
-                    </div>
-                    <div class="col-12 col-xl-6 order-1 order-xl-0">
-
-                         <!-- Content -->
-                        <div class="pt-xl-4 mb-xl-0 mb-5">
-                            <div class="block-title">
-                                <h2 class="h1 title lh-sm">The Safer Parking Award</h2>
-                            </div>
-                            <p>
-                                 Airparq Ltd is proud to announce that we have been awarded the prestigious Safer Parking Award issued by Park Mark. This accolade is a testament to our commitment to providing a secure and high-quality parking environment.
-                            </p>
-                            </p>
-                                By meeting the rigorous standards of the Safer Parking Scheme, Airparq Ltd ensures effective surveillance, quality management, appropriate lighting, and a clean environment, all contributing to a safer experience for our customers. This police-accredited recognition demonstrates our dedication to maintaining a top-tier facility that prioritises the safety and well-being of everyone who parks with us.
-                            </p>
-
-                        </div>
-                        <!-- /Content -->
                     </div>
 
                 </div>
-            </div>
-        </section>
-        <!-- /About -->
+                <br/>
+            </section>
+            <!-- /Shopping cart -->
+        </div>
+
     </main>
     <!-- /Main -->
 
@@ -464,7 +506,6 @@
             </div>
         </div>
         <!-- /Footer top -->
-
         <!-- Footer Bottom -->
         <div class="footer-bottom">
             <div class="container">
@@ -472,12 +513,10 @@
                     <div class="col-12 col-md-6">
                         <p class="mb-lg-0">© All rights reserved.| airparq.co.uk | Developed by Lithic Labs Ltd </p>
                     </div>
-
                 </div>
             </div>
         </div>
         <!-- /Footer Bottom -->
-
     </footer>
     <!-- /Footer -->
     <!-- Scroll top -->
@@ -485,10 +524,148 @@
         <i class="hicon hicon-thin-arrow-up"></i>
     </a>
     <!-- /Scroll top -->
-
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-notify@1.0.4/dist/simple-notify.min.js"></script>
     <script defer="" src="{{asset('account/js/theme-1.min.js')}}"></script>
     <script defer="" src="{{asset('account/js/theme-2.min.js')}}"></script>
     <script defer="" src="{{asset('account/js/theme-3.min.js')}}"></script>
+    <script>
+        // Get necessary elements
+        const formViewButton = document.getElementById('form_view');
+        const dropButton = document.getElementById('drop');
+        const terminalView = document.getElementById('terminalview');
+        const bookingDetailsForm = document.getElementById('booking_details_form');
+
+        // Expand button: shows the form and hides the terminal on mobile
+        formViewButton.addEventListener('click', function() {
+            // Toggle the booking form and terminal view
+            if (bookingDetailsForm.classList.contains('d-none')) {
+                bookingDetailsForm.classList.remove('d-none');  // Show form
+                terminalView.classList.add('d-none');  // Hide terminal view
+                dropButton.style.display = 'block';  // Show Drop button to bring back terminal
+                this.textContent = 'Hide Form';  // Change button text to "Hide Form"
+            } else {
+                bookingDetailsForm.classList.add('d-none');  // Hide form
+                terminalView.classList.remove('d-none');  // Show terminal view
+                this.textContent = 'Expand';  // Change button text back to "Expand"
+                // Change the icon to "up arrow" and text to "Hide Terminal"
+                dropButton.innerHTML = '<i class="hicon hicon-thin-arrow-up"></i>';
+            }
+        });
+
+        // Drop button: shows the terminal and hides the form on mobile
+        dropButton.addEventListener('click', function() {
+            // Toggle the terminal view and form view
+            if (terminalView.classList.contains('d-none')) {
+                terminalView.classList.remove('d-none');  // Show terminal view
+                bookingDetailsForm.classList.add('d-none');  // Hide form view
+                this.textContent = 'Hide Terminal';  // Change button text to "Hide Terminal"
+                formViewButton.textContent = 'Expand';  // Reset Expand button text
+            } else {
+                terminalView.classList.add('d-none');  // Hide terminal view
+                 // Change the icon to "down arrow" and text back to "Drop"
+                dropButton.innerHTML = '<i class="hicon hicon-thin-arrow-down"></i>';
+            }
+        });
+
+
+
+
+        // jQuery for handling button click
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const chooseButtons = document.querySelectorAll('.choose-terminal');
+         chooseButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const terminalId = this.getAttribute('value');
+                    document.getElementById('selected_terminal_id').value = terminalId;
+                });
+            });
+        });
+
+         document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.editsearch').addEventListener('click', function() {
+                // Collect form values
+                let parkingFromDate = document.querySelector('#parking_from_date').value;
+                let fromTime = document.querySelector('#parking_from_time').value;
+                let parkingTillDate = document.querySelector('#parking_till_date').value;
+                let tillTime = document.querySelector('#parking_till_time').value;
+                let promoCode = document.querySelector('#promocode').value;
+                let airport = document.querySelector('#airport').value;
+                let selectedTerminalId = document.querySelector('#selected_terminal_id').value;
+
+                // Prepare data for the AJAX request
+                let data = {
+                    parking_from_date: parkingFromDate,
+                    from_time: fromTime,
+                    parking_till_date: parkingTillDate,
+                    till_time: tillTime,
+                    promocode: promoCode,
+                    airport: airport,
+                    selected_terminal_id: selectedTerminalId,
+                    _token: "{{ csrf_token() }}"  // CSRF token for security
+                };
+
+                // Send the AJAX request
+                fetch('{{ route("bookingedit") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // CSRF token
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                 .then(result => {
+                    if (result.success) {
+                        // Success: reload the page to reflect updated session values
+                        window.location.reload();
+                    } else if (result.errors) {
+                        // Validation error: display the errors using notify
+                        let errorMessages = '';
+                        Object.keys(result.errors).forEach(function (key) {
+                            errorMessages += result.errors[key] + ' '; // Concatenate error messages
+                        });
+
+                        Swal.fire({
+                            icon: 'error',
+                            text: errorMessages.trim(),
+                            showCancelButton: true, // This will show a close button
+                            cancelButtonText: 'Close', // Custom text for the close button
+                            cancelButtonColor: '#d33', // Optional: Customize the color of the close button
+                            showConfirmButton: false, // Hide the default "OK" button
+                            timer:3000,
+                        });
+                    } else {
+                        // Generic error handling
+                         Swal.fire({
+                            icon: 'error',
+                            title: 'Validation Error',
+                            text: result.message,
+                            showCancelButton: true, // This will show a close button
+                            cancelButtonText: 'Close', // Custom text for the close button
+                            cancelButtonColor: '#d33', // Optional: Customize the color of the close button
+                            showConfirmButton: false,// Hide the default "OK" button
+                            timer: 3000,
+                        });
+
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+
+
+
+
+
+    </script>
+     <!-- Notify JS -->
+    @notifyJs
+
 
 </body>
 

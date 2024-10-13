@@ -8,6 +8,7 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="Themenix.com">
+     <meta name="csrf-token" content="{{ csrf_token() }}">
       {{-- notify css --}}
     @notifyCss
     <link href="{{asset('account/img/logos/logo.png')}}" rel="shortcut icon" type="image/png">
@@ -16,6 +17,18 @@
     <link href="{{asset('account/css/theme-3.min.css')}}" rel="stylesheet">
 </head>
 <!-- /Head -->
+<style>
+       /* Media query for mobile view (up to 768px) */
+    @media (max-width: 768px) {
+        .nav-link.active span {
+            color: #EBC51E; /* Set the color you want for mobile view */
+        }
+        .bookingbtn{
+            background-color:#FFD31C;
+        }
+    }
+
+</style>
 
 <body>
     <x-notify::notify />
@@ -57,20 +70,34 @@
                     </a>
                     <div class="offcanvas offcanvas-navbar offcanvas-start border-end-0" tabindex="-1" id="offcanvasNavbar">
                         <div class="offcanvas-header border-bottom p-4 p-xl-0">
-                            <a href="index.html" class="d-inline-block">
-                                <img src="{{asset('account/img/logos/menu-logo.png')}}" srcset="{{asset('account/img/logos/menu-logo%402x.png')}} 2x" alt="">
+                            <a class="d-inline-block" href="{{route('/')}}" >
+                                  @if(empty($csetting) || empty($csetting[0]['image']))
+                                    <img
+                                        src="{{ asset('assets/img/logo.png') }}"
+                                        alt="navbar brand"
+                                        class="navbar-brand"
+                                    style="width:200px;height:60px"
+                                    />
+                                @else
+                                    <img
+                                        src="{{ asset('assets/img/' . $csetting[0]['image']) }}"
+                                        alt="navbar brand"
+                                        class="navbar-brand"
+                                    style="width:200px;height:60px"
+                                    />
+                                @endif
                             </a>
                             <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
                         <div class="offcanvas-body p-4 p-xl-0">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link dropdown-toggle-hover active" href="{{route('/')}}" data-bs-display="static">
+                                    <a class="nav-link active" href="{{route('/')}}" data-bs-display="static">
                                         <span>Home</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link dropdown-toggle-hover" href="{{route('aboutus')}}" data-bs-display="static">
+                                    <a class="nav-link" href="{{route('aboutus')}}" data-bs-display="static">
                                         <span>About Us</span>
                                     </a>
                                 </li>
@@ -84,14 +111,15 @@
                                         <span>Contact Us</span>
                                     </a>
                                 </li>
+                                 <li class="nav-item">
+                                    <div class="hero-action" style="margin-top:20px"  >
+                                    <a href="{{route('showbookingone')}}" class="btn btn-outline-light btn-uppercase mnw-180 me-4 bookingbtn">
+                                        <span>BOOK NOW</span>
+                                    </a>
+                                    </div>
+                                </li>
                             </ul>
-
                         </div>
-                    </div>
-                     <div class="hero-action">
-                        <a href="{{route('showbooking')}}" class="btn btn-outline-light btn-uppercase mnw-180 me-4">
-                            <span>BOOK NOW</span>
-                        </a>
                     </div>
                     <div class="dropdown user-menu ms-xl-auto">
                         <button class="circle-icon circle-icon-link circle-icon-link-hover" data-bs-toggle="dropdown" data-bs-display="static">
@@ -224,7 +252,6 @@
                 </div>
             </div>
             <!-- Carousel -->
-
             <!-- Check tour -->
             <div class="container">
                 <div class="row justify-content-end">
@@ -232,13 +259,14 @@
                         <div class="search-tours search-hero search-hero-half" style="padding-bottom:20px">
                               <form id="bookingForm"  class="search-tour-form" action="{{route('bookingdetailstep2')}}" method="post">
                                 @csrf
-
                                 <div class="search-tour-input">
                                     <div class="row g-3 g-xl-2" style="margin-bottom:20px">
                                          <div class="col-12">
                                              <div class="input-icon-group">
                                                 <select class="form-select dropdown-select shadow-sm" id="airport" name="airport">
-                                                    <option value="London Heathrow" selected="">London Heathrow</option>
+                                                       <option value="London Heathrow" {{ $airport == 'London Heathrow' ? 'selected' : '' }}>London Heathrow</option>
+                                                    <option value="New York JFK" {{ $airport == 'New York JFK' ? 'selected' : '' }}>New York JFK</option>
+                                                    <option value="Tokyo Narita" {{ $airport == 'Tokyo Narita' ? 'selected' : '' }}>Tokyo Narita</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -246,7 +274,13 @@
                                     <div class="row g-3 g-xl-2 mb-20" style="margin-bottom:20px">
                                          <div class="col-8">
                                              <div class="mb-0">
-                                                    <input id="parking_from_date" name="parking_from_date" type="date" class="form-control shadow-sm" placeholder="Parking From">
+                                                <div class="input-icon-group tour-date">
+                                                    <label class="input-icon hicon hicon-menu-calendar hicon-bold"></label>
+                                                    <input id="parking_from_date" name="parking_from_date" type="date" class="form-select shadow-sm" placeholder="Parking From" value="{{$fDate ?? ''}}" data-input="">
+                                                </div>
+                                                @error('parking_from_date')
+                                                    <div style="color:red">{{$message}}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                          <div class="col-4">
@@ -255,7 +289,10 @@
                                                 <?php
                                                  date_default_timezone_set('Asia/Colombo'); //e timeze to Sri Lanka
                                                 ?>
-                                                    <input id="parking_from_time" name="parking_from_time" type="time" class="form-control" placeholder="Time" value="<?php echo date('H:i', strtotime('+2 hours')) ?>" min="<?php echo date('H:i', strtotime('+2 hours')) ?>" >
+                                                    <input id="parking_from_time" name="parking_from_time" type="time" class="form-control" placeholder="Time" value="{{ $fTime ?? date('H:i', strtotime('+2 hours')) }}" min="{{ $fTime ?? date('H:i', strtotime('+2 hours')) }}" >
+                                                     @error('parking_from_date')
+                                                    <div style="color:red">{{$message}}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>
@@ -263,14 +300,22 @@
                                     <div class="row g-3 g-xl-2 mb-20" style="margin-bottom:20px">
                                          <div class="col-8">
                                              <div class="mb-0">
-                                                    <input type="date" name="parking_till_date" id="parking_till_date" class="form-control shadow-sm" placeholder="Parking Till">
+                                                <div class="input-icon-group tour-date">
+                                                    <label class="input-icon hicon hicon-menu-calendar hicon-bold"></label>
+                                                    <input id="parking_till_date" name="parking_till_date" type="date" class="form-select shadow-sm" placeholder="Parking Till" value="{{$tDate ?? ''}}" data-input="">
+                                                </div>
+                                                 @error(' parking_till_date')
+                                                <div style="color:red">{{$message}}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                          <div class="col-4">
                                              <div class="mb-0">
                                                 <div class="input-icon-group tour-date">
-                                                    <input id="parking_till_time" name="parking_till_time" type="time" class="form-control" placeholder="Time" value="">
-                                                </div>
+                                                    <input id="parking_till_time" name="parking_till_time" type="time" class="form-control" placeholder="Time" value="{{$tTime ?? ''}}">
+                                                  @error(' parking_till_time')
+                                                <div style="color:red">{{$message}}</div>
+                                                @enderror</div>
                                             </div>
                                         </div>
                                     </div>
@@ -278,7 +323,10 @@
                                          <div class="col-12">
                                              <div class="mb-0">
                                                 <div class="input-icon-group">
-                                                    <input id="promocode" name="promocode" type="Text" class="form-control shadow-sm" placeholder="Promo code">
+                                                    <input id="promocode" name="promocode" type="Text" class="form-control shadow-sm" placeholder="Promo code"  value="{{ $pCode ?? '' }}">
+                                                      @error('promocode')
+                                                    <div style="color:red">{{$message}}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>
@@ -299,7 +347,6 @@
                 </div>
             </div>
             <!-- /Check tour -->
-
              <br/>
              <br/>
         </section>
@@ -378,7 +425,7 @@
                 <!-- Types -->
                 <div class="row g-3 g-xl-4">
                     <div class="col-12 col-xl-4 col-md-6">
-                        <a href="tour-packages-1.html" class="info-card hover-effect shadow-sm rounded h-100">
+                        <a href="" class="info-card hover-effect shadow-sm rounded h-100">
                             <div class="card-icon">
                                 <i class="hicon hicon-family-with-teens"></i>
                             </div>
@@ -387,7 +434,7 @@
                         </a>
                     </div>
                     <div class="col-12 col-xl-4 col-md-6">
-                        <a href="tour-packages-1.html" class="info-card hover-effect shadow-sm rounded h-100">
+                        <a href="" class="info-card hover-effect shadow-sm rounded h-100">
                             <div class="card-icon">
                                 <i class="hicon hicon-regular-travel-protection"></i>
                             </div>
@@ -396,7 +443,7 @@
                         </a>
                     </div>
                     <div class="col-12 col-xl-4 col-md-6">
-                        <a href="contact.html" class="info-card hover-effect shadow-sm rounded h-100">
+                        <a href="" class="info-card hover-effect shadow-sm rounded h-100">
                             <div class="card-icon">
                                 <i class="hicon hicon-tours"></i>
                             </div>
@@ -409,6 +456,28 @@
             </div>
         </section>
         <!-- /Tour types -->
+           <!-- Featured -->
+        <section class="pt-5 pb-4" data-aos="fade">
+            <div class="container">
+                 <div class="block-title">
+                    <h2 class="h1 title">Promo Code</h2>
+                </div>
+                <ul class="stats-list row g-0">
+                @foreach ($allpromocodelists as $allpromocodelist )
+                 <li class="col-6 col-xl-3">
+                    <div class="stats-item">
+                        <h2 class="h1 stats-number">{{$allpromocodelist->discount_amount}}
+                        {{ $allpromocodelist->discount_type == 'percent' ? '%' : '' }}                        </h2>
+                        <p class="stats-desc">
+                            {{$allpromocodelist->promo_code}}
+                        </p>
+                    </div>
+                </li>
+                @endforeach
+                </ul>
+            </div>
+        </section>
+        <!-- /Featured -->
         <!-- Why -->
         <section class="p-top-90 p-bottom-90 " data-aos="fade">
             <div class="container">
@@ -416,7 +485,7 @@
                     <div class="col-12 col-xl-1 order-0 order-xl-1"></div>
                       <div class="col-12 col-xl-5 order-0 order-xl-1">
                           <!-- Contact Form -->
-                        <div class="form-contact rounded shadow-sm" style="margin-top:20px">
+                        <div class="form-contact rounded shadow-sm" style="margin-top:20px;margin-bottom:50px">
                             <form class="needs-validation" method="post" novalidate="">
                                 <div class="border-bottom pb-4 mb-4">
                                     <h3 class="mb-0">Still have question?</h3>
@@ -446,6 +515,7 @@
                         </div>
                         <!-- /Contact Form -->
                     </div>
+                    <br/>
                     <div class="col-12 col-xl-6 order-1 order-xl-0">
                           <!-- Content -->
                         <div class="mb-5">
@@ -555,7 +625,9 @@
             </div>
         </section>
         <!-- /Why -->
-      
+
+
+
     </main>
     <!-- /Main -->
 

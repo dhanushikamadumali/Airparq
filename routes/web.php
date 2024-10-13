@@ -23,17 +23,22 @@ Route::prefix('account')->group(function () {
     Route::post('/login', [App\Http\Controllers\WebController::class, 'authenticate'])->name('authenticate');
 
     Route::get('/contactus', [App\Http\Controllers\WebController::class, 'contactus'])->name('contactus');
+    Route::post('/storecontactus', [App\Http\Controllers\ContactController::class, 'store'])->name('storecontactus');
+
     Route::get('/aboutus', [App\Http\Controllers\WebController::class, 'aboutus'])->name('aboutus');
     Route::get('/howitworks', [App\Http\Controllers\WebController::class, 'howitworks'])->name('howitworks');
-    Route::get('/showbooking', [App\Http\Controllers\WebController::class, 'showbooking'])->name('showbooking');
+
     Route::get('/showterminal', [App\Http\Controllers\WebController::class, 'showterminal'])->name('showterminal');
     Route::get('/showcheckout', [App\Http\Controllers\WebController::class, 'showcheckout'])->name('showcheckout');
     Route::get('/privacypolicy', [App\Http\Controllers\WebController::class, 'privacypolicy'])->name('privacypolicy');
     Route::get('/termsandcondition', [App\Http\Controllers\WebController::class, 'termsandcondition'])->name('termsandcondition');
 
-
+    Route::get('/showbookingone', [App\Http\Controllers\WebController::class, 'showbookingone'])->name('showbookingone');
+    Route::get('/showbooking', [App\Http\Controllers\WebController::class, 'showbooking'])->name('showbooking');
     Route::post('/bookingdetailstep2', [App\Http\Controllers\WebController::class, 'bookingdetailstep2'])->name('bookingdetailstep2');
     Route::post('/bookingdetailstep3', [App\Http\Controllers\WebController::class, 'bookingdetailstep3'])->name('bookingdetailstep3');
+
+    Route::post('/bookingedit', [App\Http\Controllers\WebController::class, 'bookingedit'])->name('bookingedit');
 
     Route::get('/register', [App\Http\Controllers\WebController::class, 'showregister'])->name('showregister');
     Route::post('/storeregister', [App\Http\Controllers\WebController::class, 'storeregister'])->name('storeregister');
