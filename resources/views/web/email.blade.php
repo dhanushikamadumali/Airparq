@@ -1,10 +1,7 @@
 
 <!DOCTYPE html>
-
 <html lang="en">
-
 <!-- Head -->
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +15,6 @@
     <link href="{{asset('account/css/theme-2.min.css')}}" rel="stylesheet">
     <link href="{{asset('account/css/theme-3.min.css')}}" rel="stylesheet">
 </head>
-
 <!-- /Head -->
 <style>
     /* Media query for mobile view (up to 768px) */
@@ -181,9 +177,9 @@
                         <div class="card border-0 shadow-sm p-xl-2">
                             <div class="card-body">
                                 <div class="border-bottom mb-4">
-                                    <h1 class="h2 text-body-emphasis">Login</h1>
+                                    <h1 class="h2 text-body-emphasis">Reset Password</h1>
                                 </div>
-                                     <form method="POST" action="{{ route('authenticate') }}">
+                                     <form method="POST" action="">
                                     @csrf
                                     <!-- Login Email -->
                                     <div class="border-bottom pb-4">

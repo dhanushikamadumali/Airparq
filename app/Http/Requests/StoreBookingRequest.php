@@ -23,9 +23,9 @@ class StoreBookingRequest extends FormRequest
     {
         return [
                 'customer_id' => 'nullable|integer',
-                'price' => 'nullable|numeric|min:0',
+                'price' => 'required|numeric|min:0',
                 'promocode' => 'nullable|string',
-                'vehicle_reg' => 'nullable|string',
+                'vehicle_reg' => 'required|string',
                 'vehicle_manufacturer' => 'nullable|string',
                 'vehicle_model' => 'nullable|string',
                 'vehicle_color' => 'nullable|string',

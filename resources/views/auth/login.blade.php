@@ -11,6 +11,11 @@
             <div class="row "><h2 style="margin-bottom:20px;font-weight:bold">SIGN IN</h2></div>
             <div class="card">
                 <div class="card-body">
+                      @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
                     <div class="row">
                         <div class="col-md-6 col-lg-12">
                             <div class="form-group">

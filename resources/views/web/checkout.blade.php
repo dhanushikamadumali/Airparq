@@ -252,6 +252,9 @@
                                                         <label class="form-label" for="outbound_terminal">Inbound Flight No<span class="text-danger">*</span></label>
                                                          <div class="input-icon-group">
                                                             <input type="text" class="form-control shadow-sm" id="inbound_flight_number " name="inbound_flight_number"  >
+                                                              @error('inbound_flight_number')
+                                                            <div style="color:red">{{$message}}</div>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -259,31 +262,45 @@
                                                     <div class="mb-2">
                                                         <label class="form-label" for="outbound_flightno">Outbound Flight No<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control shadow-sm" id="outbound_flight_number" name="outbound_flight_number">
+                                                         @error('outbound_flight_number')
+                                                        <div style="color:red">{{$message}}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                  <div class="col-12 col-md-6">
                                                     <div class="mb-2">
                                                         <label class="form-label" for="flight_arrival_date">Flight Arrival Date<span class="text-danger">*</span></label>
                                                         <input type="date" class="form-control shadow-sm" id="flight_arrival_date" name="flight_arrival_date">
-
+                                                         @error('flight_arrival_date')
+                                                        <div style="color:red">{{$message}}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                  <div class="col-12 col-md-6">
                                                     <div class="mb-2">
                                                         <label class="form-label" for="flight_arrival_time">Flight Arrival Time<span class="text-danger">*</span></label>
                                                         <input type="time" class="form-control" id="flight_arrival_time" name="flight_arrival_time" >
+                                                          @error('flight_arrival_time')
+                                                        <div style="color:red">{{$message}}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                  <div class="col-12 col-md-6">
                                                     <div class="mb-2">
                                                         <label class="form-label" for="flight_departure_date">Flight Departure Date<span class="text-danger">*</span></label>
                                                         <input type="date" class="form-control shadow-sm" id="flight_departure_date" name="flight_departure_date" >
+                                                         @error('flight_departure_date')
+                                                        <div style="color:red">{{$message}}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                  <div class="col-12 col-md-6">
                                                     <div class="mb-2">
                                                         <label class="form-label" for="flight_departure_time">Flight Departure Time<span class="text-danger">*</span></label>
                                                         <input type="time" class="form-control " id="flight_departure_time" name="flight_departure_time" >
+                                                          @error('flight_departure_time')
+                                                        <div style="color:red">{{$message}}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -295,31 +312,39 @@
                                                     <div class="mb-2">
                                                         <label class="form-label" for="vehicle_reg">Vehicle Registration<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control shadow-sm" id="vehicle_reg" name="vehicle_reg" >
+                                                          @error('vehicle_reg')
+                                                        <div style="color:red">{{$message}}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-6">
                                                     <div class="mb-2">
                                                         <label class="form-label" for="vehicle_manufacturer">Vehicle Manufaturer<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control shadow-sm" id="vehicle_manufacturer" name="vehicle_manufacturer"  >
+                                                          @error('vehicle_manufacturer')
+                                                        <div style="color:red">{{$message}}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-6">
                                                     <div class="mb-2">
                                                         <label class="form-label" for="vehicle_model">Vehicle Model<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control shadow-sm" id="vehicle_model"  name="vehicle_model" >
+                                                         @error('vehicle_model')
+                                                        <div style="color:red">{{$message}}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-6">
                                                     <div class="mb-2">
                                                         <label class="form-label" for="vehicle_color">Vehicle Color<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control shadow-sm" id="vehicle_color" name="vehicle_color" >
+                                                           @error('vehicle_color')
+                                                        <div style="color:red">{{$message}}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
-                                                  <div class="mt-4">
-                                                      <button type="submit" class="btn btn-primary mnw-180"  >
-                                                        Book and pay
-                                                    </button>
-                                                </div>
+
                                             </div>
 
                                         </div>
@@ -329,7 +354,7 @@
                             </div>
                             <!-- /Booking & Payment -->
                         </div>
-                           </form>
+
                     </div>
 
 
@@ -381,18 +406,21 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                      <div class="border-bottom pb-2 mb-4">
+                                    <div class="border-bottom pb-2 mb-4">
                                         <h3 class="h4 mb-4">Payment method</h3>
                                         <div class="d-inline-flex align-items-center mb-3">
                                             <strong class="fs-5 me-2">Total:</strong>
                                             <span class="fs-2 fw-semibold text-body-emphasis"><sup>£</sup><span id="totalprice">{{ $tPrice}}</span></span>
                                         </div>
-
                                     </div>
-
+                                      <button type="submit" class="btn btn-primary btn-uppercase w-100" id="booking">
+                                        <i class="hicon hicon-mmb-my-booking hicon-md mr-1"></i>
+                                        <span>Book and pay</span>
+                                    </button>
                                 </div>
                             </div>
+
+                            </form>
                         </div>
                         <!-- /Selected tours -->
                     </div>

@@ -26,23 +26,12 @@
     #form_view {
         display: none;
     }
-
-    /* Terminal initially takes up full view */
-    #terminalview {
-        transition: transform 1.8s ease; /* Smooth transition */
-    }
-
-    /* Terminal moves down (partially hidden) */
-    #terminalview.half-hidden {
-        transform: translateY(100%); /* Move down by 50% */
-    }
     .mobilebtnrow{
         display:none;
     }
     #drop{
         display:none;
     }
-
     /* Show Form View button only on mobile */
     @media (max-width: 768px) {
         #form_view {
@@ -57,21 +46,13 @@
          #drop{
             display:block;
         }
-
-
         /* Default hidden on mobile */
         #terminalview {
             display: block;
         }
-
         #booking_detailsform {
             display: none; /* Hide the booking form by default */
         }
-
-        #terminalview {
-            transform: translateY(0); /* Fully visible by default */
-        }
-
 
     }
 </style>
@@ -88,17 +69,11 @@
             background-color:#FFD31C;
         }
 
-        #terminalview1 {
-            background-color: #fff;
-            z-index: 2;
-            position: relative;
-            padding: 1.5rem;
-        }
+
     }
 </style>
 <body>
      <x-notify::notify />
-
     <!-- Preloader -->
     <div id="preloader">
         <div class="spinner-border text-primary" role="status">
@@ -106,7 +81,6 @@
         </div>
     </div>
     <!-- /Preloader -->
-
       <!-- Header -->
     <header id="header" data-aos="fade">
         <!-- Header Navbar -->
@@ -132,7 +106,6 @@
                             style="width:200px;height:60px"
                             />
                         @endif
-
                     </a>
                     <div class="offcanvas offcanvas-navbar offcanvas-start border-end-0" tabindex="-1" id="offcanvasNavbar">
                         <div class="offcanvas-header border-bottom p-4 p-xl-0">
@@ -204,13 +177,10 @@
                                     <span>Login</span>
                                 </a>
                             </li>
-
-
                             @if(auth()->guard('account')->check())
                                 <?php $customer = auth()->guard('account')->user(); ?>
                                 <p>Welcome, {{ $customer->first_name }}</p>
                              <li>
-
                                 </form>
                                 <div class="dropdown-user-scroll scrollbar-outer">
                                  <a class="dropdown-item" href="{{ route('account.logout') }}"
@@ -222,11 +192,9 @@
                                 <form id="logout-form" action="{{ route('account.logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
-
                                 </div>
                             </li>
                             @endif
-
                         </ul>
                     </div>
                 </div>
@@ -235,20 +203,20 @@
         <!-- /Header Navbar -->
     </header>
     <!-- /Header -->
-
-
     <!-- Main -->
     <main>
-
         <div class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade">
             <!-- Shopping cart -->
             <section class="container" id="step1">
+
+
+
                 <div class="row g-0 g-xl-8">
-                    <!-- Form View Button (only visible on mobile) -->
-                    <button type="button" id="form_view" class="btn btn-primary d-md-none mnw-180">
+                     <!-- Form View Button (only visible on mobile) -->
+                    <button type="button" id="form_view" class="btn btn-primary d-md-none mnw-180" style="margin-bottom:20px">
                         Expand
                     </button>
-                      <div class="col-12 col-xl-12">
+                    <div class="col-12 col-xl-12">
                            <!-- Booking Details Form (visible only on desktop by default) -->
                         <div id="booking_details_form" class="d-none d-md-block">
                             <div class="card border-0 shadow-sm">
@@ -299,7 +267,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="row g-3 g-xl-2" style="margin-bottom:20px">
                                                  <div class="col-6">
@@ -328,13 +295,12 @@
                                                     </button></div>
                                             </div>
                                              <div class="row mobilebtnrow" style="margin-bottom:20px">
-                                                     <div class="col-6">
                                                      <button type="button" class="btn btn-primary mnw-180" style="margin-bottom:20px" >
                                                         Edit Search
-                                                    </button></div>
-                                                     <div class="col-6"><button type="submit" class="btn btn-primary mnw-180" id="nextBtn"  >
+                                                    </button>
+                                                     <button type="submit" class="btn btn-primary mnw-180" id="nextBtn"  >
                                                         Next
-                                                    </button></div>
+                                                    </button>
                                             </div>
                                         </div>
                                     </form>
@@ -345,17 +311,18 @@
                         <!-- /Your Profile -->
                         <br/>
 
-                    <div class="pe-xl-4 me-xl-2 " id="terminalview">
-                           <button type="button" id="drop" class="btn btn-primary mnw-180 d-md-none">
-                            <i class="hicon hicon-thin-arrow-down"></i>
-                        </button>
+                    <div class="pe-xl-4 me-xl-2 " >
                               <!-- Terminal View (Card) -->
                             <div class="card border-0 shadow-sm" >
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center justify-content-between border-bottom pb-4 mb-4">
+                                <div class="card-body" >
+                                     <div class="d-flex align-items-center justify-content-between border-bottom pb-4 mb-4">
                                         <h2 class="h3 text-body-emphasis mb-0">Select Terminal</h2>
-
+                                         <a  id="drop" class="btn btn-primary" style="border-radius:50%">
+                                            <i class="hicon hicon-thin-arrow-down"></i>
+                                        </a>
                                     </div>
+                                </div>
+                                <div class="card-body" id="terminalview">
                                     <div class="row g-10 g-xl-8">
                                         <div class="tour-grid">
                                             <div class="row">
@@ -364,11 +331,9 @@
                                                     <!-- Tour -->
                                                     <div class="tour-item rounded shadow-sm hover-effect mb-4">
                                                         <div class="tour-img">
-                                                            <a href="single-tour-1.html">
-                                                                <figure class=" ">
-                                                                    <img src="{{asset('images/'.$terminallist->image)}}" srcset="{{asset('account/img/tours/t1%402x.jpg')}} 2x" alt="">
-                                                                </figure>
-                                                            </a>
+                                                            <figure class=" ">
+                                                                <img src="{{asset('images/'.$terminallist->image)}}" >
+                                                            </figure>
                                                         </div>
                                                         <div class="tour-content">
                                                             <h3 class="tour-title">
@@ -399,7 +364,7 @@
                         </div>
                     </div>
                 </div>
-                <br/>
+                
             </section>
             <!-- /Shopping cart -->
         </div>
@@ -598,6 +563,7 @@
             if (bookingDetailsForm.classList.contains('d-none')) {
                 bookingDetailsForm.classList.remove('d-none');  // Show form
                 terminalView.classList.add('d-none');  // Hide terminal view
+                   dropButton.innerHTML = '<i class="hicon hicon-thin-arrow-up"></i>';
                 dropButton.style.display = 'block';  // Show Drop button to bring back terminal
                 this.textContent = 'Hide Form';  // Change button text to "Hide Form"
             } else {
@@ -605,7 +571,7 @@
                 terminalView.classList.remove('d-none');  // Show terminal view
                 this.textContent = 'Expand';  // Change button text back to "Expand"
                 // Change the icon to "up arrow" and text to "Hide Terminal"
-                dropButton.innerHTML = '<i class="hicon hicon-thin-arrow-up"></i>';
+                dropButton.innerHTML = '<i class="hicon hicon-thin-arrow-down"></i>';
             }
         });
 
@@ -614,13 +580,16 @@
             // Toggle the terminal view and form view
             if (terminalView.classList.contains('d-none')) {
                 terminalView.classList.remove('d-none');  // Show terminal view
+
                 bookingDetailsForm.classList.add('d-none');  // Hide form view
-                this.textContent = 'Hide Terminal';  // Change button text to "Hide Terminal"
+                dropButton.innerHTML = '<i class="hicon hicon-thin-arrow-down"></i>';
+
                 formViewButton.textContent = 'Expand';  // Reset Expand button text
             } else {
                 terminalView.classList.add('d-none');  // Hide terminal view
+                bookingDetailsForm.classList.remove('d-none');
                  // Change the icon to "down arrow" and text back to "Drop"
-                dropButton.innerHTML = '<i class="hicon hicon-thin-arrow-down"></i>';
+                dropButton.innerHTML = '<i class="hicon hicon-thin-arrow-up"></i>';
             }
         });
 

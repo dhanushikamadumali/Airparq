@@ -315,7 +315,8 @@
                                                     <input id="parking_till_time" name="parking_till_time" type="time" class="form-control" placeholder="Time" value="{{$tTime ?? ''}}">
                                                   @error(' parking_till_time')
                                                 <div style="color:red">{{$message}}</div>
-                                                @enderror</div>
+                                                @enderror
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
