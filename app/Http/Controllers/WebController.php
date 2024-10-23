@@ -16,10 +16,21 @@ use Exception;
 use Illuminate\Support\Facades\Session;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Log;
-
+use App\Models\AcoountPasswordResetToken;
+use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Support\Str;
+use App\Mail\ResetPasswordMail;
+use App\Models\Bookingprice;
+use Illuminate\Mail\Mailer;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Middleware\CompanySettings;
 
 class WebController extends Controller
 {
+    public function __construct(){
+        $this->middleware(CompanySettings::class);
+    }
+
      /**
      * Display a listing of the resource.
      */
@@ -34,15 +45,15 @@ class WebController extends Controller
         $pCode =  Session::get('promoCode');
         $airport =  Session::get('airport');
 
-        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
-        return view('web.index',compact('csetting','fDate','fTime','tDate','tTime','tPrice','pCode','airport','csetting','allpromocodelists'));
+
+        return view('web.index',compact('fDate','fTime','tDate','tTime','tPrice','pCode','airport','allpromocodelists'));
     }
 
     // customer login view
 
     public function showlogin(){
-        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
-        return view('web.login',compact('csetting'));
+
+        return view('web.login');
     }
 
     // customer store login
@@ -63,8 +74,7 @@ class WebController extends Controller
 
     // customer register view
     public function showregister(){
-        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
-        return view('web.register',  compact('csetting'));
+        return view('web.register');
     }
 
     // insert customer
@@ -101,25 +111,25 @@ class WebController extends Controller
          return redirect('/account/login')->with('success', 'You have been logged out.');
 
     }
-
+    //show contact us page
     public function contactus(){
-        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
-        return view('web.contact', compact('csetting'));
-    }
 
+        return view('web.contact');
+    }
+    // show about us
     public function aboutus(){
-        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
-        return view('web.aboutus', compact('csetting'));
-    }
 
-    public function howitworks(){
-        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
-        return view('web.howitworks', compact('csetting'));
+        return view('web.aboutus');
     }
+    //show howitworks
+    public function howitworks(){
+
+        return view('web.howitworks');
+    }
+    //show bookindpage
     public function showbooking(){
 
         $allterminallists = Terminal::all();
-        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
         $fDate =  Session::get('fromDate');
         $fTime =  Session::get('fromTime');
         $tDate =  Session::get('tillDate');
@@ -128,12 +138,12 @@ class WebController extends Controller
         $pCode =  Session::get('promoCode');
         $airport =  Session::get('airport');
 
-        return view('web.booking',compact('allterminallists','fDate','fTime','tDate','tTime','tPrice','pCode','airport','csetting'));
+        return view('web.booking',compact('allterminallists','fDate','fTime','tDate','tTime','tPrice','pCode','airport'));
     }
-
+    //show bookingone page
     public function showbookingone(){
 
-        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
+
         $fDate =  Session::get('fromDate');
         $fTime =  Session::get('fromTime');
         $tDate =  Session::get('tillDate');
@@ -142,13 +152,12 @@ class WebController extends Controller
         $pCode =  Session::get('promoCode');
         $airport =  Session::get('airport');
 
-        return view('web.bookingone',compact('fDate','fTime','tDate','tTime','tPrice','pCode','airport','csetting'));
+        return view('web.bookingone',compact('fDate','fTime','tDate','tTime','tPrice','pCode','airport'));
     }
-
+    // show checkout page
     public function showcheckout(){
 
         $allterminallists = Terminal::all();
-        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
         $fDate =  Session::get('fromDate');
         $fTime =  Session::get('fromTime');
         $tDate =  Session::get('tillDate');
@@ -167,7 +176,7 @@ class WebController extends Controller
         $terminalid =  Session::get('terminalid');
         $terminalname =  Session::get('terminalname');
 
-        return view('web.checkout',compact('allterminallists','terminalid','fDate','fTime','tDate','tTime','tPrice','pCode','price','discount','cusfname','cuslname','cusemail','cusphoneno','terminalname','cusid','airport','csetting'));
+        return view('web.checkout',compact('allterminallists','terminalid','fDate','fTime','tDate','tTime','tPrice','pCode','price','discount','cusfname','cuslname','cusemail','cusphoneno','terminalname','cusid','airport'));
 
     }
 
@@ -184,28 +193,24 @@ class WebController extends Controller
         ]);
 
         $allterminallists = Terminal::all();
-
-        $countfrom = Carbon::parse($request->input('parking_from_date'));
-        $counttill = Carbon::parse($request->input('parking_till_date'));
-
+         // Parse the dates using Carbon
+         $fromDate = Carbon::parse($request->input('parking_from_date'));
+         $tillDate = Carbon::parse($request->input('parking_till_date'));
+        // Check if the months are the same
+        if ($fromDate->month !== $tillDate->month) {
+            notify()->error('Parking dates must be within the same month', 'Error', [
+                'position' => 'bottom-right'
+            ]);
+            return back(); // Stop further processing
+        }
         // Calculate the difference in days and include the last day (+1)
-        $dayscount = $countfrom->diffInDays($counttill) + 1;
+        $dayscount = $fromDate->diffInDays($tillDate) + 1;
+
+        $bookingprice = Bookingprice::getbookingcount($dayscount);
 
         // This will output the difference in days
-        $price = 0;
-        if ($dayscount >= 1) {
-            $price += 55; // Base price for the 1st day
-        }
-        if ($dayscount >= 2 && $dayscount <= 5) {
-            $price += ($dayscount - 1) * 2; // 2 pounds for each day from 2nd to 5th day
-        } elseif ($dayscount >= 6 && $dayscount <= 14) {
-            $price += (5 - 1) * 2; // 2 pounds for each day from 2nd to 5th day
-            $price += ($dayscount - 5) * 5; // 5 pounds for each day from 6th to 14th day
-        } elseif ($dayscount >= 15) {
-            $price += (5 - 1) * 2; // 2 pounds for each day from 2nd to 5th day
-            $price += (14 - 5) * 5; // 5 pounds for each day from 6th to 14th day
-            $price += ($dayscount - 14) * 7; // 7 pounds for each day from 15th day onwards
-        }
+        $price = $bookingprice[0]->booking_price;
+
 
         $promocode = $request->input('promocode');
 
@@ -257,12 +262,11 @@ class WebController extends Controller
     }
 
     public function bookingdetailstep3(Request $request){
-
         //check if the user is authenticated unser the 'account' quard
         if(!Auth::guard('account')->check()){
             return  Redirect::route('showlogin');
         }
-          // Check if selected_terminal_id is provided
+        // Check if selected_terminal_id is provided
         if (!$request->input('selected_terminal_id')) {
             notify()->error('Terminal ID is required!', 'Missing Data', [
                 'position' => 'top-right',
@@ -272,7 +276,6 @@ class WebController extends Controller
             return back();
         }
         $terminaldetails = Terminal::getterminaldetails($request->input('selected_terminal_id'));//get terminal details
-
          // If authenticated, retrieve the authenticated user details
          $customer = Auth::guard('account')->user();
          $cuid = $customer->id;
@@ -282,33 +285,28 @@ class WebController extends Controller
          $cuemail = $customer->email; // or $customer->email depending on your model
          $cuphoneno = $customer->phone_no; // or $customer->phone_no depending on your model
 
-        $countfrom = Carbon::parse($request->input('parking_from_date'));
-        $counttill = Carbon::parse($request->input('parking_till_date'));
-
+         // Parse the dates using Carbon
+         $fromDate = Carbon::parse($request->input('parking_from_date'));
+         $tillDate = Carbon::parse($request->input('parking_till_date'));
+        // Check if the months are the same
+        if ($fromDate->month !== $tillDate->month) {
+            notify()->error('Parking dates must be within the same month', 'Error', [
+                'position' => 'bottom-right'
+            ]);
+            return back(); // Stop further processing
+        }
         // Calculate the difference in days and include the last day (+1)
-        $dayscount = $countfrom->diffInDays($counttill) + 1;
+        $dayscount =  $fromDate->diffInDays($tillDate) + 1;
 
-         // This will output the difference in days
-        $price = 0;
-        if ($dayscount >= 1) {
-            $price += 55; // Base price for the 1st day
-        }
-        if ($dayscount >= 2 && $dayscount <= 5) {
-            $price += ($dayscount - 1) * 2; // 2 pounds for each day from 2nd to 5th day
-        } elseif ($dayscount >= 6 && $dayscount <= 14) {
-            $price += (5 - 1) * 2; // 2 pounds for each day from 2nd to 5th day
-            $price += ($dayscount - 5) * 5; // 5 pounds for each day from 6th to 14th day
-        } elseif ($dayscount >= 15) {
-            $price += (5 - 1) * 2; // 2 pounds for each day from 2nd to 5th day
-            $price += (14 - 5) * 5; // 5 pounds for each day from 6th to 14th day
-            $price += ($dayscount - 14) * 7; // 7 pounds for each day from 15th day onwards
-        }
+        $bookingprice = Bookingprice::getbookingcount($dayscount);
+
+        // This will output the difference in days
+        $price = $bookingprice[0]->booking_price;
 
         $promocode = $request->input('promocode');
 
         // Initialize the total price to the original price
         $totalprice = $price;
-
 
         if (!empty($promocode)) {
             $promodetails = Promocode::getpromodetails($promocode);
@@ -380,26 +378,23 @@ class WebController extends Controller
             $cuemail = $customer->email; // or $customer->email depending on your model
             $cuphoneno = $customer->phone_no; // or $customer->phone_no depending on your model
 
-            $countfrom = Carbon::parse($request->input('parking_from_date'));
-            $counttill = Carbon::parse($request->input('parking_till_date'));
+            // Parse the dates using Carbon
+            $fromDate = Carbon::parse($request->input('parking_from_date'));
+            $tillDate = Carbon::parse($request->input('parking_till_date'));
+           // Check if the months are the same
+           if ($fromDate->month !== $tillDate->month) {
+               notify()->error('Parking dates must be within the same month', 'Error', [
+                   'position' => 'bottom-right'
+               ]);
+               return back(); // Stop further processing
+           }
 
-            // Calculate the difference in days and include the last day (+1)
-            $dayscount = $countfrom->diffInDays($counttill) + 1;
-             // This will output the difference in days
-            $price = 0;
-            if ($dayscount >= 1) {
-                $price += 55; // Base price for the 1st day
-            }
-            if ($dayscount >= 2 && $dayscount <= 5) {
-                $price += ($dayscount - 1) * 2; // 2 pounds for each day from 2nd to 5th day
-            } elseif ($dayscount >= 6 && $dayscount <= 14) {
-                $price += (5 - 1) * 2; // 2 pounds for each day from 2nd to 5th day
-                $price += ($dayscount - 5) * 5; // 5 pounds for each day from 6th to 14th day
-            } elseif ($dayscount >= 15) {
-                $price += (5 - 1) * 2; // 2 pounds for each day from 2nd to 5th day
-                $price += (14 - 5) * 5; // 5 pounds for each day from 6th to 14th day
-                $price += ($dayscount - 14) * 7; // 7 pounds for each day from 15th day onwards
-            }
+           // Calculate the difference in days and include the last day (+1)
+           $dayscount =  $fromDate->diffInDays($tillDate) + 1;
+           $bookingprice = Bookingprice::getbookingcount($dayscount);
+
+            // This will output the difference in days
+            $price = $bookingprice[0]->booking_price;
 
             $promocode = $request->input('promocode');
 
@@ -412,7 +407,6 @@ class WebController extends Controller
                 if (!empty($promodetails) && !$promodetails->isEmpty()) {
                     $discountamount = $promodetails[0]->discount_amount; // Get promo code discount
                     $discounttype = $promodetails[0]->discount_type;     // Get promo code discount type
-
                     // Calculate the discount based on the type
                     if ($discounttype == "percent") {
                         $discountprice = $price / 100 * $discountamount;
@@ -449,7 +443,6 @@ class WebController extends Controller
              Session::put('tillTime', $tillTime);
 
              notify()->success('Booking updated successfully.', 'Success');
-
             // Return a success response if everything is valid
             return response()->json(['success' => true, 'message' => 'Booking updated successfully']);
 
@@ -460,24 +453,86 @@ class WebController extends Controller
             Log::error($e->getMessage());
             return response()->json(['success' => false, 'message' => 'An unexpected error occurred'], 500);
         }
-
-
-
     }
-
+    //show complete page
     public function completepage(){
-        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
-        return view('web.completed',compact('csetting'));
+        return view('web.completed');
     }
 
-
+    // show terms and condition page
     public function termsandcondition(){
-        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
-        return view('web.termsandcondition',compact('csetting'));
+        return view('web.termsandcondition');
     }
+
+    //show privacypolicy page
     public function privacypolicy(){
-        $csetting= Setting::select('image','address','phone1','phone2','email')->get();
-        return view('web.privacypolice',compact('csetting'));
+        return view('web.privacypolice');
+    }
+    //show resetpassword page
+    public function resetpassword(){
+        return view('web.resetpassword');
+    }
+
+    public function sendresetpassword(Request $request){
+
+        $request->validate([
+            'email' => 'required|email|exists:customer,email'
+        ]);
+        $token = Str::random(60);
+
+        AcoountPasswordResetToken::updateOrCreate(
+            [
+                'email' => $request->email
+            ],
+            [
+                'email' => $request->email,
+                'token' => $token,
+            ]
+        );
+
+        Mail::to($request->email)->send(new ResetPasswordMail($token));
+        notify()->success('successfully.', 'Success');
+        return Redirect::route('resetpassword');
+    }
+    //show validatereset password
+    public function validateresetpassword(Request $request,$token){
+
+       $oldtoken  =  AcoountPasswordResetToken::where('token',$token)->first();
+       $oldtoken = $oldtoken->token;
+       if(!$token){
+            notify()->error('Email is invalid', 'Erorr');
+            return Redirect::route('showlogin');
+       }
+        return view('web.validateresetpassword',compact('token'));
+    }
+
+    public function sendvalidateresetpassword(Request $request){
+
+        $validatedData = $request->validate([
+            'password' =>'required|confirmed|min:8'
+        ]);
+
+        $token =  AcoountPasswordResetToken::where('token',$request->token)->first();
+
+        if(!$token){
+            notify()->error('Token is invallid', 'Erorr');
+            return Redirect::route('showlogin');
+        }
+        $customer = Customer::where('email',$token->email)->first();
+
+        if(!$customer){
+            notify()->error('Email is invalid', 'Erorr');
+            return Redirect::route('showlogin');
+        }
+
+        $customer->update([
+            'password' => Hash::make($request->password)
+        ]);
+
+        $token->delete();
+        notify()->success('Password Reset Scuccessfully', 'Success');
+        return Redirect::route('showlogin');
+
     }
 
 }

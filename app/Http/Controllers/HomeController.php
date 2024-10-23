@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Middleware\CompanySettings;
 
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+
     /**
      * Create a new controller instance.
      *
@@ -14,6 +16,7 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(CompanySettings::class);
     }
 
     /**

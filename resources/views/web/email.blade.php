@@ -46,7 +46,7 @@
                         <i class="hicon hicon-bold hicon-hamburger-menu"></i>
                     </button>
                     <a class="navbar-brand" href="{{route('/')}}" >
-                          @if(empty($csetting) || empty($csetting[0]['image']))
+                          @if(empty($csetting) || empty($csetting['image']))
                             <img
                                 src="{{ asset('assets/img/logo.png') }}"
                                 alt="navbar brand"
@@ -55,7 +55,7 @@
                             />
                         @else
                             <img
-                                src="{{ asset('assets/img/' . $csetting[0]['image']) }}"
+                                src="{{ asset('assets/img/' . $csetting['image']) }}"
                                 alt="navbar brand"
                                 class="navbar-brand"
                             style="width:200px;height:60px"
@@ -66,7 +66,7 @@
                     <div class="offcanvas offcanvas-navbar offcanvas-start border-end-0" tabindex="-1" id="offcanvasNavbar">
                         <div class="offcanvas-header border-bottom p-4 p-xl-0">
                             <a class="d-inline-block" href="{{route('/')}}" >
-                                  @if(empty($csetting) || empty($csetting[0]['image']))
+                                  @if(empty($csetting) || empty($csetting['image']))
                                     <img
                                         src="{{ asset('assets/img/logo.png') }}"
                                         alt="navbar brand"
@@ -75,7 +75,7 @@
                                     />
                                 @else
                                     <img
-                                        src="{{ asset('assets/img/' . $csetting[0]['image']) }}"
+                                        src="{{ asset('assets/img/' . $csetting['image']) }}"
                                         alt="navbar brand"
                                         class="navbar-brand"
                                     style="width:200px;height:60px"
@@ -246,7 +246,7 @@
                         <!-- Brand -->
                         <div class="footer-widget">
                             <a href="index.html" class="brand-img">
-                                  @if(empty($csetting) || empty($csetting[0]['image']))
+                                  @if(empty($csetting) || empty($csetting['image']))
                                     <img
                                         src="{{ asset('assets/img/logo.png') }}"
                                         alt="navbar brand"
@@ -255,7 +255,7 @@
                                     />
                                 @else
                                     <img
-                                        src="{{ asset('assets/img/' . $csetting[0]['image']) }}"
+                                        src="{{ asset('assets/img/' . $csetting['image']) }}"
                                         alt="navbar brand"
                                         class="navbar-brand"
                                     style="width:200px;height:60px"
@@ -322,29 +322,29 @@
                             <h2 class="h4 pb-3">Contact Info</h2>
                             <div class="contact-info">
                                 <p>
-                                    @if(!empty($csetting) || !empty($csetting[0]['address']))
-                                        <span>{{$csetting[0]['address']}}</span>
+                                    @if(!empty($csetting) || !empty($csetting['address']))
+                                        <span>{{$csetting['address']}}</span>
                                     @else
                                         <span>Defult address</span>
                                     @endif
                                 </p>
                                 <p>
-                                    @if(!empty($csetting) || !empty($csetting[0]['phone1']))
-                                        <span>{{$csetting[0]['phone1']}}</span>
+                                    @if(!empty($csetting) || !empty($csetting['phone1']))
+                                        <span>{{$csetting['phone1']}}</span>
                                     @else
                                         <span>Defult no1</span>
                                     @endif
                                 </p>
                                 <p>
-                                    @if(!empty($csetting) || !empty($csetting[0]['phone2']))
-                                        <span>{{$csetting[0]['phone2']}}</span>
+                                    @if(!empty($csetting) || !empty($csetting['phone2']))
+                                        <span>{{$csetting['phone2']}}</span>
                                     @else
                                         <span>Defult no2</span>
                                     @endif
                                 </p>
                                 <p>
-                                      @if(!empty($csetting) || !empty($csetting[0]['email']))
-                                        <a href="#">{{$csetting[0]['email']}}</a>
+                                      @if(!empty($csetting) || !empty($csetting['email']))
+                                        <a href="#">{{$csetting['email']}}</a>
                                     @else
                                         <a href="#">Defult email</a>
                                     @endif

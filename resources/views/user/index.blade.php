@@ -40,21 +40,41 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($userlists as $userlist)
-                                    <tr>
-                                        <td>{{$userlist->name}}</td>
-                                        <td>{{$userlist->email}}</td>
-                                        <td>{{$userlist->role}}</td>
-                                        <td>
-                                            <a href="{{ route('edituser',Crypt::encryptString($userlist->id))}}">
-                                                <i class="fa fa-edit editbtn"></i>
-                                            </a>
-                                            <button class="btn p-0 delete" onclick="userdelete('{{Crypt::encryptString($userlist->id)}}')">
-                                            <i class="fa fa-times deletebtn"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    @endforeach
+                                    @if(Auth::check())
+                                        @if(Auth::user()->role == 'admin')
+                                        @foreach ($userlists as $userlist)
+                                        <tr>
+                                            <td>{{$userlist->name}}</td>
+                                            <td>{{$userlist->email}}</td>
+                                            <td>{{$userlist->role}}</td>
+                                            <td>
+                                                <a href="{{ route('edituser',Crypt::encryptString($userlist->id))}}">
+                                                    <i class="fa fa-edit editbtn"></i>
+                                                </a>
+                                                <button class="btn p-0 delete" onclick="userdelete('{{Crypt::encryptString($userlist->id)}}')">
+                                                <i class="fa fa-times deletebtn"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                        @elseif(Auth::user()->role == 'driver')
+                                        @foreach ($driverlists as $driverlist)
+                                        <tr>
+                                            <td>{{$driverlist->name}}</td>
+                                            <td>{{$driverlist->email}}</td>
+                                            <td>{{$driverlist->role}}</td>
+                                            <td>
+                                                <a href="{{ route('edituser',Crypt::encryptString($driverlist->id))}}">
+                                                    <i class="fa fa-edit editbtn"></i>
+                                                </a>
+                                                <button class="btn p-0 delete" onclick="userdelete('{{Crypt::encryptString($driverlist->id)}}')">
+                                                <i class="fa fa-times deletebtn"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                        @endif
+                                    @endif
                                 </tbody>
                             </table>
                         </div>

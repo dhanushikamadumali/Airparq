@@ -9,7 +9,7 @@
                         <i class="icon-arrow-right"></i>
                     </li>
                     <li class="nav-item">
-                        <a href="#">Back</a>
+                         <a href="{{ URL::previous() }}">Back</a>
                     </li>
                 </ul>
         </div>
@@ -17,7 +17,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <a href="{{asset('createterminal')}}">
+                        <a href="{{asset('admin/createterminal')}}">
                             <button class="btn page_btn" data-bs-toggle="modal" data-bs-target="#addRowModal" >
                                 <i class="fa fa-plus"></i>
                                     Add New Terminal
@@ -34,7 +34,6 @@
                                 <th>Base Price</th>
                                 <th>Per day Price</th>
                                 <th>Description</th>
-                                {{-- <th>Status</th> --}}
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -46,7 +45,6 @@
                                 <td>{{$terminallist->base_price}}</td>
                                 <td>{{$terminallist->per_day_price}}</td>
                                 <td>{{$terminallist->description}}</td>
-                                {{-- <td>{{$terminallist->status}}</td> --}}
                                 <td>
                                     <a href="{{ route('editterminal',Crypt::encryptString($terminallist->id))}}">
                                         <i class="fa fa-edit editbtn"></i>

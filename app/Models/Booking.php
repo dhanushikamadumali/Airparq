@@ -44,7 +44,7 @@ class Booking extends Pivot
 
     public static function getCustomerByBookingId(){
     return DB::table('booking')
-                ->select('booking.id', 'booking.booking_code','customer.first_name','customer.last_name','customer.email','customer.phone_no')
+                ->select('booking.id', 'booking.booking_code','booking.status','customer.first_name','customer.last_name','customer.email','customer.phone_no')
                 ->join('customer', 'booking.customer_id', '=', 'customer.id')
                 ->orderByDesc('booking.id')
                 ->get();
@@ -129,12 +129,36 @@ class Booking extends Pivot
     // monthly booking count
     public static function monthlybookings(){
         return DB::table('booking')
-        ->select(DB::raw('MONTHNAME(parking_from_date) as month'), DB::raw('COUNT(*) as count'))
-        ->groupBy(DB::raw('MONTHNAME(parking_from_date)'))
-        ->get()
-        ->toArray();
+                ->select(DB::raw('MONTHNAME(parking_from_date) as month'), DB::raw('COUNT(*) as count'))
+                ->groupBy(DB::raw('MONTHNAME(parking_from_date)'))
+                ->get()
+                ->toArray();
     }
 
+    public static function editbookingdetailsbyid($id){
+        return DB::table('booking')
+                    ->select(
+                        'booking.*',
+                        'customer.first_name',
+                        'customer.last_name',
+                        'customer.email',
+                        'customer.phone_no',
+                        'customer.id as customer_id',
+                        'inbound_terminal.name as inbound_terminal_name',
+                        'outbound_terminal.name as outbound_terminal_name'
+                    )
+                    ->join('customer', 'booking.customer_id', '=', 'customer.id')
+                    ->join('terminals as inbound_terminal', 'booking.inbound_terminal', '=', 'inbound_terminal.id')
+                    ->join('terminals as outbound_terminal', 'booking.outbound_terminal', '=', 'outbound_terminal.id')
+                    ->where('booking.id', '=', $id)
+                    ->orderByDesc('booking.id')
+                    ->get();
+    }
 
+    public static function updatestatus($id){
+        return DB::table('booking')
+                    ->where('id',$id)
+                    ->update(['status' => 0]);
+    }
 
 }

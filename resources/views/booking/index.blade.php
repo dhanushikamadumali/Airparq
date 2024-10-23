@@ -4,34 +4,42 @@
     <div class="page-inner">
         <div class="page-header">
             <h3 class="fw-bold mb-3">All Booking</h3>
-                <ul class="breadcrumbs mb-3">
-                    <li class="separator">
-                        <i class="icon-arrow-right"></i>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#">Back</a>
-                    </li>
-                </ul>
+            <ul class="breadcrumbs mb-3">
+                <li class="separator">
+                    <i class="icon-arrow-left"></i>
+                </li>
+                <li class="nav-item">
+                     <a href="{{ URL::previous() }}">Back</a>
+                </li>
+            </ul>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <a href="{{asset('datefilterbooking')}}">
-                            <button class="btn page_btn" data-bs-toggle="modal" data-bs-target="#addRowModal" >
-                                    Filter Date
-                            </button>
-                        </a>
-                        <a href="{{asset('incomebooking')}}">
-                            <button class="btn page_btn" data-bs-toggle="modal" data-bs-target="#addRowModal" >
-                                    Incoming Booking
-                            </button>
-                        </a>
-                        <a href="{{asset('outgoingbooking')}}">
-                            <button class="btn page_btn" data-bs-toggle="modal" data-bs-target="#addRowModal" >
-                                    Outgoing Booking
-                            </button>
-                        </a>
+                        <div class="row g-3">
+                            <div class="col-12 col-md-2">
+                                <a href="{{asset('admin/datefilterbooking')}}">
+                                    <button class="btn page_btn" style="width:100%" >
+                                            Filter Date
+                                    </button>
+                                </a>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                  <a href="{{asset('admin/incomebooking')}}">
+                                    <button class="btn page_btn" style="width:100%" >
+                                            Incoming
+                                    </button>
+                                </a>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                 <a href="{{asset('admin/outgoingbooking')}}">
+                                    <button class="btn page_btn" style="width:100%" >
+                                            Outgoing
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -42,6 +50,7 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Phone No</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -52,6 +61,14 @@
                                 <td>{{$allbookinglist->first_name}} {{$allbookinglist->last_name}}</td>
                                 <td>{{$allbookinglist->email}}</td>
                                 <td>{{$allbookinglist->phone_no}}</td>
+                                 <td>
+                                 @if ($allbookinglist->status == 0)
+                                    <div style="color:red">Cancel</div>
+                                 @endif
+                                    @if ($allbookinglist->status == 1)
+                                        <div style="color:#ff8533">Pending</div>
+                                     @endif
+                                 </td>
                                 <td>
                                     <a href="{{ route('editbooking',Crypt::encryptString($allbookinglist->id))}}">
                                         <i class="fa fa-edit p-2 editbtn"></i>
@@ -62,7 +79,7 @@
                                     <a href="{{route('printbooking',Crypt::encryptString($allbookinglist->id))}}">
                                     <i class="fas fa-print p-2 print"></i>
                                     </a>
-                                    <button class="btn p-0 delete" onclick="bookingdelete('{{Crypt::encryptString($allbookinglist->id)}}')">
+                                    <button class="btn p-0 delete" onclick="bookingdetailsdelete('{{Crypt::encryptString($allbookinglist->id)}}')">
                                     <i class="fa fa-times deletebtn"></i>
                                     </button>
                                 </td>

@@ -14,11 +14,18 @@ use App\Models\Promocode;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
-
-
+use App\Models\Setting;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\Confirmationemail;
+use App\Http\Middleware\CompanySettings;
 
 class BookingController extends Controller
 {
+    public function __construct(){
+        $this->middleware(CompanySettings::class);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -41,24 +48,19 @@ class BookingController extends Controller
      */
     public function store(StoreBookingRequest $request)
     {
+        $flight_arrival_date = Carbon::parse($request->input('flight_arrival_date'));
+        $flight_departure_date = Carbon::parse($request->input('flight_departure_date'));
         $latestBooking = Booking::orderBy('id', 'desc')->first();
         $nextId = $latestBooking ? $latestBooking->id + 1 : 1;
         $bookingCode = 'BOOK' . str_pad($nextId, 5, '0', STR_PAD_LEFT); // 'BOOK00001'
-
-        $stripe = new \Stripe\StripeClient(Config::get('stripe.stripe_secret_key'));
-
-        $redirectUrl = route('completepage') . '?session_id={CHECKOUT_SESSION_ID}';
-
         try{
-            // $amountInCents =  $request->input('price') * 100;
-            $unitPriceInPence = 30; // £0.30 in pence
-
-            // Calculate the total amount (Stripe expects the amount in pence)
-            $totalAmount = $unitPriceInPence * $request->input('price') ;
+            $stripe = new \Stripe\StripeClient(Config::get('stripe.stripe_secret_key'));
+            $redirectUrl = route('completepage') . '?session_id={CHECKOUT_SESSION_ID}';
+            $roundno = round($request->input('price'),2);
+            $totalAmount =   $roundno * 100;
 
             $response =  $stripe->checkout->sessions->create([
                 'success_url' => $redirectUrl,
-                // 'payment_method_types' => ['link', 'card'],
                 'line_items' => [
                     [
                         'price_data'  => [
@@ -66,7 +68,7 @@ class BookingController extends Controller
                                 'name' => 'airparq booking',
                             ],
                             'unit_amount'  => $totalAmount,
-                            'currency'     => 'gbp',
+                            'currency'     => 'GBP',
                         ],
                         'quantity'    => 1,
                     ],
@@ -74,11 +76,14 @@ class BookingController extends Controller
                 'mode' => 'payment',
                 'allow_promotion_codes' => false
             ]);
-
             $validateddata = $request->all();//all validated data
             $validateddata['booking_code'] = $bookingCode;
+            $validateddata['totalAmount'] = $roundno;
+            $validateddata['flight_arrival_date'] = $flight_arrival_date;
+            $validateddata['flight_departure_date'] = $flight_departure_date;
             Booking::create($validateddata);
-            notify()->success('Successfully registered promocode!','Success!',[
+            Notification::route('mail', 'dhanushika76@gmail.com')->notify(new Confirmationemail($validateddata));
+            notify()->success('Booking Successfully!','Success!',[
                 'position' => 'bottom-right'
             ]);
             return redirect($response['url']);
@@ -91,17 +96,17 @@ class BookingController extends Controller
 
     }
 
-    public function stripeCheckoutSuccess(Request $request)
-    {
-        $stripe = new \Stripe\StripeClient(Config::get('stripe.stripe_secret_key'));
+    // public function stripeCheckoutSuccess(Request $request)
+    // {
+    //     $stripe = new \Stripe\StripeClient(Config::get('stripe.stripe_secret_key'));
 
-        $session = $stripe->checkout->sessions->retrieve($request->session_id);
-        info($session);
+    //     $session = $stripe->checkout->sessions->retrieve($request->session_id);
+    //     info($session);
 
-        $successMessage = "We have received your payment request and will let you know shortly.";
+    //     $successMessage = "We have received your payment request and will let you know shortly.";
 
-        return view('web.completed', compact('successMessage'));
-    }
+    //     return view('web.completed', compact('successMessage'));
+    // }
 
     /**
      * Display the specified resource.
@@ -114,9 +119,16 @@ class BookingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Booking $booking)
+    public function edit(Booking $booking,$id)
     {
-        //
+        $booking = $booking::editbookingdetailsbyid(Crypt::decryptString($id));
+        if (isset($booking[0]->image) && !empty($booking[0]->image)) {
+            $images = json_decode($booking[0]->image, true);
+        } else {
+            $images = [];
+        }
+        $allterminallists = Terminal::all();
+        return view('booking.edit', compact('booking','allterminallists','images'));
     }
 
     /**
@@ -124,18 +136,52 @@ class BookingController extends Controller
      */
     public function update(UpdateBookingRequest $request, Booking $booking)
     {
-        //
+        try{
+            $data = $request->all();
+            $booking = $booking::findOrFail($request->id);
+            $booking->update($data);
+            notify()->success('Sucessfully Updated booking!');
+        }catch(Exception $e){
+            notify()->error('Failed to Update booking');
+        }
+        return Redirect::route('allbooking');
     }
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Booking $booking)
+    public function destroy(Booking $booking,$id)
     {
-        //
+        try{
+            $deletebooking = $booking::FindOrFail(Crypt::decryptString($id));
+
+            // Check if the booking is in a state that allows for deletion
+            if ($deletebooking->status === 0) { // Assuming 1 means "active" or similar
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Booking cannot be deleted as it is already marked as deleted'
+                ], 400);
+            } else {
+                // Update the status to mark it as deleted or inactive
+                $booking::updatestatus($deletebooking->id);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Booking deleted successfully'
+                ]);
+            }
+        } catch (ModelNotFoundException $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Booking not found'
+            ], 404);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete booking'
+            ], 500);
+        }
     }
-
-
      /**
      * date filter .
      */
@@ -270,15 +316,12 @@ class BookingController extends Controller
     }
 
     public function printbooking(Booking $booking,$id){
-
         $id = Crypt::decryptString($id);
         $bookingdetails = Booking::bookingdetailsbyid($id);
         return view('booking.print',compact('bookingdetails'));
     }
 
     public function uploadvehiclephoto(Request $request,Booking $booking){
-
-
          try{
             // Get the row ID from the request
             $rowId = $request->input('row_id');

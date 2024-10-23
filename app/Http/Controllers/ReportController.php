@@ -6,10 +6,16 @@ use App\Models\Report;
 use App\Models\Booking;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Setting;
+use Illuminate\Support\Facades\Crypt;
+use App\Http\Middleware\CompanySettings;
 
 class ReportController extends Controller
 {
 
+    public function __construct(){
+        $this->middleware(CompanySettings::class);
+    }
 
     /**
      * Display a listing of the resource.
@@ -67,6 +73,13 @@ class ReportController extends Controller
         $pdf = PDF::loadView('report.allcurrentmonthreportpdf', $data);
         return $pdf->download('currentmonthbookinglists.pdf');
 
+    }
+
+    public function printbookingdetails(Booking $booking,$id){
+
+        $id = Crypt::decryptString($id);
+        $bookingdetails = Booking::bookingdetailsbyid($id);
+        return view('booking.print',compact('bookingdetails'));
     }
 
 }

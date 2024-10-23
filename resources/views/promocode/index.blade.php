@@ -5,25 +5,20 @@
   <div class="page-inner">
     <div class="page-header">
       <h3 class="fw-bold mb-3">Promo Code</h3>
-      <ul class="breadcrumbs mb-3">
-        <li class="nav-home">
-          <a href="#">
-            <i class="icon-home"></i>
-          </a>
-        </li>
-        <li class="separator">
-          <i class="icon-arrow-right"></i>
-        </li>
-        <li class="nav-item">
-          <a href="#">Dashboard</a>
-        </li>
-      </ul>
+        <ul class="breadcrumbs mb-3">
+            <li class="separator">
+                <i class="icon-arrow-left"></i>
+            </li>
+            <li class="nav-item">
+                 <a href="{{ URL::previous() }}">Back</a>
+            </li>
+        </ul>
     </div>
     <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-          <a href="{{asset('createpromocode')}}">
+          <a href="{{asset('admin/createpromocode')}}">
              <button
                 class="btn page_btn"
                 data-bs-toggle="modal"
@@ -45,7 +40,6 @@
                     <th>Promo Code</th>
                     <th>Discount Amount</th>
                     <th>Discount Type</th>
-                    <th>Status</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -55,7 +49,6 @@
                     <td>{{$promocode->promo_code}}</td>
                     <td>{{$promocode->discount_amount}}</td>
                     <td>{{$promocode->discount_type}}</td>
-                    <td></td>
                     <td>
                         <a href="{{ route('editpromocode',Crypt::encryptString($promocode->id))}}">
                              <i class="fa fa-edit editbtn"></i>

@@ -8,10 +8,14 @@ use App\Http\Requests\UpdateContactRequest;
 use Illuminate\Support\Facades\Crypt;
 use Exception;
 use Illuminate\Support\Facades\Redirect;
+use App\Http\Middleware\CompanySettings;
 
 class ContactController extends Controller
 {
-    /**
+
+    public function __construct(){
+        $this->middleware(CompanySettings::class);
+    }/**
      * Display a listing of the resource.
      */
     public function index()

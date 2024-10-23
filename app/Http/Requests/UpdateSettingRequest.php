@@ -22,7 +22,7 @@ class UpdateSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'smtp_host' => 'required|string',
             'username' => 'required|string',
             'password' => 'required|string',

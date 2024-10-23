@@ -8,9 +8,15 @@ use App\Http\Requests\UpdateTerminalRequest;
 use FFI\Exception;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Crypt;
+use App\Models\Setting;
+use App\Http\Middleware\CompanySettings;
 
 class TerminalController extends Controller
 {
+    public function __construct(){
+        $this->middleware(CompanySettings::class);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -76,25 +82,22 @@ class TerminalController extends Controller
      */
     public function update(UpdateTerminalRequest $request, Terminal $terminal)
     {
-     
+
         try{
-            // $data = $request->all();
             $terminal = $terminal::findOrFail($request->id);
             $requestdata = $request->all();
             if($request['image']){
                 $file= $request['image'];
                 $imageName = time().'.'.$file->extension();
                 $file->move(public_path('images'),   $imageName);
-
-
                 $requestdata['image'] =    $imageName;
             }else{
                 $requestdata['image'] = $terminal->image;
             }
             $terminal->update($requestdata);
-            notify()->success('Sucessfully Updated terminal!');
+            notify()->success('Sucessfully Updated Terminal!');
         }catch(Exception $e){
-            notify()->error('Failed to Update terminal');
+            notify()->error('Failed to Update Terminal');
         }
         return Redirect::route('allterminal');
     }

@@ -145,16 +145,13 @@
 
                                 </table>
                             </div>
-
                         </div>
                     </div>
-
                 </div>
                 <!-- /Account -->
             </div>
 
              <div class="col-md-4">
-
                 <span id="result"></span>
                 <div class="card mb-4">
                     <!-- Account -->

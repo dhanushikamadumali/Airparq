@@ -39,9 +39,9 @@ class StoreBookingRequest extends FormRequest
                 'inbound_flight_number' => 'nullable|string',
                 'outbound_flight_number' => 'nullable|string',
                 'flight_arrival_time' => 'nullable',
-                'flight_arrival_date' => 'nullable|date|date_format:Y-m-d',
+                'flight_arrival_date' => 'nullable|date',
                 'flight_departure_time' => 'nullable',
-                'flight_departure_date' => 'nullable|date|date_format:Y-m-d',
+                'flight_departure_date' => 'nullable|date',
                 'airport' => 'nullable|string',
                 'status' => 'nullable|integer',
         ];

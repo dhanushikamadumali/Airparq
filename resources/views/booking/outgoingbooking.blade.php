@@ -6,10 +6,10 @@
                 <h3 class="fw-bold mb-3">Today Outgoing Booking</h3>
                 <ul class="breadcrumbs mb-3">
                     <li class="separator">
-                    <i class="icon-arrow-left"></i>
+                        <i class="icon-arrow-left"></i>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ URL::previous() }}">Back</a>
+                         <a href="{{ URL::previous() }}">Back</a>
                     </li>
                 </ul>
             </div>

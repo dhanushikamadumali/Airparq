@@ -7,9 +7,14 @@ use App\Http\Requests\StoreSettingRequest;
 use App\Http\Requests\UpdateSettingRequest;
 use FFI\Exception;
 use Illuminate\Support\Facades\Redirect;
+use App\Http\Middleware\CompanySettings;
 
 class SettingController extends Controller
 {
+    public function __construct(){
+        $this->middleware(CompanySettings::class);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -40,14 +45,12 @@ class SettingController extends Controller
                 $requestdata['image'] = $imageName;
             }
             Setting::create($requestdata);
-            notify()->success('Successfully Insert Setting!','Success!',[
-                'position' => 'bottom-right'
-            ]);
+            notify()->success('Successfully Insert Setting!','Success!');
+            return redirect()->back();
 
         }catch(Exception $e){
-            notify()->error('Failed to insert sETTING.', 'Error', [
-                'position' => 'top-right' // Change this to your desired position
-            ]);
+            notify()->error('Failed to insert Setting.', 'Error');
+            return redirect()->back();
         }
 
     }
@@ -65,11 +68,11 @@ class SettingController extends Controller
      */
     public function edit(Setting $setting)
     {
-        $csetting = Setting::find(1);
-        if(!$csetting){
+        $csetting1 = Setting::find(1);
+        if(!$csetting1){
             return view('setting.create');
         }else{
-            return view('setting.edit',compact('csetting'));
+            return view('setting.edit',compact('csetting1'));
         }
 
     }

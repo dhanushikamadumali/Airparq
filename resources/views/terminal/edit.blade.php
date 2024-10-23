@@ -9,7 +9,7 @@
                         <i class="icon-arrow-left"></i>
                     </li>
                     <li class="nav-item">
-                        <a href="#">Back</a>
+                         <a href="{{ URL::previous() }}">Back</a>
                     </li>
                 </ul>
         </div>

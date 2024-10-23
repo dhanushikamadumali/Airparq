@@ -9,7 +9,7 @@
                         <i class="icon-arrow-right"></i>
                     </li>
                     <li class="nav-item">
-                        <a href="#">Back</a>
+                         <a href="{{ URL::previous() }}">Back</a>
                     </li>
                 </ul>
         </div>
@@ -17,7 +17,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <a href="{{asset('currentmonthpdf')}}">
+                         <a href="{{asset('admin/currentmonthpdf')}}">
                             <button class="btn page_btn" >
                                     PDF
                             </button>
@@ -25,10 +25,10 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                        <table id="today_booking" class="display table table-striped table-hover">
+                        <table id="basic-datatables" class="display table table-striped table-hover">
                             <thead>
                             <tr>
-                                <th>Booking Code</th>
+                                  <th>Booking Code</th>
                                 <th>Customer Name</th>
                                 <th>Email</th>
                                 <th>Phone no</th>
@@ -36,17 +36,17 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($currentmonthbookinglists as $currentmonthbookinglist)
+                              @foreach ($currentmonthbookinglists as $currentmonthbookinglist)
                             <tr>
                                 <td>{{$currentmonthbookinglist->booking_code}}</td>
-                                <td>{{$currentmonthbookinglist->first_name}} {{$currentmonthbookinglist->last_name}}</td>
-                                <td>{{$currentmonthbookinglist->email}}</td>
+                                   <td>{{$currentmonthbookinglist->first_name}} {{$currentmonthbookinglist->last_name}}</td>
+                                 <td>{{$currentmonthbookinglist->email}}</td>
                                 <td>{{$currentmonthbookinglist->phone_no}}</td>
-                                <td>
-                                    <a href="{{route('printbooking',Crypt::encryptString($currentmonthbookinglist->id))}}">
-                                    <i class="fas fa-print p-2"></i>
+                                 <td>
+                                  <a href="{{ route('printbookingdetails',Crypt::encryptString($currentmonthbookinglist->id))}}">
+                                    <i class="fa fa-edit p-2 editbtn"></i>
                                     </a>
-                                    <button class="btn p-0 delete" onclick="currentmonthreportdelete('{{Crypt::encryptString($currentmonthbookinglist->id)}}')">
+                                     <button class="btn p-0 delete" onclick="currentmonthreportdelete('{{Crypt::encryptString($currentmonthbookinglist->id)}}')">
                                     <i class="fa fa-times deletebtn"></i>
                                     </button>
                                 </td>

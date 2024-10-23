@@ -3,20 +3,15 @@
     <div class="container">
     <div class="page-inner">
     <div class="page-header">
-      <h3 class="fw-bold mb-3">Company Setting</h3>
-      <ul class="breadcrumbs mb-3">
-        <li class="nav-home">
-          <a href="#">
-            <i class="icon-home"></i>
-          </a>
-        </li>
-        <li class="separator">
-          <i class="icon-arrow-right"></i>
-        </li>
-        <li class="nav-item">
-          <a href="#">Back</a>
-        </li>
-      </ul>
+        <h3 class="fw-bold mb-3">Company Setting</h3>
+        <ul class="breadcrumbs mb-3">
+            <li class="separator">
+                <i class="icon-arrow-left"></i>
+            </li>
+            <li class="nav-item">
+                 <a href="{{ URL::previous() }}">Back</a>
+            </li>
+        </ul>
     </div>
     <form action="{{route('storecsetting')}}" method="POST" enctype="multipart/form-data" >
     @csrf
@@ -33,7 +28,6 @@
                             class="form-control"
                             id="smtp_host"
                             name="smtp_host"
-
                         />
                         @error('smtp_host')
                         <div style="color:red">{{$message}}</div>
@@ -48,7 +42,6 @@
                             class="form-control"
                             id="username"
                             name="username"
-
                         />
                         @error('username')
                         <div style="color:red">{{$message}}</div>
@@ -65,7 +58,6 @@
                                 class="form-control"
                                 id="password"
                                 name="password"
-
                             />
                             @error('password')
                             <div style="color:red">{{$message}}</div>
@@ -97,7 +89,6 @@
                                 class="form-control"
                                 id="email"
                                 name="email"
-
                             />
                             @error('email')
                             <div style="color:red">{{$message}}</div>
@@ -122,13 +113,12 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
-                            <label>Phone2</label>
+                            <label>Phone1</label>
                             <input
                                 type="text"
                                 class="form-control"
                                 id="phone1"
                                 name="phone1"
-
                             />
                             @error('phone1')
                             <div style="color:red">{{$message}}</div>
@@ -160,7 +150,6 @@
                                 class="form-control"
                                 id="port"
                                 name="port"
-
                             />
                             @error('port')
                             <div style="color:red">{{$message}}</div>

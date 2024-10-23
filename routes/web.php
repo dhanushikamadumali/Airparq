@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Middleware\CompanySettings;
 
 // web
 Route::get('/',[App\Http\Controllers\WebController::class,'index'])->name('/');
@@ -21,6 +22,12 @@ Route::get('/',[App\Http\Controllers\WebController::class,'index'])->name('/');
 Route::prefix('account')->group(function () {
     Route::get('/login', [App\Http\Controllers\WebController::class, 'showlogin'])->name('showlogin');
     Route::post('/login', [App\Http\Controllers\WebController::class, 'authenticate'])->name('authenticate');
+
+    Route::get('/resetpassword', [App\Http\Controllers\WebController::class, 'resetpassword'])->name('resetpassword');
+    Route::post('/sendresetpassword', [App\Http\Controllers\WebController::class, 'sendresetpassword'])->name('sendresetpassword');
+
+    Route::get('/validateresetpassword/{token}', [App\Http\Controllers\WebController::class, 'validateresetpassword'])->name('validateresetpassword');
+    Route::post('/sendvalidateresetpassword', [App\Http\Controllers\WebController::class, 'sendvalidateresetpassword'])->name('sendvalidateresetpassword');
 
     Route::get('/contactus', [App\Http\Controllers\WebController::class, 'contactus'])->name('contactus');
     Route::post('/storecontactus', [App\Http\Controllers\ContactController::class, 'store'])->name('storecontactus');
@@ -72,30 +79,32 @@ Route::prefix('admin')->group(function(){
         return view('auth.login');
     });
      // Routes accessible by both admin and driver
-     Route::middleware([RoleMiddleware::class . ':admin,driver'])->group(function () {
+     Route::middleware([RoleMiddleware::class .':admin,driver'])->group(function () {
 
         Route::get('/dashboard',[App\Http\Controllers\DashboardController::class,'index'])->name('dashboard');
-        Route::get('/getmontlybooking',[App\Http\Controllers\DashboardController::class,'getmontlybooking'])->name('getmontlybooking');
         // allbooking
+        Route::get('/getmontlybooking',[App\Http\Controllers\DashboardController::class,'getmontlybooking'])->name('getmontlybooking');
         Route::get('/allbooking',[App\Http\Controllers\BookingController::class,'index'])->name('allbooking');
-
+        Route::get('/editbooking/{id}',[App\Http\Controllers\BookingController::class,'edit'])->name('editbooking');
+        Route::put('/updatebooking',[App\Http\Controllers\BookingController::class,'update'])->name('updatebooking');
+        Route::delete('/deletebookingdetails/{id}',[App\Http\Controllers\BookingController::class,'destroy'])->name('deletebookingdetails');
         // date range filter booking
         Route::get('/datefilterbooking',[App\Http\Controllers\BookingController::class,'datefilter'])->name('datefilterbooking');
         Route::post('/getfilterbookingdate',[App\Http\Controllers\BookingController::class,'getfilterbookingdate'])->name('getfilterbookingdate');
-
         // income booking
         Route::get('/incomebooking',[App\Http\Controllers\BookingController::class,'incomebook'])->name('incomebooking');
         Route::post('/getfilterincomebooking',[App\Http\Controllers\BookingController::class,'getfilterincomebooking'])->name('getfilterincomebooking');
         // outgoing
         Route::get('/outgoingbooking',[App\Http\Controllers\BookingController::class,'outgoingbooking'])->name('outgoingbooking');
         Route::post('/getfilteroutgoingbooking',[App\Http\Controllers\BookingController::class,'getfilteroutgoingbooking'])->name('getfilteroutgoingbooking');
-         // print booking
+        // print booking
+         Route::get('/printbookingdetails/{id}',[App\Http\Controllers\ReportController::class,'printbookingdetails'])->name('printbookingdetails');
          Route::get('/printbooking/{id}',[App\Http\Controllers\BookingController::class,'printbooking'])->name('printbooking');
-
         // user
          Route::get('/alluserlist',[App\Http\Controllers\UserController::class,'index'])->name('alluserlist');
          Route::post('/logoutuser',[App\Http\Controllers\UserController::class,'logoutuser'])->name('logoutuser');
-    });
+
+        });
     Route::middleware([AdminMiddleware::class . ':admin'])->group(function () {
         // promocode module
         Route::get('/allpromolist',[App\Http\Controllers\PromocodeController::class,'index'])->name('allpromolist');
@@ -104,7 +113,6 @@ Route::prefix('admin')->group(function(){
         Route::get('/editpromocode/{id}',[App\Http\Controllers\PromocodeController::class,'edit'])->name('editpromocode');
         Route::put('/updatepromocode',[App\Http\Controllers\PromocodeController::class,'update'])->name('updatepromocode');
         Route::delete('/deletepromocode/{id}',[App\Http\Controllers\PromocodeController::class,'destroy'])->name('deletepromocode');
-
         // terminal module
         Route::get('/allterminal',[App\Http\Controllers\TerminalController::class,'index'])->name('allterminal');
         Route::get('/createterminal',[App\Http\Controllers\TerminalController::class,'create'])->name('createterminal');
@@ -112,36 +120,25 @@ Route::prefix('admin')->group(function(){
         Route::get('/editterminal/{id}',[App\Http\Controllers\TerminalController::class,'edit'])->name('editterminal');
         Route::put('/updateterminal',[App\Http\Controllers\TerminalController::class,'update'])->name('updateterminal');
         Route::delete('/deleteterminal/{id}',[App\Http\Controllers\TerminalController::class,'destroy'])->name('deleteterminal');
-
         // vehicle photo
         Route::post('/uploadvehiclephoto',[App\Http\Controllers\BookingController::class,'uploadvehiclephoto'])->name('uploadvehiclephoto');
-
         Route::post('/upload',[App\Http\Controllers\BookingController::class, 'upload'])->name('upload');
-
         // today report
         Route::get('/todayreport',[App\Http\Controllers\ReportController::class,'todayreport'])->name('todayreport');
         Route::post('/todayreportprint',[App\Http\Controllers\ReportController::class,'todayreportprint'])->name('todayreportprint');
         Route::delete('/todayreportdelete',[App\Http\Controllers\ReportController::class,'todayreportdelete'])->name('todayreportdelete');
         Route::get('/todaypdf',[App\Http\Controllers\ReportController::class,'todaypdf'])->name('todaypdf');
-
         //current month report
         Route::get('/currentmonthreport',[App\Http\Controllers\ReportController::class,'currentmonthreport'])->name('currentmonthreport');
         Route::post('/currentmonthreportprint',[App\Http\Controllers\ReportController::class,'currentmonthreportprint'])->name('currentmonthreportprint');
         Route::delete('/currentmonthreportdelete',[App\Http\Controllers\ReportController::class,'currentmonthreportdelete'])->name('currentmonthreportdelete');
         Route::get('/currentmonthpdf',[App\Http\Controllers\ReportController::class,'currentmonthpdf'])->name('currentmonthpdf');
-
          // booking module
         Route::get('/createbooking',[App\Http\Controllers\BookingController::class,'create'])->name('createbooking');
         // Route::post('/storebooking',[App\Http\Controllers\BookingController::class,'store'])->name('storebooking');
-        Route::get('/editbooking/{id}',[App\Http\Controllers\BookingController::class,'edit'])->name('editbooking');
-        Route::put('/updatebooking',[App\Http\Controllers\BookingController::class,'update'])->name('updatebooking');
-        Route::delete('/deletebooking/{id}',[App\Http\Controllers\BookingController::class,'destroy'])->name('deletebooking');
-
         // contact
         Route::get('/allcontact',[App\Http\Controllers\ContactController::class,'index'])->name('allcontact');
         Route::delete('/deletecontact/{id}',[App\Http\Controllers\ContactController::class,'destroy'])->name('deletecontact');
-
-
         //company setting
         Route::get('/csetting',[App\Http\Controllers\SettingController::class,'edit'])->name('csetting');
         Route::put('/updatecsetting',[App\Http\Controllers\SettingController::class,'update'])->name('updatecsetting');
@@ -152,17 +149,15 @@ Route::prefix('admin')->group(function(){
         Route::get('/edituser/{id}',[App\Http\Controllers\UserController::class,'edit'])->name('edituser');
         Route::put('/updateuser',[App\Http\Controllers\UserController::class,'update'])->name('updateuser');
         Route::delete('/deleteuser/{id}',[App\Http\Controllers\UserController::class,'destroy'])->name('deleteuser');
-
+        //bookinprice
+        Route::get('/allbookingprice',[App\Http\Controllers\BookingpriceController::class,'index'])->name('allbookingprice');
+        Route::get('/createbookingprice',[App\Http\Controllers\BookingpriceController::class,'create'])->name('createbookingprice');
+        Route::post('/storebookingprice',[App\Http\Controllers\BookingpriceController::class,'store'])->name('storebookingprice');
+        Route::get('/editbookingprice/{id}',[App\Http\Controllers\BookingpriceController::class,'edit'])->name('editbookingprice');
+        Route::put('/updatebookingprice',[App\Http\Controllers\BookingpriceController::class,'update'])->name('updatebookingprice');
+        Route::delete('/deletebookingprice/{id}',[App\Http\Controllers\BookingpriceController::class,'destroy'])->name('deletebookingprice');
     });
 });
-
-
-// setting
-// Route::get('/role', [App\Http\Controllers\RoleController::class, 'index'])->name('role');
-// Route::get('/permission', [App\Http\Controllers\RoleController::class, 'index'])->name('permission');
-// Route::get('/permission', [App\Http\Controllers\RoleController::class, 'index'])->name('rolepermission');
-// Route::get('/role', [App\Http\Controllers\RoleController::class, 'index'])->name('role');
-
 
 Auth::routes();
 

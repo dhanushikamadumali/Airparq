@@ -13,18 +13,25 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use App\Models\Setting;
+use App\Http\Middleware\CompanySettings;
 
 class UserController extends Controller
 {
+    public function __construct(){
+        $this->middleware(CompanySettings::class);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $userlists = User::all();
+        $driverlists = User::getDriverAdmin();
         // $superadminlists = User::getSuperAdmin();
         // $userlists = User::all();
-        return view('user.index',compact('userlists'));
+        return view('user.index',compact('userlists','driverlists'));
     }
 
     /**
@@ -32,7 +39,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.create');
+        $csetting= Setting::select('image')->get();
+        return view('user.create',compact('csetting'));
     }
 
     /**
@@ -84,8 +92,9 @@ class UserController extends Controller
      */
     public function edit(User $user,$id)
     {
+        $csetting= Setting::select('image')->get();
         $user = $user::find(Crypt::decryptString($id));
-        return view('user.edit', compact('user'));
+        return view('user.edit', compact('user','csetting'));
     }
 
     /**
