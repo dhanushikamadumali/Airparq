@@ -34,9 +34,6 @@
 <!-- Kaiadmin DEMO methods, don't include it in your project! -->
 <script src="{{asset('assets/js/setting-demo.js')}}"></script>
 <script src="{{asset('assets/js/demo.js')}}"></script>
-
-
-
 <script>
   $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
     type: "line",
@@ -367,7 +364,7 @@
         $('#cameraModal').modal('hide');
         stopCamera();  // Stop the camera when modal is closed
     });
-    
+
     // Function to start the camera stream
     function startCamera() {
         if (currentStream) {

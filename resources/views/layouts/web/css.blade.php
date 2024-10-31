@@ -1,30 +1,43 @@
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@1.0.4/dist/simple-notify.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@1.0.4/dist/simple-notify.css" />
 <link href="{{asset('account/img/logos/logo.png')}}" rel="shortcut icon" type="image/png">
 <link href="{{asset('account/css/theme-1.min.css')}}" rel="stylesheet">
 <link href="{{asset('account/css/theme-2.min.css')}}" rel="stylesheet">
 <link href="{{asset('account/css/theme-3.min.css')}}" rel="stylesheet">
 <style>
+        .headingtitle{
+            font-size:30px;
+            font-weight:bold;
+        }
+        .cardtitle{
+            font-size:1rem;
+            font-weight:600;
+        }
+        .navbarlink{
+            margin-left:380px;
+        }
        /* Media query for mobile view (up to 768px) */
     @media (max-width: 768px) {
+
+
         .nav-link.active span {
             color: #EBC51E; /* Set the color you want for mobile view */
         }
         .bookingbtn{
             background-color:#FFD31C;
         }
+         .navbarlink {
+            margin-left: 0; /* Remove margin on mobile view */
+        }
     }
-
-     #toggleButton {
+    #toggleButton {
         display: none;
-      }
-
-      /* Desktop view: show both divs */
+    }
+    /* Desktop view: show both divs */
       @media (min-width: 769px) {
         #viewDiv, #hideDiv {
           display: block !important;
         }
-      }
-
+    }
       /* Mobile view: only show the button initially, and one div at a time */
       @media (max-width: 768px) {
         #toggleButton {
@@ -40,10 +53,7 @@
         }
       }
 
-    /* Hide Form View button on desktop */
-    #form_view {
-        display: none;
-    }
+
      #form_view1 {
         display: none;
     }
@@ -57,6 +67,9 @@
     @media (max-width: 768px) {
         #form_view {
             display: block; /* Show on mobile */
+        }
+        .btntext{
+            display:block;
         }
         .mobilebtnrow{
             display:block;
@@ -77,6 +90,173 @@
          #form_view1 {
             display: block; /* Show on mobile */
         }
+
+
+    }
+    @media (min-width: 1200px) {
+         /*home page booking form*/
+         .bookingform{
+        margin-bottom:0;
+        margin-right:0;
+         }
     }
 
+
+
+    /* navbar font size*/
+
+    /*navbar booking btn */
+    .bookingbtn{
+        font-size:10px;
+        border-radius:30px;
+        border-top-right-radius:0;
+        transition:0.5s;
+
+    }
+    .bookingbtn:hover{
+        border-top-right-radius:30px;
+    }
+   .crouselheding1{
+        animation:bottomIn 1s ease-in-out forwards;
+        animation-delay: 0.2s;
+        opacity:0;
+
+   }
+    .crouselheding2{
+        font-weight:bold;
+        animation:bottomIn 1.4s ease-in-out forwards;
+        animation-delay: 0.2s;
+        opacity:0;
+    }
+    .crouselheding3{
+        font-weight:bold;
+        animation:bottomIn 2s ease-in-out forwards;
+        animation-delay: 0.2s;
+        opacity:0;
+    }
+    .bookingform{
+        animation:zoomIn 1.4s ease-in-out forwards;
+        animation-delay:0.2s;
+        opacity:0;
+    }
+
+    @keyframes leftIn{
+
+         from {
+            transform:translateX(-1000px);
+        }
+        to{
+            transform:translateX(0);
+            opacity:1;
+        }
+    }
+     @keyframes rightIn{
+
+         from {
+            transform:translateX(1000px);
+        }
+        to{
+            transform:translateX(0);
+            opacity:1;
+        }
+    }
+    @keyframes bottomIn{
+        from {
+            transform:translateY(500px);
+        }
+        to{
+            transform:translateY(0);
+            opacity:1;
+        }
+    }
+    @keyframes zoomIn{
+        from {
+            transform:scale(0);
+        }
+        to{
+            transform:scale(1);
+            opacity:1;
+        }
+    }
+
+    @keyframes flyAround {
+        0% {
+            transform: translate(-100%, 50%); /* Start at the bottom-left corner */
+        }
+        100% {
+            transform: translate(100%, -100%); /* End at the top-right corner */
+        }
+    }
+
+    .plain {
+         animation: flyAround 10s linear infinite;
+    }
+    .cloud1 {
+        position: absolute;
+        top: 25rem;
+        left: 0.5rem;
+        animation: cloudMove 8s ease-in-out infinite;
+    }
+
+    @keyframes cloudMove {
+        0% {
+            transform: translateX(100vw); /* Start from the far right */
+        }
+        100% {
+            transform: translateX(-100vw); /* Move to the far left */
+        }
+    }
+
+    .cloud2 {
+        position: absolute;
+        top: 25rem;
+        left: 0.5rem;
+        animation: cloudMove2 8s ease-in-out infinite;
+    }
+
+    @keyframes cloudMove2 {
+          0% {
+            transform: translateX(100vw); /* Start from the far right */
+        }
+        100% {
+            transform: translateX(-100vw); /* Move to the far left */
+        }
+    }
+
+    .howitwork{
+        animation: zoomIn 2s ease-in-out forwards;
+        animation-timeline:view();
+        animation-range: cover 25% cover 40%;
+    }
+     .aboutus{
+        animation: zoomIn 2s ease-in-out forwards;
+        animation-timeline:view();
+        animation-range: cover 25% cover 40%;
+    }
+    .headingtitle{
+        animation: leftIn 2s ease-in-out forwards;
+
+        animation-range: cover 25% cover 40%;
+    }
+    .sub-title{
+         animation: rightIn 1s ease-in-out forwards;
+        animation-range: cover 25% cover 40%;
+    }
+
+    .howitworktext{
+        position:relative;
+        transition:all 1s ease-in-out;
+    }
+
+   .descriptionpara{
+    animation: rightIn 1s ease-in-out forwards;
+   }
+
+    /* Change the Bootstrap collapse arrow color to white */
+    .accordion-button.collapsed::after {
+        filter: brightness(0) invert(1); /* Makes the arrow white */
+    }
+    .accordion-button::after {
+        filter: brightness(0) invert(1); /* Keeps it white for both collapsed and expanded states */
+    }
 </style>

@@ -34,7 +34,7 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label>Base Price</label>
-                                        <input type="number" class="form-control" id="base_price" name="base_price" value="{{ $terminal->base_price }}"/>
+                                        <input type="text" class="form-control" id="base_price" name="base_price" value="{{ $terminal->base_price }}"/>
                                         @error('base_price')
                                         <div style="color:red">{{$message}}</div>
                                         @enderror
@@ -45,7 +45,7 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label>Per Day Price</label>
-                                        <input type="number" class="form-control" id="per_day_price" name="per_day_price" value="{{$terminal->per_day_price}}"/>
+                                        <input type="text" class="form-control" id="per_day_price" name="per_day_price" value="{{$terminal->per_day_price}}"/>
                                         @error('per_day_price')
                                         <div style="color:red">{{$message}}</div>
                                         @enderror

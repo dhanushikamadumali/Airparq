@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('image');
-            $table->decimal('base_price')->nullable();
-            $table->decimal('per_day_price');
-            $table->string('description');
+            $table->string('base_price')->nullable();
+            $table->string('per_day_price')->nullable();
+            $table->longText('description');
             $table->integer('status')->default(1);
             $table->timestamps();
         });

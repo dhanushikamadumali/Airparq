@@ -24,11 +24,13 @@ use App\Models\Bookingprice;
 use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Middleware\CompanySettings;
+use App\Http\Middleware\AllPromoCode;
 
 class WebController extends Controller
 {
     public function __construct(){
         $this->middleware(CompanySettings::class);
+        $this->middleware(AllPromoCode::class);
     }
 
      /**
@@ -36,7 +38,6 @@ class WebController extends Controller
      */
     public function index()
     {
-        $allpromocodelists = Promocode::all();
         $fDate =  Session::get('fromDate');
         $fTime =  Session::get('fromTime');
         $tDate =  Session::get('tillDate');
@@ -44,9 +45,7 @@ class WebController extends Controller
         $tPrice =  Session::get('totalPrice');
         $pCode =  Session::get('promoCode');
         $airport =  Session::get('airport');
-
-
-        return view('web.index',compact('fDate','fTime','tDate','tTime','tPrice','pCode','airport','allpromocodelists'));
+        return view('web.index',compact('fDate','fTime','tDate','tTime','tPrice','pCode','airport'));
     }
 
     // customer login view
@@ -143,7 +142,6 @@ class WebController extends Controller
     //show bookingone page
     public function showbookingone(){
 
-
         $fDate =  Session::get('fromDate');
         $fTime =  Session::get('fromTime');
         $tDate =  Session::get('tillDate');
@@ -188,7 +186,7 @@ class WebController extends Controller
             'parking_from_time' => 'required',
             'parking_till_date' => 'required|date',
             'parking_till_time' => 'required',
-            'promocode' => 'required|string',
+            'promocode' => 'nullable|string',
 
         ]);
 
@@ -196,35 +194,29 @@ class WebController extends Controller
          // Parse the dates using Carbon
          $fromDate = Carbon::parse($request->input('parking_from_date'));
          $tillDate = Carbon::parse($request->input('parking_till_date'));
-        // Check if the months are the same
-        if ($fromDate->month !== $tillDate->month) {
-            notify()->error('Parking dates must be within the same month', 'Error', [
-                'position' => 'bottom-right'
-            ]);
+
+        // Calculate the difference in days and include the last day (+1)
+        $dayscount = $fromDate->diffInDays($tillDate);
+
+        if($dayscount > 32){
+            notify()->error('Parking dates must be within 31 days', 'Error');
             return back(); // Stop further processing
         }
-        // Calculate the difference in days and include the last day (+1)
-        $dayscount = $fromDate->diffInDays($tillDate) + 1;
-
         $bookingprice = Bookingprice::getbookingcount($dayscount);
 
         // This will output the difference in days
         $price = $bookingprice[0]->booking_price;
 
-
         $promocode = $request->input('promocode');
-
         // Initialize the total price to the original price
         $totalprice = $price;
 
         if (!empty($promocode)) {
             $promodetails = Promocode::getpromodetails($promocode);
-
             // Check if the promo code exists and has details
             if (!empty($promodetails) && !$promodetails->isEmpty()) {
                 $discountamount = $promodetails[0]->discount_amount; // Get promo code discount
                 $discounttype = $promodetails[0]->discount_type;     // Get promo code discount type
-
                 // Calculate the discount based on the type
                 if ($discounttype == "percent") {
                     $discountprice = $price / 100 * $discountamount;
@@ -234,11 +226,11 @@ class WebController extends Controller
                     $totalprice = $price - $discountprice;
                 }
             }else{
-                notify()->error('Failed to insert promocode.', 'Error', [
-                    'position' => 'top-right' // Change this to your desired position
-                ]);
+                $totalprice = $price;
             }
             // If promo details are empty, totalprice will remain unchanged (equal to $price)
+        }else{
+            $totalprice = $price;
         }
          // Retrieve query parameters
         //  $terminalId = $request->input('terminal_id');
@@ -247,7 +239,6 @@ class WebController extends Controller
          $tillDate = Carbon::parse($request->input('parking_till_date'))->format('Y-m-d');
          $tillTime = $request->input('parking_till_time');
 
-
          Session::put('fromDate', $fromDate);
          Session::put('fromTime', $fromTime);
          Session::put('tillDate', $tillDate);
@@ -255,7 +246,6 @@ class WebController extends Controller
          Session::put('totalPrice', $totalprice);
          Session::put('promoCode', $promocode);
          Session::put('airport', $request->input('airport'));
-
 
          return Redirect::route('showbooking');
         //  return view('web.booking',compact('fromDate','fromTime','tillDate','tillTime','promocode','allterminallists','totalprice'));
@@ -288,34 +278,28 @@ class WebController extends Controller
          // Parse the dates using Carbon
          $fromDate = Carbon::parse($request->input('parking_from_date'));
          $tillDate = Carbon::parse($request->input('parking_till_date'));
-        // Check if the months are the same
-        if ($fromDate->month !== $tillDate->month) {
-            notify()->error('Parking dates must be within the same month', 'Error', [
-                'position' => 'bottom-right'
-            ]);
+        // Calculate the difference in days and include the last day (+1)
+        $dayscount =  $fromDate->diffInDays($tillDate);
+
+        if($dayscount > 32){
+            notify()->error('Parking dates must be within 31 days', 'Error');
             return back(); // Stop further processing
         }
-        // Calculate the difference in days and include the last day (+1)
-        $dayscount =  $fromDate->diffInDays($tillDate) + 1;
 
         $bookingprice = Bookingprice::getbookingcount($dayscount);
-
         // This will output the difference in days
         $price = $bookingprice[0]->booking_price;
 
         $promocode = $request->input('promocode');
-
         // Initialize the total price to the original price
         $totalprice = $price;
 
         if (!empty($promocode)) {
             $promodetails = Promocode::getpromodetails($promocode);
-
             // Check if the promo code exists and has details
             if (!empty($promodetails) && !$promodetails->isEmpty()) {
                 $discountamount = $promodetails[0]->discount_amount; // Get promo code discount
                 $discounttype = $promodetails[0]->discount_type;     // Get promo code discount type
-
                 // Calculate the discount based on the type
                 if ($discounttype == "percent") {
                     $discountprice = $price / 100 * $discountamount;
@@ -325,11 +309,11 @@ class WebController extends Controller
                     $totalprice = $price - $discountprice;
                 }
             }else{
-                notify()->error('Failed to insert promocode.', 'Error', [
-                    'position' => 'top-right' // Change this to your desired position
-                ]);
+                $totalprice = $price;
             }
             // If promo details are empty, totalprice will remain unchanged (equal to $price)
+        }else{
+            $totalprice = $price;
         }
 
          $fromDate = Carbon::parse($request->input('parking_from_date'))->format('Y-m-d');
@@ -357,7 +341,6 @@ class WebController extends Controller
         try {
             // Validate the request
             $request->validate([
-                'selected_terminal_id' => 'required',
                 'parking_from_date' => 'required|date',
                 'from_time' => 'required',
                 'parking_till_date' => 'required|date',
@@ -368,7 +351,7 @@ class WebController extends Controller
                if(!Auth::guard('account')->check()){
                 return  Redirect::route('showlogin');
             }
-            $terminaldetails = Terminal::getterminaldetails($request->input('selected_terminal_id'));//get terminal details
+
             // If authenticated, retrieve the authenticated user details
             $customer = Auth::guard('account')->user();
             $cuid = $customer->id;
@@ -381,18 +364,14 @@ class WebController extends Controller
             // Parse the dates using Carbon
             $fromDate = Carbon::parse($request->input('parking_from_date'));
             $tillDate = Carbon::parse($request->input('parking_till_date'));
-           // Check if the months are the same
-           if ($fromDate->month !== $tillDate->month) {
-               notify()->error('Parking dates must be within the same month', 'Error', [
-                   'position' => 'bottom-right'
-               ]);
-               return back(); // Stop further processing
-           }
 
            // Calculate the difference in days and include the last day (+1)
-           $dayscount =  $fromDate->diffInDays($tillDate) + 1;
+           $dayscount =  $fromDate->diffInDays($tillDate);
+           if($dayscount > 32){
+                notify()->error('Parking dates must be within 31 days', 'Error');
+                return back(); // Stop further processing
+            }
            $bookingprice = Bookingprice::getbookingcount($dayscount);
-
             // This will output the difference in days
             $price = $bookingprice[0]->booking_price;
 
@@ -411,14 +390,17 @@ class WebController extends Controller
                     if ($discounttype == "percent") {
                         $discountprice = $price / 100 * $discountamount;
                         $totalprice = $price - $discountprice;
+
                     } else {
                         $discountprice = $discountamount;
                         $totalprice = $price - $discountprice;
                     }
                 }else{
-                    return response()->json(['success' => false, 'errors' => 'Failed to insert promocode'], 422);
+                    $totalprice = $price;
                 }
                 // If promo details are empty, totalprice will remain unchanged (equal to $price)
+            }else{
+                $totalprice = $price;
             }
              $fromDate = Carbon::parse($request->input('parking_from_date'))->format('Y-m-d');
              $fromTime = $request->input('from_time');
@@ -426,15 +408,15 @@ class WebController extends Controller
              $tillTime = $request->input('till_time');
 
             // Perform the price calculations and session updates (your existing logic)
-             Session::put('totalPrice', $price);
+             Session::put('totalPrice', $totalprice);
              Session::put('discount', $discountamount ?? 0);
              Session::put('cusid', $cuid);
              Session::put('cusfirstname', $cufirstname);
              Session::put('cuslastname', $culastname);
              Session::put('cusemail', $cuemail);
              Session::put('cusphoneno', $cuphoneno);
-             Session::put('terminalid', $request->input('selected_terminal_id'));
-             Session::put('terminalname', $terminaldetails[0]->name);
+            //  Session::put('terminalid', $request->input('selected_terminal_id'));
+            //  Session::put('terminalname', $terminaldetails[0]->name);
              Session::put('airport', $request->input('airport'));
              Session::put('promoCode', $promocode);
              Session::put('fromDate', $fromDate);

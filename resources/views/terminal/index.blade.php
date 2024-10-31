@@ -33,7 +33,6 @@
                                 <th>Name</th>
                                 <th>Base Price</th>
                                 <th>Per day Price</th>
-                                <th>Description</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -44,7 +43,6 @@
                                 <td>{{$terminallist->name}}</td>
                                 <td>{{$terminallist->base_price}}</td>
                                 <td>{{$terminallist->per_day_price}}</td>
-                                <td>{{$terminallist->description}}</td>
                                 <td>
                                     <a href="{{ route('editterminal',Crypt::encryptString($terminallist->id))}}">
                                         <i class="fa fa-edit editbtn"></i>

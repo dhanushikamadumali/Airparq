@@ -45,7 +45,27 @@
             })
             .catch(error => console.error('Error:', error));
         });
+
+
     });
+
+document.addEventListener('DOMContentLoaded', function () {
+     // Select all 'Choose' buttons
+        const chooseButtons = document.querySelectorAll('.choose-terminal');
+        chooseButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Set values for the hidden inputs based on button data attributes
+                const terminalid =  this.getAttribute('value');
+                document.getElementById('selected_terminal_id').value = this.getAttribute('value');
+
+
+                // Submit the form
+                document.getElementById('bookingForm').submit();
+            });
+        });
+
+});
+
 
   //contact form
     const code = new URLSearchParams(window.location.search).get('code');
@@ -91,6 +111,7 @@
 
      document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('.editsearch').addEventListener('click', function() {
+
             // Collect form values
             let parkingFromDate = document.querySelector('#parking_from_date').value;
             let fromTime = document.querySelector('#parking_from_time').value;
@@ -98,7 +119,7 @@
             let tillTime = document.querySelector('#parking_till_time').value;
             let promoCode = document.querySelector('#promocode').value;
             let airport = document.querySelector('#airport').value;
-            let selectedTerminalId = document.querySelector('#selected_terminal_id').value;
+
 
             // Prepare data for the AJAX request
             let data = {
@@ -108,7 +129,6 @@
                 till_time: tillTime,
                 promocode: promoCode,
                 airport: airport,
-                selected_terminal_id: selectedTerminalId,
                 _token: "{{ csrf_token() }}"  // CSRF token for security
             };
 
@@ -160,6 +180,29 @@
             .catch(error => {
                 console.error('Error:', error);
             });
+        });
+    });
+
+
+    //home page animation
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = "leftIn 2s ease-in-out forwards";
+                        observer.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            },
+            {
+                threshold: 0.25 // Trigger when 25% of the element is visible
+            }
+        );
+
+        document.querySelectorAll(".headingtitle").forEach((element) => {
+            observer.observe(element);
         });
     });
 </script>

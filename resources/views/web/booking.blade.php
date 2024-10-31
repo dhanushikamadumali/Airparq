@@ -2,35 +2,95 @@
 @section('content')
 <!-- Main -->
 <main>
-        <!-- Book tour -->
-    <section id="book-tour" class="hero" data-aos="fade">
+<!-- Book tour -->
+    <section id="book-tour" class="hero d-md-none btntext mt-4 pb-20" data-aos="fade">
+        <div class="bg-content container">
+        <div class="row g-0 justify-content-between">
+            <div class="col-12" style="font-weight:600;font-size:20px"> 1. Select Booking</div>
+            <br/>
+        <div class="col-12">
+        <button type="button" id="form_view" class="btn btn-primary d-md-none mnw-180 w-100" style="margin-bottom:20px">
+            Amend
+        </button>
+        </div>
+        </div>
+        </div>
+    </section>
+    <section id="booking_details_form" class="d-none d-md-block"  class="hero" data-aos="fade">
         <div class="bg-content container">
             <div class="p-top-90 p-bottom-90">
-                    <div class="col-12">
-                        <button type="button" id="form_view" class="btn btn-primary d-md-none mnw-180 w-100" style="margin-bottom:20px">
-                        Amend
-                    </button>
-                    </div>
                 <div class="row g-0 justify-content-between">
                     <!-- Book tour form -->
                     <div class="col-12 col-xl-12">
-                        <div id="booking_details_form" class="d-none d-md-block">
+                            {{-- <div > --}}
                                 <div class="card border-0 shadow p-lg-2 bg-light-gray" >
                                 <div class="card-body">
                                     <div class="mb-4">
-                                        <strong class="fs-2 fw-semibold fw-medium">Secure Your Spot with AIRPARQ Today!</strong>
+                                        <h1 class="headingtitle">Secure Your Spot with AIRPARQ Today!</h1>
                                     </div>
-                                    <form  class="row g-3" action="{{route('bookingdetailstep3')}}" method="post">
+                                    <form id="bookingForm"  class="row g-3" action="{{route('bookingdetailstep3')}}" method="post">
                                         @csrf
                                         <input type="hidden" id="selected_terminal_id" name="selected_terminal_id">
                                         <div class="col-12">
                                             <div class="input-icon-group">
-                                                <label class="input-icon hicon hicon-adults-line hicon-bold" for="txtCheckDate2"></label>                                                    <div class="input-icon-group">
-                                                <select class="form-select dropdown-select shadow-sm" id="airport" name="airport">
-                                                    <option value="London Heathrow" {{ $airport == 'London Heathrow' ? 'selected' : '' }}>London Heathrow</option>
-                                                    <option value="New York JFK" {{ $airport == 'New York JFK' ? 'selected' : '' }}>New York JFK</option>
-                                                    <option value="Tokyo Narita" {{ $airport == 'Tokyo Narita' ? 'selected' : '' }}>Tokyo Narita</option>
-                                                </select>
+                                                <label for="txtKeyword" class="input-icon hicon hicon-flights-pin"></label>
+                                                <div class="input-icon-group">
+                                                     <select class="form-select dropdown-select shadow-sm" id="airport" name="airport">
+                                                        <option value="London Heathrow" {{ $airport == 'London Heathrow' ? 'selected' : '' }}>London Heathrow</option>
+                                                        <option value="New York JFK" {{ $airport == 'New York JFK' ? 'selected' : '' }}>New York JFK</option>
+                                                        <option value="Tokyo Narita" {{ $airport == 'Tokyo Narita' ? 'selected' : '' }}>Tokyo Narita</option>
+                                                          <option value="Birmingham" {{ $airport == 'Birmingham' ? 'selected' : '' }} >Birmingham</option>
+                                                        <option value="Gatwick" {{ $airport == 'Gatwick' ? 'selected' : '' }}>Gatwick</option>
+                                                        <option value="Heathrow" {{ $airport == 'Heathrow' ? 'selected' : '' }}>Heathrow</option>
+                                                        <option value="Luton Airport" {{ $airport == 'Luton Airport' ? 'selected' : '' }}>Luton Airport</option>
+                                                        <option value="Southampton Port" {{ $airport == 'Southampton Port' ? 'selected' : '' }}>Southampton Port</option>
+                                                        <option value="Southend" {{ $airport == 'Southend' ? 'selected' : '' }}>Southend</option>
+                                                        <option value="Stansted" {{ $airport == 'Stansted' ? 'selected' : '' }}>Stansted</option>
+                                                           <optgroup label="Other Airports">
+                                                                <option value="Aberdeen" {{ $airport == 'Aberdeen' ? 'selected' : '' }}>Aberdeen</option>
+                                                                <option value="Atlanta Airport" {{ $airport == 'Atlanta Airport' ? 'selected' : '' }}>Atlanta Airport</option>
+                                                                <option value="Belfast City (George Best)" {{ $airport == 'Belfast City (George Best)' ? 'selected' : '' }}>Belfast City (George Best)</option>
+                                                                <option value="Belfast International" {{ $airport == 'Belfast International' ? 'selected' : '' }}>Belfast International</option>
+                                                                <option value="Blackpool Tower" {{ $airport == 'Blackpool Tower' ? 'selected' : '' }}>Blackpool Tower</option>
+                                                                <option value="Bournemouth" {{ $airport == 'Bournemouth' ? 'selected' : '' }}>Bournemouth</option>
+                                                                <option value="Brisbane" {{ $airport == 'Brisbane' ? 'selected' : '' }}>Brisbane</option>
+                                                                <option value="Bristol" {{ $airport == 'Bristol' ? 'selected' : '' }}>Bristol</option>
+                                                                <option value="Budapest Airport" {{ $airport == 'Budapest Airport' ? 'selected' : '' }}>Budapest Airport</option>
+                                                                <option value="Cardiff" {{ $airport == 'Cardiff<' ? 'selected' : '' }}>Cardiff</option>
+                                                                <option value="Cork" {{ $airport == 'Cork' ? 'selected' : '' }}>Cork</option>
+                                                                <option value="Dallas Fort Worth" {{ $airport == 'Dallas Fort Worth' ? 'selected' : '' }}>Dallas Fort Worth</option>
+                                                                <option value="Doncaster-Sheffield (Robin Hood)" {{ $airport == 'Doncaster-Sheffield (Robin Hood)' ? 'selected' : '' }}>Doncaster-Sheffield (Robin Hood)</option>
+                                                                <option value="Dublin" {{ $airport == 'Dublin' ? 'selected' : '' }}>Dublin</option>
+                                                                <option value="Durham Tees Valley" {{ $airport == 'Durham Tees Valley' ? 'selected' : '' }}>Durham Tees Valley</option>
+                                                                <option value="East Midlands" {{ $airport == 'East Midlands' ? 'selected' : '' }}>East Midlands</option>
+                                                                <option value="Edinburgh" {{ $airport == 'Edinburgh' ? 'selected' : '' }}>Edinburgh</option>
+                                                                <option value="Exeter" {{ $airport == 'Exeter' ? 'selected' : '' }}>Exeter</option>
+                                                                <option value="Frankfurt Airport" {{ $airport == 'Frankfurt Airport' ? 'selected' : '' }}>Frankfurt Airport</option>
+                                                                <option value="Glasgow International" {{ $airport == 'Glasgow International' ? 'selected' : '' }}>Glasgow International</option>
+                                                                <option value="Glasgow Prestwick" {{ $airport == 'Glasgow Prestwick' ? 'selected' : '' }}>Glasgow Prestwick</option>
+                                                                <option value="Gran Canaria" {{ $airport == 'Gran Canaria' ? 'selected' : '' }}>Gran Canaria</option>
+                                                                <option value="Humberside" {{ $airport == 'Humberside' ? 'selected' : '' }}>Humberside </option>
+                                                                <option value="Inverness" {{ $airport == 'Inverness' ? 'selected' : '' }}>Inverness</option>
+                                                                <option value="Isle of Man" {{ $airport == 'Isle of Man' ? 'selected' : '' }}>Isle of Man</option>
+                                                                <option value="Kuala Lumpur International Airport" {{ $airport == 'Kuala Lumpur International Airport' ? 'selected' : '' }}>Kuala Lumpur International Airport</option>
+                                                                <option value="Leeds Bradford" {{ $airport == 'Leeds Bradford' ? 'selected' : '' }}>Leeds Bradford</option>
+                                                                <option value="Liverpool" {{ $airport == 'Liverpool' ? 'selected' : '' }}>Liverpool</option>
+                                                                <option value="London City" {{ $airport == 'London City' ? 'selected' : '' }}>London City</option>
+                                                                <option value="Manchester" {{ $airport == 'Manchester' ? 'selected' : '' }}>Manchester</option>
+                                                                <option value="Newcastle" {{ $airport == 'Newcastle' ? 'selected' : '' }}>Newcastle</option>
+                                                                <option value="Norwich" {{ $airport == 'Norwich' ? 'selected' : '' }}>Norwich</option>
+                                                                <option value="NS Treinen" {{ $airport == 'NS Treinen' ? 'selected' : '' }}>NS Treinen</option>
+                                                                <option value="Orlando International Airport" {{ $airport == 'Orlando International Airport' ? 'selected' : '' }}>Orlando International Airport</option>
+                                                                <option value="Paris Charles De Gaulle" {{ $airport == 'Paris Charles De Gaulle' ? 'selected' : '' }}>Paris Charles De Gaulle</option>
+                                                                <option value="Paris Orly" {{ $airport == 'Paris Orly' ? 'selected' : '' }}>Paris Orly</option>
+                                                                <option value="San Francisco International" {{ $airport == 'San Francisco International' ? 'selected' : '' }}>San Francisco International</option>
+                                                                <option value="Shannon" {{ $airport == 'Shannon' ? 'selected' : '' }}>Shannon</option>
+                                                                <option value="Southampton Airport" {{ $airport == 'Southampton Airport' ? 'selected' : '' }}>Southampton Airport</option>
+                                                                <option value="Sydney" {{ $airport == 'Sydney' ? 'selected' : '' }}>Sydney</option>
+                                                                <option value="Toronto Pearson International" {{ $airport == 'Toronto Pearson International' ? 'selected' : '' }}>Toronto Pearson International</option>
+                                                                <option value="Washington Dulles International Airport" {{ $airport == 'Washington Dulles International Airport' ? 'selected' : '' }}>Washington Dulles International Airport</option>
+                                                        </optgroup>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -49,12 +109,31 @@
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6">
-                                            <div class="input-icon-group">
-                                            <?php
-                                                date_default_timezone_set('Asia/Colombo'); //e timeze to Sri Lanka
-                                            ?>
-                                                <input id="parking_from_time" name="parking_from_time" type="time" class="form-control" placeholder="Time" value="{{ $fTime ?? date('H:i', strtotime('+2 hours')) }}" min="{{ $fTime ?? date('H:i', strtotime('+2 hours')) }}" >
+                                            @php
+                                                use Carbon\Carbon;
+                                                // Get the current time in London and add 2 hours
+                                                $startTime = Carbon::now('Europe/London')->addHours(2);
+                                                $timeOptions = [];
+                                                // Generate time slots for the next 24 hours (every minute)
+                                                for ($i = 0; $i < 1440; $i++) { // 24 hours * 60 minutes = 1440 minutes
+                                                    // Add one minute intervals
+                                                    $timeOptions[] = $startTime->copy()->addMinutes($i)->format('H:i'); // Format as hour:minute
+                                                }
+                                                // Determine the initial value for the dropdown
+                                                $initialTime = $fTime ?? $startTime->format('H:i');
+                                            @endphp
+                                            <div class="input-icon-group tour-date">
+                                            <label class="input-icon hicon hicon-time-clock hicon-bold"></label>
+                                                <select id="parking_from_time" name="parking_from_time" class="form-control">
+                                                    <option value="">Select From Time</option>
+                                                    @foreach ($timeOptions as $time)
+                                                     <option value="{{ $time }}" {{ $time == $initialTime ? 'selected' : '' }}>{{ $time }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
+                                            @error('parking_from_time')
+                                                <div style="color:red">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                         <div class="col-12 col-md-6">
                                             <div class="input-icon-group tour-date">
@@ -63,31 +142,46 @@
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6">
-                                                <div class="input-icon-group tour-date">
-                                                <input id="parking_till_time" name="parking_till_time" type="time" class="form-control" placeholder="Time" value="{{$tTime ?? ''}}">
+                                             @php
+                                                // Get the current time in London and add 2 hours
+                                                $startTime = Carbon::now('Europe/London');
+                                                $timeOptions = [];
+                                                // Generate time slots for the next 24 hours (every minute)
+                                                for ($i = 0; $i < 1440; $i++) { // 24 hours * 60 minutes = 1440 minutes
+                                                    // Add one minute intervals
+                                                    $timeOptions[] = $startTime->copy()->addMinutes($i)->format('H:i'); // Format as hour:minute
+                                                }
+                                                // Determine the initial value for the dropdown
+                                                $initialTime = $fTime ?? $startTime->format('H:i');
+                                            @endphp
+                                            <div class="input-icon-group tour-date">
+                                            <label class="input-icon hicon hicon-time-clock hicon-bold"></label>
+                                                  <select id="parking_till_time" name="parking_till_time" class="form-control">
+                                                    <option value="">Select Till Time</option>
+                                                    @foreach ($timeOptions as $time)
+                                                     <option value="{{ $time }}" {{ $time == $initialTime ? 'selected' : '' }}>{{ $time }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
+
+                                            @error('parking_till_time')
+                                                <div style="color:red">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                         <div class="col-12">
                                                 <div class="row">
                                                 <div class="col-12 col-md-6">
                                                 <div class="mb-1">
-                                                    <button type="button" class="btn btn-primary btn-uppercase w-100">
+                                                    <button type="button" class="btn btn-primary btn-uppercase w-100 editsearch">
                                                         Edit Search
                                                     </button>
                                                 </div>
                                                 </div>
-                                            <div class="col-12 col-md-6">
-                                                <div class="mb-0">
-                                                    <button type="submit" class="btn btn-primary btn-uppercase w-100">
-                                                        Next
-                                                    </button>
-                                                </div>
-                                                </div>
-                                            </div>
+
                                         </div>
-                                    </form>
+
                                 </div>
-                            </div>
+                            {{-- </div> --}}
                             </div>
 
                     </div>
@@ -97,7 +191,8 @@
         </div>
     </section>
     <!-- /Book tour -->
-    <div class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade" id="terminalview">
+    @if($allterminallists !== null && count($allterminallists) > 0)
+     <div class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade" id="terminalview">
         <!-- Shopping cart -->
         <section class="container" id="step1">
             <div class="row g-0 g-xl-8">
@@ -106,11 +201,11 @@
                             <!-- Terminal View (Card) -->
                                 <div class="row g-10 g-xl-8">
                                     <div class="tour-grid">
-                                        <div class="row">
+                                        <div class="row g-3">
                                             @foreach ($allterminallists as $terminallist)
-                                            <div class="col-12 col-xxl-3 col-xl-4 col-md-6" data-aos="fade">
+                                            <div class="col-12 col-md-3 " data-aos="fade">
                                                 <!-- Tour -->
-                                                <div class="tour-item rounded shadow-sm hover-effect mb-4">
+                                                <div class="tour-item rounded shadow-sm hover-effect mb-4  h-100">
                                                     <div class="tour-img">
                                                         <figure class=" ">
                                                             <img src="{{asset('images/'.$terminallist->image)}}" >
@@ -118,17 +213,17 @@
                                                     </div>
                                                     <div class="tour-content">
                                                         <h3 class="tour-title">
-                                                            <a href="single-tour-1.html" class="link-dark link-hover">{{$terminallist->name}}</a>
+                                                            <a  class="link-dark link-hover" style="font-weight:600">{{$terminallist->name}}</a>
                                                         </h3>
-                                                        <div class="inline-review">
+                                                        <div class="inline-review h-100" style="text-align:justify;font-size:15px">
                                                             <div>{{$terminallist->description}}</div>
                                                         </div>
                                                         <div class="tour-booking">
                                                             <div class="tour-price">
-                                                                <strong><sup>£</sup>{{$tPrice ?? 55}}</strong>
+                                                                <strong><sup>£</sup>{{$tPrice ?? 50.99}}</strong>
                                                             </div>
-                                                            <button type="button" class="btn btn-primary mnw-100 choose-terminal" value="{{$terminallist->id}}">
-                                                                Choose
+                                                            <button type="button" class="btn btn-primary mnw-100 choose-terminal" style="font-size:12px" value="{{$terminallist->id}}">
+                                                                CHOOSE
                                                             </button>
                                                         </div>
                                                     </div>
@@ -139,14 +234,17 @@
                                         </div>
                                     </div>
                                 </div>
-
+                         </form>
                     </div>
                     </div>
-
             </div>
         </section>
         <!-- /Shopping cart -->
     </div>
+    @elseif($allterminallists === null)
+
+    @endif
+
 </main>
 <!-- /Main -->
 @endsection

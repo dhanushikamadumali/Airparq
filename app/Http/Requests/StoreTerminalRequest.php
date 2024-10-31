@@ -24,9 +24,9 @@ class StoreTerminalRequest extends FormRequest
         return [
             'name' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'base_price' => 'numeric',
-            'per_day_price' => 'required|numeric',
-            'description'=> 'string',
+            'base_price' => 'nullable|string',
+            'per_day_price' => 'nullable|string',
+            'description'=> 'nullable|string',
             'status' => 'nullable|integer'
 
         ];

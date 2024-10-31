@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 class Booking extends Pivot
 {
     protected $table = "booking";
-    protected $primary_key = "id";
 
     protected $fillable= [
         'booking_code',

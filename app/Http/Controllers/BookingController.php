@@ -34,15 +34,6 @@ class BookingController extends Controller
         $allbookinglists = Booking::getCustomerByBookingId();
         return view('booking.index',compact('allbookinglists'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -82,11 +73,13 @@ class BookingController extends Controller
             $validateddata['flight_arrival_date'] = $flight_arrival_date;
             $validateddata['flight_departure_date'] = $flight_departure_date;
             Booking::create($validateddata);
-            Notification::route('mail', 'dhanushika76@gmail.com')->notify(new Confirmationemail($validateddata));
+
             notify()->success('Booking Successfully!','Success!',[
                 'position' => 'bottom-right'
             ]);
+            Notification::route('mail', 'dhanushika76@gmail.com')->notify(new Confirmationemail($validateddata));
             return redirect($response['url']);
+
         }catch(Exception $e){
             notify()->error('Failed to Booking.', 'Error', [
                 'position' => 'top-right' // Change this to your desired position
@@ -94,26 +87,6 @@ class BookingController extends Controller
 
         }
 
-    }
-
-    // public function stripeCheckoutSuccess(Request $request)
-    // {
-    //     $stripe = new \Stripe\StripeClient(Config::get('stripe.stripe_secret_key'));
-
-    //     $session = $stripe->checkout->sessions->retrieve($request->session_id);
-    //     info($session);
-
-    //     $successMessage = "We have received your payment request and will let you know shortly.";
-
-    //     return view('web.completed', compact('successMessage'));
-    // }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Booking $booking)
-    {
-        //
     }
 
     /**

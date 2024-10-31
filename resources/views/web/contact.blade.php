@@ -10,7 +10,7 @@
         <div class="bg-content container">
             <div class="hero-page-title">
                 <span class="hero-sub-title">Contact Us</span>
-                <h1 class="display-3 hero-title">
+                <h1 class="display-3 hero-title crouselheding1" style="font-weight:600">
                     Connect with AIRPARQ Today!
                 </h1>
             </div>
@@ -25,20 +25,18 @@
                     <!-- Contac Information -->
                     <div class="p-top-90 mb-4">
                         <div class="border-bottom pb-4 mb-4">
-                            <h2 class="me-auto mb-0">Ready to help you!</h2>
+                            <h1 class="headingtitle">Ready to help you!</h1>
                         </div>
                         <p class="mb-4">We're here to help and answer any question you might have.</p>
                         <div class="row">
                             <div class="col-12">
                                 <div class="fw-medium mb-3">
                                     <i class="hicon hicon-flights-pin text-primary me-2"></i>
-
                                         @if(!empty($csetting) || !empty($csetting['address']))
                                             <span>{{$csetting['address']}}</span>
                                         @else
                                             <span>Defult address</span>
                                         @endif
-
                                 </div>
                             </div>
                             <div class="col-12">
@@ -71,7 +69,7 @@
                             <form class="search-tour-form" action="{{route('storecontactus')}}" method="post">
                             @csrf
                             <div class="border-bottom pb-4 mb-4">
-                                <h2 class="mb-0">Looking for any help?</h2>
+                                <h1 class="headingtitle">Looking for any help?</h1>
                             </div>
                             <div class="alert d-none" role="alert" id="msg_alert"></div>
                             <div class="form-floating mb-4">
@@ -92,10 +90,14 @@
                                 <textarea id="txtMessage" name="comment" class="form-control shadow-sm" placeholder="Message" style="height: 150px"></textarea>
                                 <label for="txtMessage">Message *</label>
                             </div>
-                            <button type="submit" class="btn btn-light mnw-180">
-                                <i class="hicon hicon-email-envelope"></i>
-                                <span> Send message</span>
-                            </button>
+                            <div class="col-12" >
+                                <div class="mb-0">
+                                    <button type="submit" class="btn btn-primary btn-uppercase w-100" id="booking" style="font-size:10px">
+                                        <i class="hicon hicon-email-envelope hicon-md mr-1"></i>
+                                        <span>Send message</span>
+                                    </button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                     <!-- /Contact Form -->

@@ -2,7 +2,7 @@
     <div class="sidebar-logo">
       <!-- Logo Header -->
       <div class="logo-header" data-background-color="dark">
-        <a href="index.html" class="logo">
+        <a href="{{route('dashboard')}}" class="logo">
             @if(empty($csetting) || empty($csetting['image']))
                 <img
                     src="{{ asset('assets/img/logo.png') }}"
@@ -12,10 +12,10 @@
                 />
             @else
                 <img
-                    src="{{ asset('assets/img/' . $csetting['image']) }}"
+                    src="{{ asset('assets/img/whitepng.png')}}"
                     alt="navbar brand"
                     class="navbar-brand"
-                    style="width:150px;height:50px"
+                    style="width:150px;height:40px"
                 />
             @endif
         </a>
