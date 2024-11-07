@@ -75,11 +75,16 @@ class ReportController extends Controller
 
     }
 
-    public function printbookingdetails(Booking $booking,$id){
 
-        $id = Crypt::decryptString($id);
+    public function todayprintbookingdetails(Booking $booking,$id){
+
         $bookingdetails = Booking::bookingdetailsbyid($id);
-        return view('booking.print',compact('bookingdetails'));
+        return view('report.todayprint',compact('bookingdetails'));
+    }
+    public function currentmonthprintbookingdetails(Booking $booking,$id){
+
+        $bookingdetails = Booking::bookingdetailsbyid($id);
+        return view('report.currentmonthprint',compact('bookingdetails'));
     }
 
 }

@@ -4,7 +4,7 @@
     @if($promoList !== null && count($promoList) > 0)
        <div class="header-topbar">
           <div class="container-fluid">
-             <div class="row g-0">
+             <div class="row g-0 justify-content-center">
                 @foreach ($promoList as $value)
                    <div class="col-3 col-md-1">
                       <div class="d-flex align-items-center">
@@ -69,22 +69,22 @@
                     <div class="offcanvas-body navbarlink">
                         <ul class="navbar-nav ">
                             <li class="nav-item">
-                                <a class="nav-link active navlink" href="{{route('/')}}" data-bs-display="static"  >
+                                <a class="nav-link {{ Route::is('/') ? 'active' : '' }}" href="{{ route('/') }}" data-bs-display="static">
                                     <span>Home</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{route('aboutus')}}" data-bs-display="static">
+                                <a class="nav-link {{ Route::is('aboutus') ? 'active' : '' }}" href="{{ route('aboutus') }}" data-bs-display="static">
                                     <span>About Us</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link dropdown-toggle-hover" href="{{route('howitworks')}}" data-bs-display="static">
+                                <a class="nav-link {{ Route::is('howitworks') ? 'active' : '' }}" href="{{ route('howitworks') }}" data-bs-display="static">
                                     <span>How It Works</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link dropdown-toggle-hover" href="{{route('contactus')}}" data-bs-display="static">
+                                <a class="nav-link {{ Route::is('contactus') ? 'active' : '' }}" href="{{ route('contactus') }}" data-bs-display="static">
                                     <span>Contact Us</span>
                                 </a>
                             </li>

@@ -48,7 +48,15 @@ class Booking extends Pivot
                 ->orderByDesc('booking.id')
                 ->get();
     }
-
+    public static  function getfilterstatusetails($status)
+    {
+        return DB::table('booking')
+                    ->select('booking.id', 'booking.booking_code','customer.first_name','customer.last_name','customer.email','customer.phone_no')
+                    ->join('customer', 'booking.customer_id', '=', 'customer.id')
+                    ->where('status', '=', $status)
+                    ->orderByDesc('booking.id')
+                    ->get();
+    }
     public static  function getfilterdatedetails($from_date,$to_date)
     {
         return DB::table('booking')
@@ -84,11 +92,11 @@ class Booking extends Pivot
 
     public static function bookingdetailsbyid($id){
         return DB::table('booking')
-                    ->select('booking.id', 'booking.booking_code','customer.first_name','customer.last_name','customer.email','customer.phone_no')
-                    ->join('customer', 'booking.customer_id', '=', 'customer.id')
-                    ->where('booking.id', '=',$id)
-                    ->orderByDesc('booking.id')
-                    ->get();
+        ->select('booking.*', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
+        ->join('customer', 'booking.customer_id', '=', 'customer.id')
+        ->where('booking.id', '=', $id)
+        ->orderByDesc('booking.id')
+        ->get();
     }
 
     public static function todaybookingreport($today){
@@ -158,6 +166,27 @@ class Booking extends Pivot
         return DB::table('booking')
                     ->where('id',$id)
                     ->update(['status' => 0]);
+    }
+
+
+    public static function showbookingdetailsbyid($id){
+        return DB::table('booking')
+                    ->select(
+                        'booking.*',
+                        'customer.first_name',
+                        'customer.last_name',
+                        'customer.email',
+                        'customer.phone_no',
+                        'customer.id as customer_id',
+                        'inbound_terminal.name as inbound_terminal_name',
+                        'outbound_terminal.name as outbound_terminal_name'
+                    )
+                    ->join('customer', 'booking.customer_id', '=', 'customer.id')
+                    ->join('terminals as inbound_terminal', 'booking.inbound_terminal', '=', 'inbound_terminal.id')
+                    ->join('terminals as outbound_terminal', 'booking.outbound_terminal', '=', 'outbound_terminal.id')
+                    ->where('booking.id', '=', $id)
+                    ->orderByDesc('booking.id')
+                    ->get();
     }
 
 }

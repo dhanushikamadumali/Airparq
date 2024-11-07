@@ -88,6 +88,11 @@ Route::prefix('admin')->group(function(){
         Route::get('/editbooking/{id}',[App\Http\Controllers\BookingController::class,'edit'])->name('editbooking');
         Route::put('/updatebooking',[App\Http\Controllers\BookingController::class,'update'])->name('updatebooking');
         Route::delete('/deletebookingdetails/{id}',[App\Http\Controllers\BookingController::class,'destroy'])->name('deletebookingdetails');
+        Route::delete('/canclebookingdetails/{id}',[App\Http\Controllers\BookingController::class,'cancle'])->name('canclebookingdetails');
+        Route::get('/viewbooking/{id}',[App\Http\Controllers\BookingController::class,'show'])->name('viewbooking');
+        // status range filter booking
+        Route::get('/statusfilterbooking',[App\Http\Controllers\BookingController::class,'statusfilter'])->name('statusfilterbooking');
+        Route::post('/getfilterbookingstatus',[App\Http\Controllers\BookingController::class,'getfilterbookingstatus'])->name('getfilterbookingstatus');
         // date range filter booking
         Route::get('/datefilterbooking',[App\Http\Controllers\BookingController::class,'datefilter'])->name('datefilterbooking');
         Route::post('/getfilterbookingdate',[App\Http\Controllers\BookingController::class,'getfilterbookingdate'])->name('getfilterbookingdate');
@@ -100,7 +105,10 @@ Route::prefix('admin')->group(function(){
         // print booking
          Route::get('/printbookingdetails/{id}',[App\Http\Controllers\ReportController::class,'printbookingdetails'])->name('printbookingdetails');
          Route::get('/printbooking/{id}',[App\Http\Controllers\BookingController::class,'printbooking'])->name('printbooking');
-        // user
+         Route::get('/printbooking1/{id}',[App\Http\Controllers\BookingController::class,'printbooking1'])->name('printbooking1');
+         Route::get('/todayprintbookingdetails/{id}',[App\Http\Controllers\ReportController::class,'todayprintbookingdetails'])->name('todayprintbookingdetails');
+         Route::get('/currentmonthprintbookingdetails/{id}',[App\Http\Controllers\ReportController::class,'currentmonthprintbookingdetails'])->name('currentmonthprintbookingdetails');
+         // user
          Route::get('/alluserlist',[App\Http\Controllers\UserController::class,'index'])->name('alluserlist');
          Route::post('/logoutuser',[App\Http\Controllers\UserController::class,'logoutuser'])->name('logoutuser');
 

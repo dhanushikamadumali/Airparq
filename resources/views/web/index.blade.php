@@ -5,12 +5,12 @@
     <!-- Hero -->
     <section class="hero" data-aos="fade">
         <!-- Carousel -->
-        <div  class="hero-carousel" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <!-- Carousel item -->
-                <div class="hero-item">
+                     <div id="heroCarousel" class="hero-carousel carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <!-- Carousel item -->
+                        <div class="hero-item carousel-item active">
                     <div class="hero-bg">
-                        <img src="{{asset('account/img/hero/sk2.jpg')}}"  alt="">
+                        <img src="{{asset('account/img/hero/hero-bg4.jpg')}}"  alt="">
                     </div>
                     <div class="hero-caption text-sm-start">
                         <div class="container">
@@ -38,56 +38,72 @@
                 </div>
                 <!-- /Carousel item -->
                 <!-- Carousel item -->
-                {{-- <div class="hero-item carousel-item">
+                <div class="hero-item carousel-item">
                     <div class="hero-bg">
                         <img src="{{asset('account/img/hero/hero-bg6.jpg')}}" alt="">
                     </div>
                     <div class="hero-caption text-sm-start">
                         <div class="container">
                             <div class="row">
-                                <div class="col-12 col-xxl-6 col-xl-7 col-md-10">
-                                     <h2 class="display-3 hero-title" style="font-weight:bold">
-                                        Seamless Parking Stress-Free Travel
-                                    </h2>
-                                </div>
+                                {{-- <div class="col-12 col-xxl-6 col-xl-7 col-md-10"> --}}
+                                      <div class="col-12 col-md-6">
+                                        <h2 class="display-3 hero-title crouselheding1" style=" font-weight: bold" >
+                                            Seamless
+                                        <h2 class="display-3 hero-title crouselheding2" style=" font-weight: bold" >
+                                             Parking
+                                        </h2>
+                                        <h2 class="display-3 hero-title crouselheding3" style=" font-weight: bold" >
+                                            Stress-Free Travel
+                                        </h2>
+
+                                    </div>
+                                {{-- </div> --}}
                             </div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
                 <!-- /Carousel item -->
                 <!-- Carousel item -->
-                {{-- <div class="hero-item carousel-item">
+                <div class="hero-item carousel-item">
                     <div class="hero-bg">
                         <img src="{{asset('account/img/hero/bread-bg8.jpg')}}" alt="">
                     </div>
                     <div class="hero-caption text-sm-start">
                         <div class="container">
                             <div class="row">
-                                <div class="col-12 col-xxl-6 col-xl-7 col-md-10">
-                                     <h2 class="display-3 hero-title" style="font-weight:bold">
-                                        Seamless Parking Stress-Free Travel
-                                    </h2>
+                                {{-- <div class="col-12 col-xxl-6 col-xl-7 col-md-10"> --}}
+                                      <div class="col-12 col-md-6">
+                                        <h2 class="display-3 hero-title crouselheding1" style=" font-weight: bold" >
+                                            Seamless
+                                        <h2 class="display-3 hero-title crouselheding2" style=" font-weight: bold" >
+                                             Parking
+                                        </h2>
+                                        <h2 class="display-3 hero-title crouselheding3" style=" font-weight: bold" >
+                                            Stress-Free Travel
+                                        </h2>
+
+                                    {{-- </div> --}}
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
                 <!-- /Carousel item -->
             </div>
             <div class="carousel-control">
-                {{-- <button class="carousel-control-next prev-custom" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <button class="carousel-control-next prev-custom" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
                 <button class="carousel-control-prev next-custom" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
-                </button> --}}
+                </button>
             </div>
             <div class="carousel-indicators hero-indicators-right">
-                {{-- <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                 <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button> --}}
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
             </div>
         </div>
         <!-- Carousel -->
@@ -457,7 +473,7 @@
                             <div class="accordion-item " style="background-color:#0E233E;color:#fff">
                                 <h2 class="accordion-header" style="color:#fff;padding:8px" >
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acdContent1" aria-expanded="false" aria-controls="acdContent1" >
-                                        <i class="hicon hicon-bold hicon-positive" style="color:#fff"></i>
+                                        <i class="fa fa-square" style="color:#fff"></i>
                                         <span style="font-size:18px;font-weight:600;color:#fff">How does AIRPARQ's meet and greet parking service work?</span>
                                     </button>
                                 </h2>
@@ -470,7 +486,7 @@
                             <div class="accordion-item" style="background-color:#0E233E;color:#fff;padding:3px">
                                 <h2 class="accordion-header" style="color:#fff;padding:8px">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acdContent2" aria-expanded="false" aria-controls="acdContent2">
-                                        <i class="hicon hicon-bold hicon-positive" style="color:#fff"></i>
+                                        <i class="fa fa-square" style="color:#fff"></i>
                                         <span style="font-size:18px;font-weight:600">Is my vehicle safe with AIRPARQ?</h>
                                     </button>
                                 </h2>
@@ -483,7 +499,7 @@
                             <div class="accordion-item" style="background-color:#0E233E;color:#fff" >
                                 <h2 class="accordion-header" style="color:#fff;padding:8px">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acdContent3" aria-expanded="false" aria-controls="acdContent3">
-                                        <i class="hicon hicon-bold hicon-positive" style="color:#fff"></i>
+                                        <i class="fa fa-square" style="color:#fff"></i>
                                         <span style="font-size:18px;font-weight:600">Can I make changes to my booking?</span>
                                     </button>
                                 </h2>
@@ -496,11 +512,11 @@
                             <div class="accordion-item" style="background-color:#0E233E;color:#fff">
                                 <h2 class="accordion-header" style="color:#fff;padding:8px">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acdContent4" aria-expanded="false" aria-controls="acdContent4">
-                                        <i class="hicon hicon-bold hicon-positive" style="color:#fff"></i>
+                                        <i class="fa fa-square" style="color:#fff"></i>
                                         <span style="font-size:18px;font-weight:600">What if my flight is delayed?</span>
                                     </button>
                                 </h2>
-                                <div id="acdContent4" class="accordion-collapse collapse" data-bs-parent="#acdWhy" style="padding:10px>
+                                <div id="acdContent4" class="accordion-collapse collapse" data-bs-parent="#acdWhy" style="padding:10px">
                                     <small class="accordion-body" style="text-align:justify">
                                          Don't worry. We track flight arrivals in real-time, so our team will be aware of any delays. Your car will be ready for you whenever you arrive.
                                     </small>
@@ -509,7 +525,7 @@
                             <div class="accordion-item" style="background-color:#0E233E;color:#fff">
                                 <h2 class="accordion-header" style="color:#fff;padding:8px">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acdContent5" aria-expanded="false" aria-controls="acdContent5">
-                                        <i class="hicon hicon-bold hicon-positive" style="color:#fff"></i>
+                                        <i class="fa fa-square" style="color:#fff"></i>
                                         <span style="font-size:18px;font-weight:600">How far in advance should I book my parking spot?</span>
                                     </button>
                                 </h2>
@@ -522,7 +538,7 @@
                              <div class="accordion-item" style="background-color:#0E233E;color:#fff">
                                 <h2 class="accordion-header" style="color:#fff;padding:8px">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acdContent6" aria-expanded="false" aria-controls="acdContent6">
-                                        <i class="hicon hicon-bold hicon-positive" style="color:#fff"></i>
+                                        <i class="fa fa-square" style="color:#fff"></i>
                                         <span style="font-size:18px;font-weight:600">Do you offer discounts for frequent travellers or long-term parking?</span>
                                     </button>
                                 </h2>
@@ -535,7 +551,7 @@
                               <div class="accordion-item" style="background-color:#0E233E;color:#fff">
                                 <h2 class="accordion-header" style="color:#fff;padding:8px">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acdContent7" aria-expanded="false" aria-controls="acdContent7">
-                                        <i class="hicon hicon-bold hicon-positive" style="color:#fff"></i>
+                                        <i class="fa fa-square" style="color:#fff"></i>
                                         <span style="font-size:18px;font-weight:600">Do prices exclude airport access fees?</span>
                                     </button>
                                 </h2>

@@ -39,12 +39,12 @@
                               @foreach ($currentmonthbookinglists as $currentmonthbookinglist)
                             <tr>
                                 <td>{{$currentmonthbookinglist->booking_code}}</td>
-                                   <td>{{$currentmonthbookinglist->first_name}} {{$currentmonthbookinglist->last_name}}</td>
+                                <td>{{$currentmonthbookinglist->first_name}} {{$currentmonthbookinglist->last_name}}</td>
                                  <td>{{$currentmonthbookinglist->email}}</td>
                                 <td>{{$currentmonthbookinglist->phone_no}}</td>
                                  <td>
-                                  <a href="{{ route('printbookingdetails',Crypt::encryptString($currentmonthbookinglist->id))}}">
-                                    <i class="fa fa-edit p-2 editbtn"></i>
+                                  <a href="{{ route('currentmonthprintbookingdetails',$currentmonthbookinglist->id)}}">
+                                    <i class="fa fa-edit p-2"></i>
                                     </a>
                                      <button class="btn p-0 delete" onclick="currentmonthreportdelete('{{Crypt::encryptString($currentmonthbookinglist->id)}}')">
                                     <i class="fa fa-times deletebtn"></i>

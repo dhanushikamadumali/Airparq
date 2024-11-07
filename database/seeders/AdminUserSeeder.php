@@ -17,8 +17,8 @@ class AdminUserSeeder extends Seeder
         //// Create Super Admin
         User::factory()->create([
             'name' => 'Super Admin',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('123'), // Use a strong password in production
+            'email' => 'admin@airparq.com',
+            'password' => Hash::make('++Team@@11@@'), // Use a strong password in production
             'role' => 'admin',
         ]);
 

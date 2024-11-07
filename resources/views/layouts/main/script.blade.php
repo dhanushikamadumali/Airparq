@@ -115,65 +115,132 @@
             ]);
           $("#addRowModal").modal("hide");
         });
-    /// filter date range
-         var table = $("#filterdate_rangetable").DataTable({
-            pageLength: 5,
-            initComplete: function () {
-                this.api()
-                    .columns()
-                    .every(function () {
-                        var column = this;
-                        var select = $(
-                            '<select class="form-select"><option value=""></option></select>'
-                        )
-                            .appendTo($(column.footer()).empty())
-                            .on("change", function () {
-                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
 
-                                column
-                                    .search(val ? "^" + val + "$" : "", true, false)
-                                    .draw();
-                            });
+    const table4 = $("#filterstatus_rangetable").DataTable({
+        pageLength: 5,
+        initComplete: function () {
+            this.api()
+                .columns()
+                .every(function () {
+                    var column = this;
+                    var select = $(
+                        '<select class="form-select"><option value=""></option></select>'
+                    )
+                        .appendTo($(column.footer()).empty())
+                        .on("change", function () {
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
 
-                        column
-                            .data()
-                            .unique()
-                            .sort()
-                            .each(function (d, j) {
-                                select.append(
-                                    '<option value="' + d + '">' + d + "</option>"
-                                );
-                            });
-                    });
-            },
-        });
+                            column
+                                .search(val ? "^" + val + "$" : "", true, false)
+                                .draw();
+                        });
 
-        // Handle Filter date Button Click
-        $('#filterButton').click(function (e) {
-            e.preventDefault();
-            var from_date = $('#from_date').val();
-            var to_date = $('#to_date').val();
-            var token = $('meta[name="csrf-token"]').attr('content');
+                    column
+                        .data()
+                        .unique()
+                        .sort()
+                        .each(function (d, j) {
+                            select.append(
+                                '<option value="' + d + '">' + d + "</option>"
+                            );
+                        });
+                });
+        },
+    });
+
+
+    /// filter status
+
+    $('#status').change(function (e) {
+
+        e.preventDefault();
+        var status = $('#status').val();
+        var token = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
-                url: `getfilterbookingdate`,
+                url: `getfilterbookingstatus`,
                 method: 'POST',
                 data: {
-                    from_date: from_date,
-                    to_date:to_date,
+                    status: status,
                     _token: token
                     },
                 success: function (response) {
-                    table.clear().rows.add(response.data).draw();
+                    console.log(response);
+                    table4.clear().rows.add(response.data).draw();
                 },
                 error: function (xhr, status, error) {
                     console.error("Error:", error);
                 }
             });
         });
+    });
+
+     // Handle Filter Status Click
+
+
+    const table1= $("#filterdate_rangetable").DataTable({
+        pageLength: 5,
+        initComplete: function () {
+            this.api()
+                .columns()
+                .every(function () {
+                    var column = this;
+                    var select = $(
+                        '<select class="form-select"><option value=""></option></select>'
+                    )
+                        .appendTo($(column.footer()).empty())
+                        .on("change", function () {
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                            column
+                                .search(val ? "^" + val + "$" : "", true, false)
+                                .draw();
+                        });
+
+                    column
+                        .data()
+                        .unique()
+                        .sort()
+                        .each(function (d, j) {
+                            select.append(
+                                '<option value="' + d + '">' + d + "</option>"
+                            );
+                        });
+                });
+        },
+    });
+
+
+    /// filter date range
+
+    $('#filterButton').click(function (e) {
+                e.preventDefault();
+                   var from_date = $('#from_date').val();
+                var to_date = $('#to_date').val();
+                var token = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: `getfilterbookingdate`,
+                    method: 'POST',
+                    data: {
+                        from_date: from_date,
+                        to_date:to_date,
+                        _token: token
+                        },
+                    success: function (response) {
+                        console.log(response);
+                        table1.clear().rows.add(response.data).draw();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error:", error);
+                    }
+                });
+            });
+
+
+        // Handle Filter date Button Click
 
 
         /// filter income booking
-         var table = $("#filterdate_incomebooktable").DataTable({
+         const table2 = $("#filterdate_incomebooktable").DataTable({
             pageLength: 5,
             initComplete: function () {
                 this.api()
@@ -218,7 +285,8 @@
                     _token: token
                     },
                 success: function (response) {
-                    table.clear().rows.add(response.data).draw();
+                     console.log(response);
+                    table2.clear().rows.add(response.data).draw();
                 },
                 error: function (xhr, status, error) {
                     console.error("Error:", error);
@@ -227,7 +295,7 @@
         });
 
           /// filter outgoing booking
-         var table = $("#filterdate_outgoingbooktable").DataTable({
+         const table3 = $("#filterdate_outgoingbooktable").DataTable({
             pageLength: 5,
             initComplete: function () {
                 this.api()
@@ -272,14 +340,15 @@
                     _token: token
                     },
                 success: function (response) {
-                    table.clear().rows.add(response.data).draw();
+                    console.log(response);
+                    table3.clear().rows.add(response.data).draw();
                 },
                 error: function (xhr, status, error) {
                     console.error("Error:", error);
                 }
             });
         });
-      });
+
 
 
         var table = $('#today_booking').DataTable({

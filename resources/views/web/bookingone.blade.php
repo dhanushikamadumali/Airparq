@@ -9,7 +9,7 @@
                     <div class="row g-0 justify-content-between">
                         <!-- Book tour form -->
                         <div class="col-12 col-xl-12">
-                            <div id="booking_details_form1" class="d-none d-md-block">
+                            <div>
                                   <div class="card border-0 shadow p-lg-2 bg-light-gray" >
                                     <div class="card-body">
                                         <div class="mb-4">

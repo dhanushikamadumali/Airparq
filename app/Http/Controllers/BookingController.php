@@ -20,6 +20,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\Confirmationemail;
 use App\Http\Middleware\CompanySettings;
+use App\Notifications\Cancleemail;
+use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CancleBookingEmail;
 
 class BookingController extends Controller
 {
@@ -90,6 +94,21 @@ class BookingController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show(Booking $booking,$id)
+    {
+        $booking = $booking::showbookingdetailsbyid(Crypt::decryptString($id));
+        if (isset($booking[0]->image) && !empty($booking[0]->image)) {
+            $images = json_decode($booking[0]->image, true);
+        } else {
+            $images = [];
+        }
+        $allterminallists = Terminal::all();
+        return view('booking.view', compact('booking','allterminallists','images'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Booking $booking,$id)
@@ -126,16 +145,10 @@ class BookingController extends Controller
     {
         try{
             $deletebooking = $booking::FindOrFail(Crypt::decryptString($id));
-
             // Check if the booking is in a state that allows for deletion
-            if ($deletebooking->status === 0) { // Assuming 1 means "active" or similar
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Booking cannot be deleted as it is already marked as deleted'
-                ], 400);
-            } else {
-                // Update the status to mark it as deleted or inactive
-                $booking::updatestatus($deletebooking->id);
+            if ($deletebooking) { // Assuming 1 means "active" or similar
+                // Delete to mark it as deleted or inactive
+                $deletebooking->delete();
                 return response()->json([
                     'success' => true,
                     'message' => 'Booking deleted successfully'
@@ -156,6 +169,44 @@ class BookingController extends Controller
         }
     }
      /**
+     * status filter .
+     */
+    public function statusfilter(Booking $booking)
+    {
+        return view('booking.statusfiltebooking');
+    }
+     /**
+     * get fileter date booking details .
+     */
+    public function  getfilterbookingstatus(Request $request, Booking $booking)
+    {
+        $status = $request->input('status');
+        $filterdata =Booking::getfilterstatusetails($status);
+        // Transform data into the format required by DataTables
+        $data =  $filterdata->map(function($booking) {
+            // Encrypt ID for the action URLs
+            $encryptedId = Crypt::encryptString($booking->id);
+            // Create HTML for action buttons
+            $buttons = '
+                <button class="delete" onclick="bookingdetailsdelete(\'' . Crypt::encryptString($booking->id) . '\')">
+                    <i class="fa fa-times deletebtn"></i>
+                </button>
+            ';
+            return [
+                $booking->booking_code,
+                $booking->first_name." ". $booking->last_name,
+                $booking->email,
+                $booking->phone_no,
+                $buttons
+            ];
+        });
+
+        // Return as JSON
+        return response()->json(['data' => $data]);
+    }
+
+
+     /**
      * date filter .
      */
     public function datefilter(Booking $booking)
@@ -170,26 +221,24 @@ class BookingController extends Controller
         $from_date = $request->input('from_date');
         $to_date = $request->input('to_date');
         $filterdata =Booking::getfilterdatedetails($from_date,$to_date);
+
         // Transform data into the format required by DataTables
         $data =  $filterdata->map(function($booking) {
             // Encrypt ID for the action URLs
             $encryptedId = Crypt::encryptString($booking->id);
             // Create HTML for action buttons
+
             $buttons = '
-                <a href="">
-                    <i class="fa fa-edit editbtn"></i>
-                </a>
-                <button class="delete" onclick="">
+                <button class="delete" onclick="bookingdetailsdelete(\'' . Crypt::encryptString($booking->id) . '\')">
                     <i class="fa fa-times deletebtn"></i>
                 </button>
             ';
-
             return [
                 $booking->booking_code,
                 $booking->first_name." ". $booking->last_name,
                 $booking->email,
                 $booking->phone_no,
-                $buttons // Add the buttons HTML here
+                $buttons
             ];
         });
 
@@ -220,10 +269,7 @@ class BookingController extends Controller
             $encryptedId = Crypt::encryptString($booking->id);
             // Create HTML for action buttons
             $buttons = '
-                <a href="">
-                    <i class="fa fa-edit editbtn"></i>
-                </a>
-                <button class="delete" onclick="">
+                <button class="delete" onclick="bookingdetailsdelete(\'' . Crypt::encryptString($booking->id) . '\')">
                     <i class="fa fa-times deletebtn"></i>
                 </button>
             ';
@@ -266,14 +312,10 @@ class BookingController extends Controller
             $encryptedId = Crypt::encryptString($booking->id);
             // Create HTML for action buttons
             $buttons = '
-                <a href="">
-                    <i class="fa fa-edit editbtn"></i>
-                </a>
-                <button class="delete" onclick="">
+                <button class="delete" onclick="bookingdetailsdelete(\'' . Crypt::encryptString($booking->id) . '\')">
                     <i class="fa fa-times deletebtn"></i>
                 </button>
             ';
-
             return [
                 $booking->booking_code,
                 $booking->first_name." ". $booking->last_name,
@@ -289,10 +331,16 @@ class BookingController extends Controller
     }
 
     public function printbooking(Booking $booking,$id){
-        $id = Crypt::decryptString($id);
+
         $bookingdetails = Booking::bookingdetailsbyid($id);
         return view('booking.print',compact('bookingdetails'));
     }
+    public function printbooking1(Booking $booking,$id){
+
+        $bookingdetails = Booking::bookingdetailsbyid($id);
+        return view('booking.pdf',compact('bookingdetails'));
+    }
+
 
     public function uploadvehiclephoto(Request $request,Booking $booking){
          try{
@@ -322,6 +370,44 @@ class BookingController extends Controller
             ]);
 
          }
+    }
+
+
+    public function cancle(Booking $booking,$id)
+    {
+        try{
+            $canclebooking = $booking::FindOrFail(Crypt::decryptString($id));
+
+            // Check if the booking is in a state that allows for deletion
+            if ($canclebooking->status === 0) { // Assuming 1 means "active" or similar
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Booking cannot be deleted as it is already marked as cancle'
+                ], 400);
+            } else {
+                // Update the status to mark it as deleted or inactive
+                //
+                // Mail::to('dhanushik76@gmail.com')->send(new CancleBookingEmail('hbjh'));
+                $booking::updatestatus($canclebooking->id);
+                Notification::route('mail', 'dhanushik76@gmail.com')->notify(new Cancleemail($canclebooking));
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Booking Cancle Successfully'
+                ]);
+            }
+        } catch (ModelNotFoundException $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Booking not found'
+            ], 404);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete booking'
+            ], 500);
+        }
     }
 
 

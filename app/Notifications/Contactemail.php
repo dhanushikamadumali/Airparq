@@ -7,10 +7,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class Confirmationemail extends Notification
+class Contactemail extends Notification
 {
     use Queueable;
-
     public $data;
     /**
      * Create a new notification instance.
@@ -18,6 +17,7 @@ class Confirmationemail extends Notification
     public function __construct($data)
     {
         $this->data = $data;
+        
     }
 
     /**
@@ -36,8 +36,8 @@ class Confirmationemail extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject('Your AIRPARQ Booking Confirmation')
-                   ->view('booking.bookingconfirmemail',['data'=>$this->data]);
+                    ->subject('Q & A email')
+                    ->line($this->data[0]->email);
 
     }
 

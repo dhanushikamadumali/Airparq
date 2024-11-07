@@ -206,15 +206,15 @@
                                             <h5 class=" coloring" style="padding-bottom: 20px;"><i class="fa-solid fa-envelope" style="border: 1px solid; padding: 8px; border-radius: 50%;font-size:10px "></i> contact@airparq.co.uk</h5>
 
                                         </div>
-                                        <div class="mb-3" ">
+                                        <div class="" ">
                                             <h7 class="text-center coloring" style="">for all customer relation feedback, please email:  </h7>
                                             <h6 class="text-center" style="margin-bottom:10px">contact@airparq.co.uk</h6>
                                             <h7 class="text-center coloring" style="padding-bottom:10px">For Amendments & Cancellations,Please Call:  </h7>
                                             <h5 class="text-center coloring" style=""><i class="fa-solid fa-phone" style="border: 1px solid; padding: 8px; border-radius: 50%;font-size:10px"></i> +44 7464 777258</h5>
                                         </div>
-                                         <div class="row mb-3" >
+                                         <div class="row mb-3" ">
                                         <div class="col-md-3">
-                                        <h7 class="text-center coloring">Don't Forget:  </h7>
+                                        <h6 class="text-center coloring">Don't Forget:  </h6>
                                         </div>
                                         <div class="col-md-3">
                                             <div style="display: flex; align-items: center;font-size:12px">
@@ -303,7 +303,7 @@
 
         // After printing, redirect to the appointments list
         window.onafterprint = function() {
-            window.location.href = "{{ route('allbooking') }}";
+            window.location.href = "{{ route('currentmonthreport') }}";
         };
 
     </script>

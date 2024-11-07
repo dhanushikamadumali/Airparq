@@ -415,4 +415,73 @@ function bookingdetailsdelete(x){
     });
 
 }
-// promo code delete end
+// booking delete end
+
+
+//booking cancle start
+function bookingdetailscancle(x){
+    swal({
+        title: "Are you sure?",
+        text: "You won't be able to cancle this!",
+        type: "warning",
+        buttons: {
+        confirm: {
+            text: "Yes, Cancle it!",
+            className: "btn btn-success",
+        },
+        cancel: {
+            visible: true,
+            className: "btn btn-danger",
+        },
+        },
+    }).then((Delete) => {
+        if (Delete) {
+            let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            fetch(`/admin/canclebookingdetails/${x}`, {
+                method: 'delete',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token
+                },
+                body: JSON.stringify({ id: x })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success){
+                    swal({
+                        title: "Cancled!",
+                        text: data.message,
+                        type: "success",
+                        buttons: {
+                        confirm: {
+                            className: "btn btn-success",
+                        },
+                        },
+                    }).then(()=>{
+                        window.location.reload();
+                    });
+                }else{
+                    swal({
+                        title:"Error!",
+                        text:data.message,
+                        icon:"error",
+                        buttons:{
+                            confirm:{
+                                className: "btn btn-danger",
+                            }
+                        }
+                    })
+                }
+
+            })
+            .catch(error => {
+                swal.close();
+
+            });
+
+        }
+    });
+
+}
+// booking cancle end

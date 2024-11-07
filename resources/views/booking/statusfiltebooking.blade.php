@@ -3,7 +3,7 @@
     <div class="container">
         <div class="page-inner">
             <div class="page-header">
-                 <h3 class="fw-bold mb-3">Date Filter List</h3>
+                 <h3 class="fw-bold mb-3">Status Filter List</h3>
                 <ul class="breadcrumbs mb-3">
                     <li class="separator">
                     <i class="icon-arrow-left"></i>
@@ -18,30 +18,21 @@
                     <div class="card">
                         <div class="card-header">
                         <div class="row">
-                                <div class="col-md-4  mt-3 ">
-                                    <lable style="margin-left:10px;font-weight:600">Parking From</lable>
-                                    <div class="form-group">
-                                        <input type="date" id="from_date" name="from_date" class="form-control" value="{{date("Y-m-d")}}"/>
-                                    </div>
-                                </div>
-                                <div class="col-md-4  mt-3">
-                                    <lable style="margin-left:10px;font-weight:600">Parking To</lable>
-                                    <div class="form-group">
-                                        <input type="date" id="to_date" name="to_date" class="form-control" value="{{date("Y-m-d")}}"/>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mt-5">
-                                    <a href="">
-                                    <button id="filterButton" class="btn page_btn">Search</button>
-                                    </a>
-                                </div>
-
+                        <div class="col-12 col-md-2">
+                             <label style="margin-left:10px;font-weight:800;font-size:30px">Status</label>
+                        </div>
+                            <div class="col-12 col-md-4">
+                                <select class="form-select dropdown-select shadow-sm" id="status" name="status">
+                                    <option value="">Select Status</option>
+                                    <option value="1">Completed</option>
+                                    <option value="0">Cancle</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table
-                                id="filterdate_rangetable"
+                            <table id="filterstatus_rangetable"
                                 class="display table table-striped table-hover"
                             >
                                 <thead>

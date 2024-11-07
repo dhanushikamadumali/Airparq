@@ -55,7 +55,7 @@
                 <!-- Title -->
                 <div class="d-xl-flex align-items-xl-center pb-4">
                     <div class="block-title me-auto">
-                        <small class="sub-title">How It Works</small>
+                        <small class="sub-title ">How It Works</small>
                           <h1 class="headingtitle">Arrival</h1>
                     </div>
                 </div>
@@ -63,7 +63,6 @@
                 <!-- Category list -->
                 <div class="row g-3">
                     <div class="col-12 col-xxl-3 col-xl-4 col-md-6" >
-
                         <a class="mini-card card-hover hover-effect shadow-sm rounded h-100">
                              <span class="card-icon">
                                 <img src="{{asset('account/img/drive.png')}}" style="width:60px;height:50px"alt="">
@@ -96,7 +95,9 @@
                             </div>
                         </a>
                     </div>
-                     <div class="col-12 col-xxl-3 col-xl-4 col-md-6">
+                     <div class="col-12 col-md-2"></div>
+
+                     <div class="col-12 col-md-4">
                         <a  class="mini-card card-hover hover-effect shadow-sm rounded h-100">
                             <span class="card-icon">
                                 <img src="{{asset('account/img/proceedd.png')}}" style="width:60px;height:50px" alt="">
@@ -107,7 +108,7 @@
                             </div>
                         </a>
                     </div>
-                     <div class="col-12 col-xxl-3 col-xl-4 col-md-6">
+                    <div class="col-12 col-md-4">
                         <a  class="mini-card card-hover hover-effect shadow-sm rounded h-100">
                             <span class="card-icon">
                                 <img src="{{asset('account/img/parking.png')}}" style="width:100px;height:50px"alt="">
@@ -118,6 +119,7 @@
                             </div>
                         </a>
                     </div>
+                      <div class="col-12 col-md-2"></div>
                 </div>
                 <!-- /Category list -->
                  <br/>
@@ -129,10 +131,10 @@
                         </div>
                     </div>
                     <!-- /Title -->
-
                     <!-- Category list -->
                     <div class="row g-3">
-                        <div class="col-12 col-xxl-3 col-xl-4 col-md-6">
+                          <div class="col-12 col-md-2"></div>
+                        <div class="col-12 col-md-4">
                             <a  class="mini-card card-hover hover-effect shadow-sm rounded h-100">
                                 <span class="card-icon">
                                     <img src="{{asset('account/img/cardrive.png')}}" style="width:100px;height:60px" alt="">
@@ -143,7 +145,7 @@
                                 </div>
                             </a>
                         </div>
-                         <div class="col-12 col-xxl-3 col-xl-4 col-md-6">
+                        <div class="col-12 col-md-4">
                             <a  class="mini-card card-hover hover-effect shadow-sm rounded h-100">
                                 <span class="card-icon">
                                     <img src="{{asset('account/img/departure.png')}}" style="width:100px;height:50px" alt="">
@@ -154,6 +156,7 @@
                                 </div>
                             </a>
                         </div>
+                        <div class="col-12 col-md-2"></div>
                     </div>
                     <!-- /Category list -->
             </div>
@@ -172,19 +175,19 @@
                 <!-- /Title -->
                 <!-- Types -->
                 <div class="row g-3 g-xl-4">
-                    <div class="col-12 col-xl-4 col-md-6">
+                    <div class="col-12 col-xl-4 col-md-6 aboutus">
                         <a class="info-card hover-effect shadow-sm rounded h-100">
                             <h3 class="cardtitle" >Convenience</h3>
                             <small class="card-desc" style="text-align:justify">With no airport transfers required, you'll save valuable time, ensuring a prompt and stress-free departure.</small>
                         </a>
                     </div>
-                    <div class="col-12 col-xl-4 col-md-6">
+                    <div class="col-12 col-xl-4 col-md-6 aboutus">
                         <a href="" class="info-card hover-effect shadow-sm rounded h-100">
                             <h3 class="cardtitle">Efficiency</h3>
                             <small class="card-desc" style="text-align:justify">Arrive at the airport and drive directly to the terminal, where our valet will be waiting to collect your vehicle.</small>
                         </a>
                     </div>
-                    <div class="col-12 col-xl-4 col-md-6">
+                    <div class="col-12 col-xl-4 col-md-6 aboutus">
                         <a href="" class="info-card hover-effect shadow-sm rounded h-100">
                             <h3 class="cardtitle">Comfort</h3>
                             <small class="card-desc" style="text-align:justify">Bid farewell to lengthy walks in congested airport lots, especially in bad weather or with heavy luggage.</small>
@@ -193,19 +196,19 @@
                 </div>
                 <br/>
                  <div class="row g-3 g-xl-4">
-                    <div class="col-12 col-xl-4 col-md-6">
+                    <div class="col-12 col-xl-4 col-md-6 aboutus">
                         <a class="info-card hover-effect shadow-sm rounded h-100">
                             <h3 class="cardtitle" >Accessibility</h3>
                             <small class="card-desc" style="text-align:justify">With no airport transfers required, you'll save valuable time, ensuring a prompt and stress-free departure.</small>
                         </a>
                     </div>
-                    <div class="col-12 col-xl-4 col-md-6">
+                    <div class="col-12 col-xl-4 col-md-6 aboutus">
                         <a href="" class="info-card hover-effect shadow-sm rounded h-100">
                             <h3 class="cardtitle">Security</h3>
                             <small class="card-desc" style="text-align:justify">Your vehicle's safety is paramount. Our parking facilities feature advanced surveillance and security patrols for protection.</small>
                         </a>
                     </div>
-                    <div class="col-12 col-xl-4 col-md-6">
+                    <div class="col-12 col-xl-4 col-md-6 aboutus">
                         <a href="" class="info-card hover-effect shadow-sm rounded h-100">
                             <h3 class="cardtitle">Affordability</h3>
                             <small class="card-desc" style="text-align:justify">Despite premium service, AIRPARQ's Meet and Greet parking offers exceptional value for seamless parking.</small>

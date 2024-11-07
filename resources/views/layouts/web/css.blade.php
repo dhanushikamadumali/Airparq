@@ -3,6 +3,7 @@
 <link href="{{asset('account/css/theme-1.min.css')}}" rel="stylesheet">
 <link href="{{asset('account/css/theme-2.min.css')}}" rel="stylesheet">
 <link href="{{asset('account/css/theme-3.min.css')}}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
         .headingtitle{
             font-size:30px;
@@ -100,9 +101,6 @@
         margin-right:0;
          }
     }
-
-
-
     /* navbar font size*/
 
     /*navbar booking btn */
@@ -115,6 +113,8 @@
     }
     .bookingbtn:hover{
         border-top-right-radius:30px;
+        background-color:white;
+        color:#FFD31C;
     }
    .crouselheding1{
         animation:bottomIn 1s ease-in-out forwards;
@@ -259,4 +259,20 @@
     .accordion-button::after {
         filter: brightness(0) invert(1); /* Keeps it white for both collapsed and expanded states */
     }
+    .navbar-nav .nav-item .nav-link.active {
+         color: white;               /* Text color */
+
+    }
+    @media (max-width: 768px) {
+        .bookingtitle{
+            display: none;
+        }
+    }
+     @media (min-width: 768px) {
+        .choose-terminal{
+            margin-left: 100px;
+        }
+    }
+
+
 </style>

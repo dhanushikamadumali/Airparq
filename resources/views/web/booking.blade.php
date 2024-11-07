@@ -3,22 +3,22 @@
 <!-- Main -->
 <main>
 <!-- Book tour -->
-    <section id="book-tour" class="hero d-md-none btntext mt-4 pb-20" data-aos="fade">
+    <section id="book-tour" class="hero d-md-none btntext mt-4" data-aos="fade">
         <div class="bg-content container">
-        <div class="row g-0 justify-content-between">
-            <div class="col-12" style="font-weight:600;font-size:20px"> 1. Select Booking</div>
-            <br/>
-        <div class="col-12">
-        <button type="button" id="form_view" class="btn btn-primary d-md-none mnw-180 w-100" style="margin-bottom:20px">
-            Amend
-        </button>
-        </div>
+        <div class="row g-0 ">
+            <div class="col-6" style="font-weight:600;font-size:18px;margin-top:10px">Select a Booking</div>
+            <div class="col-6">
+            <button type="button" id="form_view" class="btn btn-primary d-md-none w-100" style="border-radius:30px">
+                Amend
+            </button>
+            </div>
+        <br/>
         </div>
         </div>
     </section>
-    <section id="booking_details_form" class="d-none d-md-block"  class="hero" data-aos="fade">
-        <div class="bg-content container">
-            <div class="p-top-90 p-bottom-90">
+    <section id="booking_details_form" class="d-none d-md-block"  class="hero">
+        <div class="bg-content container" style="padding-top:30px">
+            {{-- <div class="" > --}}
                 <div class="row g-0 justify-content-between">
                     <!-- Book tour form -->
                     <div class="col-12 col-xl-12">
@@ -26,7 +26,7 @@
                                 <div class="card border-0 shadow p-lg-2 bg-light-gray" >
                                 <div class="card-body">
                                     <div class="mb-4">
-                                        <h1 class="headingtitle">Secure Your Spot with AIRPARQ Today!</h1>
+                                        <h3 class="bookingtitle" style="font-weight:bold">Secure your spot with AIRPARQ today!</h3>
                                     </div>
                                     <form id="bookingForm"  class="row g-3" action="{{route('bookingdetailstep3')}}" method="post">
                                         @csrf
@@ -187,56 +187,41 @@
                     </div>
                     <!-- Book tour form -->
                 </div>
-            </div>
+            {{-- </div> --}}
         </div>
     </section>
-    <!-- /Book tour -->
-    @if($allterminallists !== null && count($allterminallists) > 0)
-     <div class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade" id="terminalview">
+
+
+
+     <div class="p-top-50 p-bottom-90 bg-gray-gradient " data-aos="fade" id="terminalview" style="margin-top:20px">
         <!-- Shopping cart -->
         <section class="container" id="step1">
-            <div class="row g-0 g-xl-8">
-                <!-- Form View Button (only visible on mobile) -->
-                    <div class="pe-xl-4 me-xl-2" >
-                            <!-- Terminal View (Card) -->
-                                <div class="row g-10 g-xl-8">
-                                    <div class="tour-grid">
-                                        <div class="row g-3">
-                                            @foreach ($allterminallists as $terminallist)
-                                            <div class="col-12 col-md-3 " data-aos="fade">
-                                                <!-- Tour -->
-                                                <div class="tour-item rounded shadow-sm hover-effect mb-4  h-100">
-                                                    <div class="tour-img">
-                                                        <figure class=" ">
-                                                            <img src="{{asset('images/'.$terminallist->image)}}" >
-                                                        </figure>
-                                                    </div>
-                                                    <div class="tour-content">
-                                                        <h3 class="tour-title">
-                                                            <a  class="link-dark link-hover" style="font-weight:600">{{$terminallist->name}}</a>
-                                                        </h3>
-                                                        <div class="inline-review h-100" style="text-align:justify;font-size:15px">
-                                                            <div>{{$terminallist->description}}</div>
-                                                        </div>
-                                                        <div class="tour-booking">
-                                                            <div class="tour-price">
-                                                                <strong><sup>£</sup>{{$tPrice ?? 50.99}}</strong>
-                                                            </div>
-                                                            <button type="button" class="btn btn-primary mnw-100 choose-terminal" style="font-size:12px" value="{{$terminallist->id}}">
-                                                                CHOOSE
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- /Tour -->
-                                            </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
+
+
+              <!-- /Book tour -->
+            @if($allterminallists !== null && count($allterminallists) > 0)
+
+             <div class="row g-3 g-xl-4">
+                 @foreach ($allterminallists as $terminallist)
+                <div class="col-12 col-xl-3 col-md-6">
+                    <a class="info-card hover-effect shadow-sm rounded h-100">
+                        <div class="image-center rounded">
+                            <img src="{{asset('images/'.$terminallist->image)}}" class="w-100" alt="">
+                        </div>
+                        <h3 class="card-title mt-3 mb-3" style="font-size:20px;font-weight:600">{{$terminallist->name}}</h3>
+                        <hr/>
+                            <p style="text-align: justify;font-size:15px">{{$terminallist->description}}</p>
+                             <div style="display: flex;align-items: center;width: 100%;">
+                                <div style="font-weight:bold;font-size:30px">
+                                    £{{$tPrice ?? 50.99}}
                                 </div>
-                         </form>
-                    </div>
-                    </div>
+                                <button type="button" class="btn btn-primary  choose-terminal" style="font-size:12px;margin-left:50px" value="{{$terminallist->id}}">
+                                    CHOOSE
+                                </button>
+                            </div>
+                    </a>
+                </div>
+                 @endforeach
             </div>
         </section>
         <!-- /Shopping cart -->

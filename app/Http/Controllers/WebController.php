@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Middleware\CompanySettings;
 use App\Http\Middleware\AllPromoCode;
 
+
 class WebController extends Controller
 {
     public function __construct(){

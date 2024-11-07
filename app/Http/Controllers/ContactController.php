@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Crypt;
 use Exception;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Middleware\CompanySettings;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\Contactemail;
 
 class ContactController extends Controller
 {
@@ -39,6 +41,7 @@ class ContactController extends Controller
     {
         try{
             Contact::create($request->all());
+            Notification::route('mail', 'dhanushika76@gmail.com')->notify(new Contactemail($request->all()));
             notify()->success('Successfully insert Contact!','Success!',[
                 'position' => 'bottom-right'
             ]);

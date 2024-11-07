@@ -6,8 +6,8 @@
             <div class="row">
                 <div class="col-12 col-xl-3 col-md-6">
                     <!-- Brand -->
-                    <div class="footer-widget">
-                        <a href="{{route('/')}}" class="brand-img">
+                    <div class="footer-widget ">
+                        <a href="{{route('/')}}" class="brand-img aboutus">
                               @if(empty($csetting) || empty($csetting['image']))
                                 <img
                                     src="{{ asset('assets/img/logo.png') }}"
@@ -24,7 +24,7 @@
                                 />
                             @endif
                         </a>
-                        <div class="contact-info">
+                        <div class="contact-info aboutus">
                             <p>
                                 @if(!empty($csetting) || !empty($csetting['address']))
                                     <span style="font-size:15px">{{$csetting['address']}}</span>
@@ -61,8 +61,8 @@
                 </div>
                 <div class="col-12 col-xl-3 col-md-6">
                     <!-- Quick Links -->
-                    <div class="footer-widget">
-                        <h2 class="h4 pb-3" style="font-size:20px">Company</h2>
+                    <div class="footer-widget aboutus">
+                        <h2 class="h4 pb-3" style="font-size:20px ">Company</h2>
                         <ul class="footer-link">
                             <li class="link-item">
                                 <a style="font-size:15px"  href="{{route('aboutus')}}" >About us</a>
@@ -78,7 +78,7 @@
                     <!-- /Quick Links -->
                 </div>
                 <div class="col-12 col-xl-3 col-md-6">
-                    <div class="footer-widget">
+                    <div class="footer-widget aboutus">
                         <h2 class="h4 pb-3" style="font-size:20px">Polices</h2>
                           <ul class="footer-link">
                             <li class="link-item">
@@ -91,7 +91,7 @@
                     </div>
                 </div>
                  <div class="col-12 col-xl-3 col-md-6">
-                    <div class="footer-widget">
+                    <div class="footer-widget aboutus">
                         <h2 class="h4 pb-3" style="font-size:20px">Follow Us</h2>
                           <ul class="footer-link">
                             <li class="link-item">
