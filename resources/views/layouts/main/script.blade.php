@@ -214,7 +214,7 @@
 
     $('#filterButton').click(function (e) {
                 e.preventDefault();
-                   var from_date = $('#from_date').val();
+                var from_date = $('#from_date').val();
                 var to_date = $('#to_date').val();
                 var token = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({

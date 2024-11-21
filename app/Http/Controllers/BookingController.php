@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
 use Illuminate\Http\Request;
+use App\Http\Requests\BookingSearchRequest;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Terminal;
 use Carbon\Carbon;
@@ -24,6 +25,7 @@ use App\Notifications\Cancleemail;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CancleBookingEmail;
+use App\Models\Customer;
 
 class BookingController extends Controller
 {
@@ -33,9 +35,9 @@ class BookingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $allbookinglists = Booking::getCustomerByBookingId();
+        $allbookinglists = Booking::getCustomerByBookingId($request)->paginate(6);
         return view('booking.index',compact('allbookinglists'));
     }
     /**
@@ -47,51 +49,98 @@ class BookingController extends Controller
         $flight_departure_date = Carbon::parse($request->input('flight_departure_date'));
         $latestBooking = Booking::orderBy('id', 'desc')->first();
         $nextId = $latestBooking ? $latestBooking->id + 1 : 1;
-        $bookingCode = 'BOOK' . str_pad($nextId, 5, '0', STR_PAD_LEFT); // 'BOOK00001'
+        $bookingCode = 'B' . str_pad($nextId, 5, '0', STR_PAD_LEFT); // 'BOOK00001'
         try{
             $stripe = new \Stripe\StripeClient(Config::get('stripe.stripe_secret_key'));
-            $redirectUrl = route('completepage') . '?session_id={CHECKOUT_SESSION_ID}';
-            $roundno = round($request->input('price'),2);
-            $totalAmount =   $roundno * 100;
-
-            $response =  $stripe->checkout->sessions->create([
-                'success_url' => $redirectUrl,
+            $roundno = round($request->input('price'), 2);
+            $totalAmount = $roundno * 100;
+            $redirectUrl = route('success'); // Handle success here
+            $failedUrl = route('failed');
+            $response = $stripe->checkout->sessions->create([
                 'line_items' => [
                     [
-                        'price_data'  => [
+                        'price_data' => [
                             'product_data' => [
-                                'name' => 'airparq booking',
+                                'name' => 'AirParq Booking',
                             ],
-                            'unit_amount'  => $totalAmount,
-                            'currency'     => 'GBP',
+                            'unit_amount' => $totalAmount,
+                            'currency' => 'GBP',
                         ],
-                        'quantity'    => 1,
+                        'quantity' => 1,
                     ],
                 ],
                 'mode' => 'payment',
-                'allow_promotion_codes' => false
+                'success_url' => $redirectUrl . '?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => $failedUrl,
             ]);
-            $validateddata = $request->all();//all validated data
-            $validateddata['booking_code'] = $bookingCode;
-            $validateddata['totalAmount'] = $roundno;
-            $validateddata['flight_arrival_date'] = $flight_arrival_date;
-            $validateddata['flight_departure_date'] = $flight_departure_date;
-            Booking::create($validateddata);
+             // Store temporary booking details in the session
+             session([
+                'booking_data' => [
+                    'booking_code' => $bookingCode,
+                    'price' => $roundno,
+                    'flight_arrival_date' => $flight_arrival_date,
+                    'flight_departure_date' => $flight_departure_date,
+                    'validated_data' => $request->all(),
+                ]
+            ]);
 
-            notify()->success('Booking Successfully!','Success!',[
-                'position' => 'bottom-right'
-            ]);
-            Notification::route('mail', 'dhanushika76@gmail.com')->notify(new Confirmationemail($validateddata));
             return redirect($response['url']);
 
         }catch(Exception $e){
             notify()->error('Failed to Booking.', 'Error', [
-                'position' => 'top-right' // Change this to your desired position
+                'position' => 'top-right'
             ]);
-
+            return redirect()->back();
         }
 
     }
+
+    public function handlePaymentSuccess(Request $request)
+    {
+
+        $session_id = $request->input('session_id');
+        $bookingData = session('booking_data');
+
+        if (!$bookingData || !$session_id) {
+            notify()->error('Invalid payment session.', 'Error');
+            return redirect()->route('showcheckout'); // Adjust to your desired route
+        }
+        try {
+            $stripe = new \Stripe\StripeClient(Config::get('stripe.stripe_secret_key'));
+            $session = $stripe->checkout->sessions->retrieve($session_id);
+
+            if ($session->payment_status === 'paid') {
+
+                // Insert booking details into the database
+                $validatedData = $bookingData['validated_data'];
+
+                $validatedData['booking_code'] = $bookingData['booking_code'];
+                $validatedData['price'] = $bookingData['price'];
+                $validatedData['flight_arrival_date'] = $bookingData['flight_arrival_date'];
+                $validatedData['flight_departure_date'] = $bookingData['flight_departure_date'];
+
+                Booking::create($validatedData);
+                // Send confirmation email
+                $customer = Customer::FindOrFail($validatedData['customer_id']);
+                $users = [
+                    $validatedData['email'],// Customer's email (assuming you store it in the booking model)
+                    "admin@airparq.com"// Admin's email (set in the .env file)
+                ];
+                Notification::route('mail', $users)->notify(new Confirmationemail($validatedData));
+
+                notify()->success('Payment successful! Booking confirmed.', 'Success');
+                return redirect()->route('completepage'); // Adjust to your success page route
+            } else {
+                notify()->error('Payment not completed.', 'Error');
+                return redirect()->route('showcheckout'); // Adjust to your desired route
+            }
+        } catch (Exception $e) {
+            Log::error('Booking creation failed: ' . $e->getMessage());
+            notify()->error('An error occurred while verifying payment.', 'Error');
+            return redirect()->route('showcheckout'); // Adjust to your desired route
+        }
+    }
+
 
     /**
      * Display the specified resource.
@@ -186,18 +235,11 @@ class BookingController extends Controller
         $data =  $filterdata->map(function($booking) {
             // Encrypt ID for the action URLs
             $encryptedId = Crypt::encryptString($booking->id);
-            // Create HTML for action buttons
-            $buttons = '
-                <button class="delete" onclick="bookingdetailsdelete(\'' . Crypt::encryptString($booking->id) . '\')">
-                    <i class="fa fa-times deletebtn"></i>
-                </button>
-            ';
             return [
                 $booking->booking_code,
                 $booking->first_name." ". $booking->last_name,
                 $booking->email,
                 $booking->phone_no,
-                $buttons
             ];
         });
 
@@ -229,10 +271,24 @@ class BookingController extends Controller
             // Create HTML for action buttons
 
             $buttons = '
-                <button class="delete" onclick="bookingdetailsdelete(\'' . Crypt::encryptString($booking->id) . '\')">
-                    <i class="fa fa-times deletebtn"></i>
-                </button>
+             <a href="' . route('editbooking', Crypt::encryptString($booking->id)) . '">
+                <i class="fa fa-edit editbtn"></i>
+            </a>
+            <a href="' . route('printbooking1', $booking->id) . '">
+                <i class="fas fa-print print"></i>
+            </a>
+            <a href="' . route('viewbooking', Crypt::encryptString($booking->id)) . '">
+                <i class="far fa-eye viewbtn"></i>
+            </a>
+            <button class="btn p-0 cancle" onclick="bookingdetailscancle(\'' . Crypt::encryptString($booking->id) . '\')">
+                <i class="fas fa-ban canclebtn"></i>
+            </button>
+            <button class="btn p-0 delete" onclick="bookingdetailsdelete(\'' . Crypt::encryptString($booking->id) . '\')">
+                <i class="fa fa-times deletebtn"></i>
+            </button>
             ';
+
+
             return [
                 $booking->booking_code,
                 $booking->first_name." ". $booking->last_name,
@@ -267,12 +323,6 @@ class BookingController extends Controller
         $data =  $filterdata->map(function($booking) {
             // Encrypt ID for the action URLs
             $encryptedId = Crypt::encryptString($booking->id);
-            // Create HTML for action buttons
-            $buttons = '
-                <button class="delete" onclick="bookingdetailsdelete(\'' . Crypt::encryptString($booking->id) . '\')">
-                    <i class="fa fa-times deletebtn"></i>
-                </button>
-            ';
 
             return [
                 $booking->booking_code,
@@ -280,7 +330,6 @@ class BookingController extends Controller
                 $booking->email,
                 $booking->phone_no,
                 $booking->parking_from_time,
-                $buttons // Add the buttons HTML here
             ];
         });
 
@@ -310,19 +359,12 @@ class BookingController extends Controller
         $data =  $filterdata->map(function($booking) {
             // Encrypt ID for the action URLs
             $encryptedId = Crypt::encryptString($booking->id);
-            // Create HTML for action buttons
-            $buttons = '
-                <button class="delete" onclick="bookingdetailsdelete(\'' . Crypt::encryptString($booking->id) . '\')">
-                    <i class="fa fa-times deletebtn"></i>
-                </button>
-            ';
             return [
                 $booking->booking_code,
                 $booking->first_name." ". $booking->last_name,
                 $booking->email,
                 $booking->phone_no,
                 $booking->parking_till_time,
-                $buttons // Add the buttons HTML here
             ];
         });
 
@@ -389,7 +431,12 @@ class BookingController extends Controller
                 //
                 // Mail::to('dhanushik76@gmail.com')->send(new CancleBookingEmail('hbjh'));
                 $booking::updatestatus($canclebooking->id);
-                Notification::route('mail', 'dhanushik76@gmail.com')->notify(new Cancleemail($canclebooking));
+                $customer = Customer::FindOrFail($canclebooking->customer_id);
+                $users = [
+                    $customer->email, // Customer's email (assuming you store it in the booking model)
+                    "admin@airparq.com"// Admin's email (set in the .env file)
+                ];
+                Notification::route('mail', $users)->notify(new Cancleemail($canclebooking));
                 return response()->json([
                     'success' => true,
                     'message' => 'Booking Cancle Successfully'

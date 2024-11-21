@@ -90,11 +90,13 @@
                     <span class="sub-item">Today Booking</span>
                   </a>
                 </li>
+
                 <li>
                   <a href="{{route('currentmonthreport')}}">
                     <span class="sub-item">Current Month Booking</span>
                   </a>
                 </li>
+               
               </ul>
             </div>
           </li>

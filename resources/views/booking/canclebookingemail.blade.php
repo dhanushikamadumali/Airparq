@@ -42,34 +42,27 @@ div[style*="margin: 16px 0;"] { margin: 0 !important; }
 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding:10px;margin-top:60px;margin-bottom:60px">
     <tr>
         <td align="center" style="background-color: #eeeeee;" bgcolor="#eeeeee">
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
-              <tr>
-                <td align="center" valign="top" style="font-size:0; padding: 35px;" bgcolor="#1a2035">
-                <div style="display:inline-block; max-width:50%; min-width:100px; vertical-align:top; width:100%;">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
+                <tr>
+                    <td align="center" valign="top" style="font-size:0; padding: 10px; height: 50px;" bgcolor="#FFD31C">
                      <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
                         <tr>
-                            <td align="center">
-                                 <td align="center" valign="top" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 36px; font-weight: 800; line-height: 48px;" class="mobile-center">
+                                 <td align="center" valign="top" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 36px;" class="mobile-center">
                                     <!-- Middle column with the image -->
-                                    <img src="{{ asset('assets/img/whitepng.png') }}" style="width:250px; height:60px; display: block; margin: 0 auto;" />
+                                    <img src="{{ asset('assets/img/logo.jpg') }}" style="width:250px; display: block; margin: 0 auto;" />
                                 </td>
-                            </td>
                         </tr>
                     </table>
-                </div>
-                </td>
-            </tr>
+                    </td>
+                </tr>
             <tr>
-                <td align="center" style="padding: 35px 35px 20px 35px; background-color: #ffffff;" bgcolor="#ffffff">
+                <td align="center" style="background-color: #ffffff;" bgcolor="#ffffff">
                 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
                     <tr>
                         <td align="center" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 25px;">
                             <img src="https://img.icons8.com/carbon-copy/100/000000/delete-sign.png" width="125" height="120" style="display: block; border: 0px;" /><br>
-
                         </td>
                     </tr>
-
-
                 </table>
                 </td>
             </tr>
@@ -77,51 +70,65 @@ div[style*="margin: 16px 0;"] { margin: 0 !important; }
                 <td align="center" style=" padding: 35px; background-color: #ff7361;" bgcolor="#1b9ba3">
                 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
                     <tr>
-                        <td align="center" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 25px;">
-                            <h2 style="font-size: 24px; font-weight: 800; line-height: 30px; color: #ffffff; margin: 0;">
-                                Your Booking Was Cancled.
+                        <td align="center" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px;">
+                            <h2 style="font-size: 24px; font-weight: 800;color: #ffffff; margin: 0;">
+                                Your booking has been cancelled.
                             </h2>
                         </td>
                     </tr>
-                    <tr>
-                        <td align="center" style="padding: 25px 0 15px 0;">
+                    <tr></tr>
 
-                        </td>
-                    </tr>
                 </table>
                 </td>
             </tr>
+             <tr>
+                <td align="center" style="padding: 35px; background-color: #ffffff;" bgcolor="#ffffff">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
+                    <tr>
+                         <td align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 24px;">
+                            <p>
+                                <p style="text-align:justify">The refund for your booking will be processed directly to the original payment method you used at the time of booking.</p>
+                                <p style="text-align:justify">Please note that it may take 7 business days for the amount to reflect in your account, depending on your payment provider.</p>
+                            </p>
+                        </td>
+                    </tr>
+                         <tr>
+                            <td align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 24px;">
+                                <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">
+                                    If you have any questions or require further assistance, please don't hesitate to contact us at contact@airparq.co.uk or +44 7464 777258.
+                                </p>
+                                <p>Thank you for choosing Airpaq</p>
+                            </td>
+                        </tr>
+                    </table>
+                    </td>
+            </tr>
             <tr>
-            <td align="center" style="padding: 35px; background-color: #ffffff;" bgcolor="#ffffff">
-            <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
-                <tr>
-                    <td align="center">
-                         <img
-                            src="{{ asset('assets/img/logo.jpg') }}"
-                            width="40" height="40" style="display: block; border: 0px;"
-                        />
-                    </td>
-                </tr>
-                <tr>
-                    <td align="center" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 24px; padding: 5px 0 10px 0;">
-                        <p style="font-size: 14px; font-weight: 800; line-height: 18px; color: #333333;">
-                            Thomas House, <br>
-                            Petersfield Avenue,<br>
-                            Slough,<br>
-                            SL2 5EAe<br>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 24px;">
-                        <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">
-                            If you didn't create an account using this email address, please ignore this email.
-                        </p>
-                        <p>Thank You</p>
-                    </td>
-                </tr>
+                <td align="center" style="padding: 35px; background-color: #ffffff;" bgcolor="#ffffff">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
+                    <tr>
+                        <td align="center">
+                             <img
+                                src="{{ asset('assets/img/logo.jpg') }}"
+                                style="display: block; border: 0px;height:20px"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 24px; padding: 5px 0 10px 0;">
+                            <p style="font-size: 14px; font-weight: 800; line-height: 18px; color: #333333;">
+                                Thomas House, <br>
+                                Petersfield Avenue,<br>
+                                Slough,<br>
+                                SL2 5EAe<br>
+                            </p>
+                        </td>
+                    </tr>
 
-        </table>
+                </table>
+                </td>
+            </tr>
+            </table>
         </td>
     </tr>
 </table>

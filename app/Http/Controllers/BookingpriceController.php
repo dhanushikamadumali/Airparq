@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Setting;
 use App\Http\Middleware\CompanySettings;
+use Illuminate\Http\Request;
+
 
 class BookingpriceController extends Controller
 {
@@ -19,9 +21,9 @@ class BookingpriceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $bookingpricelists = Bookingprice::all();
+        $bookingpricelists = Bookingprice::getAllPromoDetails($request)->paginate(5);
         return view('bookingprice.index',compact('bookingpricelists'));
     }
 

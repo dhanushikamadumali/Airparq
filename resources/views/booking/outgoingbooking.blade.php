@@ -50,7 +50,6 @@
                                         <th>Email</th>
                                         <th>Phone No</th>
                                         <th>Time</th>
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>

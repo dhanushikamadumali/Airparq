@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Setting;
 use App\Http\Middleware\CompanySettings;
+use Illuminate\Http\Request;
 
 class PromocodeController extends Controller
 {
@@ -20,9 +21,9 @@ class PromocodeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $promocodelist = Promocode::all();
+        $promocodelist = Promocode::getAllPromoDetails($request)->paginate(5);
         return view('promocode.index',compact('promocodelist'));
     }
     /**

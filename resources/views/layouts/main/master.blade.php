@@ -2,11 +2,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>AirPaq</title>
+     <meta charset="utf-8">
+     <title>AIRPARQ</title>
     <meta
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
       name="viewport"
+    />
+     <link
+      rel="icon"
+      href="assets/img/kaiadmin/favicon.png"
+      type="image/x-icon"
     />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- notify css --}}

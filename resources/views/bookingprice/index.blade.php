@@ -16,17 +16,36 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
-                        <a href="{{asset('admin/createbookingprice')}}">
-                            <button class="btn page_btn" data-bs-toggle="modal" data-bs-target="#addRowModal" >
-                                <i class="fa fa-plus"></i>
-                                    Add New Price
-                            </button>
-                        </a>
+                     <div class="card-header">
+                        <div class="row g-3">
+                            <div class="d-flex flex-wrap align-items-center justify-content-between w-100">
+                                <!-- Add New Button on Right Side -->
+                                <div class="col-12 col-md-2 mb-2">
+                                    <a href="{{ asset('admin/createbookingprice') }}" class="btn page_btn w-100 d-flex align-items-center justify-content-center">
+                                        <i class="fa fa-plus me-1"></i> Add New
+                                    </a>
+                                </div>
+                                <!-- Search Form on Left Side -->
+                                <form action="{{ route('allbookingprice') }}" method="GET" class="d-flex align-items-center">
+                                    @csrf
+                                    <!-- Search Input Field -->
+                                    <div class="col-10 col-md-9 mb-2">
+                                        <input type="text" class="form-control" name="search" id="search" placeholder="Search.." />
+                                    </div>
+
+                                    <!-- Search Button -->
+                                    <div class="col-2 col-md-3 mb-2">
+                                        <button type="submit" class="btn page_btn searchbtn" style="margin-left:13px">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                        <table id="basic-datatables" class="display table table-striped table-hover">
+                        <table  class="display table table-striped table-hover">
                             <thead>
                             <tr>
                                 <th>Date Count</th>
@@ -51,6 +70,7 @@
                             @endforeach
                             </tbody>
                         </table>
+                        {{$bookingpricelists->links()}}
                         </div>
                     </div>
                 </div>

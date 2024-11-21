@@ -16,11 +16,11 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">
+                    <div class="card-header">
                         <div class="row">
-                        <div class="col-12 col-md-2">
-                             <label style="margin-left:10px;font-weight:800;font-size:30px">Status</label>
-                        </div>
+                            <div class="col-12 col-md-2">
+                                <label style="margin-left:10px;font-weight:800;font-size:30px">Status</label>
+                            </div>
                             <div class="col-12 col-md-4">
                                 <select class="form-select dropdown-select shadow-sm" id="status" name="status">
                                     <option value="">Select Status</option>
@@ -41,7 +41,6 @@
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Phone No</th>
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>

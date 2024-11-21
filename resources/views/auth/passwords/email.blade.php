@@ -7,7 +7,8 @@
     <div class="row" style="margin-top:50px">
     <div class="col-md-3"></div>
         <div class="col-md-6">
-            <div class="row "><h2 style="margin-bottom:20px;font-weight:bold">RESET PASSWORD</h2></div>
+            <div class="row d-flex justify-content-center align-items-center"><img src="{{ asset('assets/img/logo.jpg') }}" style="width:250px" /></div>
+            <div class="row d-flex justify-content-center align-items-center"><h2 style="margin-bottom:20px;font-weight:bold;text-align:center;margin-top:10px">RESET PASSWORD</h2></div>
             <div class="card">
                 <div class="card-body">
                     @if (session('status'))

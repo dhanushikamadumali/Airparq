@@ -10,7 +10,7 @@ class Terminal extends Pivot
     protected $table = "terminals";
     protected $primary_key = "id";
 
-    protected $fillable= [
+    protected $fillable = [
         'name',
         'image',
         'base_price',
@@ -18,11 +18,19 @@ class Terminal extends Pivot
         'description',
         'status'
     ];
-    public static function getterminaldetails($terminalid){
+    public static function getterminaldetails($terminalid)
+    {
 
         return DB::table('terminals')
-                ->where('id', '=', $terminalid)
-                ->get();
-
+            ->where('id', '=', $terminalid)
+            ->get();
+    }
+    //all terminal list
+    public static function getAllTerminalDetails($request)
+    {
+        $allterminal = Terminal::when($request->search, function ($query) use ($request) {
+            $query->where('name', 'LIKE', '%' . $request->search . '%');
+        });
+        return $allterminal;
     }
 }

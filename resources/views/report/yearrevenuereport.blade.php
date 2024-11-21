@@ -3,7 +3,7 @@
 <div class="container">
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Current Month Report</h3>
+            <h3 class="fw-bold mb-3">Annual Revenue Report</h3>
                 <ul class="breadcrumbs mb-3">
                     <li class="separator">
                         <i class="icon-arrow-right"></i>
@@ -17,7 +17,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                         <a href="{{asset('admin/currentmonthpdf')}}">
+                         <a href="{{asset('admin/yearrevenuepdf')}}">
                             <button class="btn page_btn" >
                                     PDF
                             </button>
@@ -32,19 +32,33 @@
                                 <th>Customer Name</th>
                                 <th>Email</th>
                                 <th>Phone no</th>
+                                <th>Amount</th>
                             </tr>
                             </thead>
                             <tbody>
-                              @foreach ($currentmonthbookinglists as $currentmonthbookinglist)
+                              @foreach ($yearbookinglists as $yearbookinglist)
                             <tr>
-                                <td>{{$currentmonthbookinglist->booking_code}}</td>
-                                <td>{{$currentmonthbookinglist->first_name}} {{$currentmonthbookinglist->last_name}}</td>
-                                 <td>{{$currentmonthbookinglist->email}}</td>
-                                <td>{{$currentmonthbookinglist->phone_no}}</td>
+                                 <td>{{$yearbookinglist->booking_code}}</td>
+                                <td>{{$yearbookinglist->first_name}} {{$yearbookinglist->last_name}}</td>
+                                <td>{{$yearbookinglist->email}}</td>
+                                <td>{{$yearbookinglist->phone_no}}</td>
+                                <td>{{$yearbookinglist->price}}</td>
                             </tr>
                             @endforeach
                             </tbody>
                         </table>
+                             <table id="basic-datatables" class="display table table-striped table-hover">
+                                 <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th style="font-size:20px">Annual Revenue</th>
+                                    <th style="font-size:20px">£ {{$yearallrevenue}}</th>
+                                </tr>
+                             </table>
                         </div>
                     </div>
                 </div>

@@ -10,7 +10,7 @@
             <div class="bg-content container">
                 <div class="hero-page-title">
                     <span class="hero-sub-title">How It Works</span>
-                    <h1 class="display-3 hero-title crouselheding1" style="font-weight:600">AIRPARQ'S Meet & Greet Process</h1>
+                    <p class="display-3 hero-title crouselheding1" style="font-weight: 600;letter-spacing: -0.1px;" >AIRPARQ'S Meet & Greet Process</p>
                 </div>
             </div>
         </section>
@@ -128,6 +128,7 @@
                         <div class="block-title me-auto">
                             <small class="sub-title">How It Works</small>
                              <h1 class="headingtitle">Return</h2>
+                             {{-- <img src="{{asset('assets/img/line.png')}}"  alt="" style="width:300px;height:30px" /> --}}
                         </div>
                     </div>
                     <!-- /Title -->

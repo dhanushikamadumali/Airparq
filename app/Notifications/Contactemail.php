@@ -17,7 +17,7 @@ class Contactemail extends Notification
     public function __construct($data)
     {
         $this->data = $data;
-        
+
     }
 
     /**
@@ -37,7 +37,10 @@ class Contactemail extends Notification
     {
         return (new MailMessage)
                     ->subject('Q & A email')
-                    ->line($this->data[0]->email);
+                    ->view('contact.contactemail',['data'=>$this->data]);
+
+
+                    
 
     }
 

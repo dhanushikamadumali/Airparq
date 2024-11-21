@@ -16,8 +16,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
-                        <div class="row g-3">
+                    {{-- <div class="card-header"> --}}
+                        {{-- <div class="row g-3">
                              <div class="col-12 col-md-2">
                                  <a href="{{asset('admin/statusfilterbooking')}}">
                                     <button class="btn page_btn" style="width:100%" >
@@ -25,32 +25,28 @@
                                     </button>
                                 </a>
                             </div>
-                            <div class="col-12 col-md-2">
-                                <a href="{{asset('admin/datefilterbooking')}}">
-                                    <button class="btn page_btn" style="width:100%" >
-                                            Filter Date
-                                    </button>
-                                </a>
+
+
+                        </div> --}}
+                    {{-- </div> --}}
+                    <div class="card-body">
+                         <form action="{{route('allbooking')}}" method="GET" role="search" >
+                        @csrf
+                        <div class="row">
+                              <div class="col-md-5">
+                                <input type="text" class="form-control" value="" name="search" id="search"  placeholder="Search.."/>
                             </div>
-                            <div class="col-12 col-md-2">
-                                  <a href="{{asset('admin/incomebooking')}}">
-                                    <button class="btn page_btn" style="width:100%" >
-                                            Incoming
-                                    </button>
-                                </a>
-                            </div>
-                            <div class="col-12 col-md-2">
-                                 <a href="{{asset('admin/outgoingbooking')}}">
-                                    <button class="btn page_btn" style="width:100%" >
-                                            Outgoing
-                                    </button>
-                                </a>
+                            
+                            <div class="col-md-2">
+                                <button type="submit" class="btn page_btn searchbtn" style="width:100%" >
+                                        Search
+                                </button>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body">
+                        </form>
+                        <hr/>
                         <div class="table-responsive">
-                        <table id="basic-datatables" class="display table table-striped table-hover">
+                        <table class="display table table-striped table-hover">
                             <thead>
                             <tr>
                                 <th>Code</th>
@@ -65,16 +61,13 @@
                             @foreach ($allbookinglists as $allbookinglist)
                             <tr>
                                 <td>{{$allbookinglist->booking_code}}</td>
-                                <td>{{$allbookinglist->first_name}} </td>
-                                <td>{{$allbookinglist->email}}</td>
-                                <td>{{$allbookinglist->phone_no}}</td>
+                                <td>{{$allbookinglist->customer->first_name}} </td>
+                                <td>{{$allbookinglist->customer->email}}</td>
+                                <td>{{$allbookinglist->customer->phone_no}}</td>
                                  <td>
                                  @if ($allbookinglist->status == 0)
                                     <span class="badge badge-danger">Cancel</span>
                                  @endif
-                                @if ($allbookinglist->status == 2)
-                                    <span class="badge badge-warning">Pending</span>
-                                @endif
                                 @if ($allbookinglist->status == 1)
                                     <span class="badge badge-success">Success</span>
                                 @endif
@@ -83,7 +76,7 @@
                                     <a href="{{ route('editbooking',Crypt::encryptString($allbookinglist->id))}}">
                                         <i class="fa fa-edit editbtn"></i>
                                     </a>
-                                    <button class="open_camera btn p-0 camerabtn" data-row-id="{{ $allbookinglist->id }}">
+                                    <button class="open_camera btn p-0 camerabtn" data-row-id="{{$allbookinglist->id }}">
                                         <i class="fas fa-camera"></i>
                                     </button>
                                     <a href="{{route('printbooking1',$allbookinglist->id)}}">
@@ -103,6 +96,7 @@
                             @endforeach
                             </tbody>
                         </table>
+                            {{$allbookinglists->links() }}
                         </div>
                     </div>
                 </div>

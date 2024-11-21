@@ -53,6 +53,9 @@ Route::prefix('account')->group(function () {
     Route::post('/accountLogout', [App\Http\Controllers\WebController::class, 'accountLogout'])->name('account.logout');
     Route::post('/storebooking',[App\Http\Controllers\BookingController::class,'store'])->name('storebooking');
     Route::get('/completepage', [App\Http\Controllers\WebController::class, 'completepage'])->name('completepage');
+    Route::get('/failed', [App\Http\Controllers\WebController::class, 'failed'])->name('failed');
+
+    Route::get('/success', [App\Http\Controllers\BookingController::class, 'handlePaymentSuccess'])->name('success');
 
     // Guest routes (for customers who are not logged in)
     Route::middleware('guest:account')->group(function() {
@@ -84,11 +87,10 @@ Route::prefix('admin')->group(function(){
         Route::get('/dashboard',[App\Http\Controllers\DashboardController::class,'index'])->name('dashboard');
         // allbooking
         Route::get('/getmontlybooking',[App\Http\Controllers\DashboardController::class,'getmontlybooking'])->name('getmontlybooking');
+        Route::get('/gettodayincomebooking',[App\Http\Controllers\DashboardController::class,'gettodayincomebooking'])->name('gettodayincomebooking');
+        Route::get('/getcurrentmonthrevenue',[App\Http\Controllers\DashboardController::class,'getcurrentmonthrevenue'])->name('getcurrentmonthrevenue');
+        Route::get('/gettodayincomerevenue',[App\Http\Controllers\DashboardController::class,'gettodayincomerevenue'])->name('gettodayincomerevenue');
         Route::get('/allbooking',[App\Http\Controllers\BookingController::class,'index'])->name('allbooking');
-        Route::get('/editbooking/{id}',[App\Http\Controllers\BookingController::class,'edit'])->name('editbooking');
-        Route::put('/updatebooking',[App\Http\Controllers\BookingController::class,'update'])->name('updatebooking');
-        Route::delete('/deletebookingdetails/{id}',[App\Http\Controllers\BookingController::class,'destroy'])->name('deletebookingdetails');
-        Route::delete('/canclebookingdetails/{id}',[App\Http\Controllers\BookingController::class,'cancle'])->name('canclebookingdetails');
         Route::get('/viewbooking/{id}',[App\Http\Controllers\BookingController::class,'show'])->name('viewbooking');
         // status range filter booking
         Route::get('/statusfilterbooking',[App\Http\Controllers\BookingController::class,'statusfilter'])->name('statusfilterbooking');
@@ -112,9 +114,19 @@ Route::prefix('admin')->group(function(){
          Route::get('/alluserlist',[App\Http\Controllers\UserController::class,'index'])->name('alluserlist');
          Route::post('/logoutuser',[App\Http\Controllers\UserController::class,'logoutuser'])->name('logoutuser');
 
+        // vehicle photo
+        Route::post('/uploadvehiclephoto',[App\Http\Controllers\BookingController::class,'uploadvehiclephoto'])->name('uploadvehiclephoto');
+        Route::post('/upload',[App\Http\Controllers\BookingController::class, 'upload'])->name('upload');
+
         });
     Route::middleware([AdminMiddleware::class . ':admin'])->group(function () {
-        // promocode module
+        // booking details
+        Route::get('/editbooking/{id}',[App\Http\Controllers\BookingController::class,'edit'])->name('editbooking');
+        Route::put('/updatebooking',[App\Http\Controllers\BookingController::class,'update'])->name('updatebooking');
+        Route::delete('/deletebookingdetails/{id}',[App\Http\Controllers\BookingController::class,'destroy'])->name('deletebookingdetails');
+        Route::delete('/canclebookingdetails/{id}',[App\Http\Controllers\BookingController::class,'cancle'])->name('canclebookingdetails');
+
+       // promocode module
         Route::get('/allpromolist',[App\Http\Controllers\PromocodeController::class,'index'])->name('allpromolist');
         Route::get('/createpromocode',[App\Http\Controllers\PromocodeController::class,'create'])->name('createpromocode');
         Route::post('/storepromocode',[App\Http\Controllers\PromocodeController::class,'store'])->name('storepromocode');
@@ -128,20 +140,42 @@ Route::prefix('admin')->group(function(){
         Route::get('/editterminal/{id}',[App\Http\Controllers\TerminalController::class,'edit'])->name('editterminal');
         Route::put('/updateterminal',[App\Http\Controllers\TerminalController::class,'update'])->name('updateterminal');
         Route::delete('/deleteterminal/{id}',[App\Http\Controllers\TerminalController::class,'destroy'])->name('deleteterminal');
-        // vehicle photo
-        Route::post('/uploadvehiclephoto',[App\Http\Controllers\BookingController::class,'uploadvehiclephoto'])->name('uploadvehiclephoto');
-        Route::post('/upload',[App\Http\Controllers\BookingController::class, 'upload'])->name('upload');
+
         // today report
         Route::get('/todayreport',[App\Http\Controllers\ReportController::class,'todayreport'])->name('todayreport');
         Route::post('/todayreportprint',[App\Http\Controllers\ReportController::class,'todayreportprint'])->name('todayreportprint');
         Route::delete('/todayreportdelete',[App\Http\Controllers\ReportController::class,'todayreportdelete'])->name('todayreportdelete');
         Route::get('/todaypdf',[App\Http\Controllers\ReportController::class,'todaypdf'])->name('todaypdf');
+        //today outgoing report
+        Route::get('/todayoutgoingreport',[App\Http\Controllers\ReportController::class,'todayoutgoingreport'])->name('todayoutgoingreport');
+        Route::post('/todayoutgoingprint',[App\Http\Controllers\ReportController::class,'todayoutgoingprint'])->name('todayoutgoingprint');
+        Route::get('/todayoutgoingpdf',[App\Http\Controllers\ReportController::class,'todayoutgoingpdf'])->name('todayoutgoingpdf');
+
         //current month report
         Route::get('/currentmonthreport',[App\Http\Controllers\ReportController::class,'currentmonthreport'])->name('currentmonthreport');
         Route::post('/currentmonthreportprint',[App\Http\Controllers\ReportController::class,'currentmonthreportprint'])->name('currentmonthreportprint');
         Route::delete('/currentmonthreportdelete',[App\Http\Controllers\ReportController::class,'currentmonthreportdelete'])->name('currentmonthreportdelete');
         Route::get('/currentmonthpdf',[App\Http\Controllers\ReportController::class,'currentmonthpdf'])->name('currentmonthpdf');
-         // booking module
+
+        //today revenue report
+        Route::get('/todayrevenuereport',[App\Http\Controllers\ReportController::class,'todayrevenuereport'])->name('todayrevenuereport');
+        // Route::post('/currentmonthreportprint',[App\Http\Controllers\ReportController::class,'currentmonthreportprint'])->name('currentmonthreportprint');
+        // Route::delete('/currentmonthreportdelete',[App\Http\Controllers\ReportController::class,'currentmonthreportdelete'])->name('currentmonthreportdelete');
+        Route::get('/todayrevenuepdf',[App\Http\Controllers\ReportController::class,'todayrevenuepdf'])->name('todayrevenuepdf');
+
+        //month to date revenue report
+        Route::get('/monthtodaterevenuereport',[App\Http\Controllers\ReportController::class,'monthtodaterevenuereport'])->name('monthtodaterevenuereport');
+        // Route::post('/currentmonthreportprint',[App\Http\Controllers\ReportController::class,'currentmonthreportprint'])->name('currentmonthreportprint');
+        // Route::delete('/currentmonthreportdelete',[App\Http\Controllers\ReportController::class,'currentmonthreportdelete'])->name('currentmonthreportdelete');
+        Route::get('/monthtodaterevenuepdf',[App\Http\Controllers\ReportController::class,'monthtodaterevenuepdf'])->name('monthtodaterevenuepdf');
+
+        //year revenue report
+        Route::get('/yearrevenuereport',[App\Http\Controllers\ReportController::class,'yearrevenuereport'])->name('yearrevenuereport');
+        // Route::post('/currentmonthreportprint',[App\Http\Controllers\ReportController::class,'currentmonthreportprint'])->name('currentmonthreportprint');
+        // Route::delete('/currentmonthreportdelete',[App\Http\Controllers\ReportController::class,'currentmonthreportdelete'])->name('currentmonthreportdelete');
+        Route::get('/yearrevenuepdf',[App\Http\Controllers\ReportController::class,'yearrevenuepdf'])->name('yearrevenuepdf');
+
+        // booking module
         Route::get('/createbooking',[App\Http\Controllers\BookingController::class,'create'])->name('createbooking');
         // Route::post('/storebooking',[App\Http\Controllers\BookingController::class,'store'])->name('storebooking');
         // contact

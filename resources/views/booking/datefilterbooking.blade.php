@@ -35,8 +35,9 @@
                                     <button id="filterButton" class="btn page_btn">Search</button>
                                     </a>
                                 </div>
-
                         </div>
+
+
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -64,5 +65,28 @@
             </div>
         </div>
     </div>
+<!-- Modal for Camera -->
+<div id="cameraModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Take Photo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <video id="video" width="100%" height="100%" autoplay></video>
+                <div id="results" class="mt-3"></div> <!-- Display captured images here -->
+            </div>
+            <div class="modal-footer">
+                <button id="switch-camera" class="btn btn-secondary">Switch Camera</button>
+                <button id="take-photo" class="btn btn-primary">Take Photo</button>
+                <button type="button" id="close-modal" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" id="upload-photos" class="btn btn-success">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 

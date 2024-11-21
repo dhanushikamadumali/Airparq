@@ -23,8 +23,8 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>BOOKING CODE</th>
-                <th>CUSTOMER NAME</th>
+                <th>BCODE</th>
+                <th>CNAME</th>
                 <th>EMAIL</th>
                 <th>PHONE NO</th>
                 <th>P FROM TIME</th>
@@ -36,7 +36,7 @@
             @foreach($bookings as $booking)
             <tr>
                 <td>{{ $booking->booking_code }}</td>
-                <td>{{ $booking->first_name }}{{ $booking->last_name }}</td>
+                <td>{{ $booking->first_name }}</td>
                 <td>{{ $booking->email }}</td>
                 <td>{{ $booking->phone_no}}</td>
                 <td>{{ $booking->parking_from_time}}</td>

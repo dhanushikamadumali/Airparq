@@ -17,7 +17,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                         <a href="{{asset('admin/currentmonthpdf')}}">
+                         <a href="{{asset('admin/todaypdf')}}">
                             <button class="btn page_btn" >
                                     PDF
                             </button>
@@ -28,11 +28,10 @@
                         <table id="basic-datatables" class="display table table-striped table-hover">
                             <thead>
                             <tr>
-                                  <th>Booking Code</th>
+                                <th>Booking Code</th>
                                 <th>Customer Name</th>
                                 <th>Email</th>
                                 <th>Phone no</th>
-                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -42,14 +41,6 @@
                                 <td>{{$todaybookinglist->first_name}} {{$todaybookinglist->last_name}}</td>
                                 <td>{{$todaybookinglist->email}}</td>
                                 <td>{{$todaybookinglist->phone_no}}</td>
-                                 <td>
-                                  <a href="{{ route('todayprintbookingdetails',$todaybookinglist->id)}}">
-                                    <i class="fa fa-edit p-2"></i>
-                                    </a>
-                                     <button class="btn p-0 delete" onclick="todayreportdelete('{{Crypt::encryptString($todaybookinglist->id)}}')">
-                                    <i class="fa fa-times deletebtn"></i>
-                                    </button>
-                                </td>
                             </tr>
                             @endforeach
                             </tbody>

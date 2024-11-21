@@ -441,6 +441,10 @@ class WebController extends Controller
     public function completepage(){
         return view('web.completed');
     }
+     //show complete page
+     public function failed(){
+        return view('web.failed');
+    }
 
     // show terms and condition page
     public function termsandcondition(){
@@ -474,7 +478,7 @@ class WebController extends Controller
         );
 
         Mail::to($request->email)->send(new ResetPasswordMail($token));
-        notify()->success('successfully.', 'Success');
+        notify()->success('Check your mail,We have emailed your password reset link.', 'Success');
         return Redirect::route('resetpassword');
     }
     //show validatereset password

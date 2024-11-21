@@ -51,9 +51,11 @@
                                                 <a href="{{ route('edituser',Crypt::encryptString($userlist->id))}}">
                                                     <i class="fa fa-edit editbtn"></i>
                                                 </a>
-                                                <button class="btn p-0 delete" onclick="userdelete('{{Crypt::encryptString($userlist->id)}}')">
-                                                <i class="fa fa-times deletebtn"></i>
-                                                </button>
+                                                 @if($userlist->role == 'driver')
+                                                    <button class="btn p-0 delete" onclick="userdelete('{{ Crypt::encryptString($userlist->id) }}')">
+                                                        <i class="fa fa-times deletebtn"></i>
+                                                    </button>
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach
@@ -67,9 +69,11 @@
                                                 <a href="{{ route('edituser',Crypt::encryptString($driverlist->id))}}">
                                                     <i class="fa fa-edit editbtn"></i>
                                                 </a>
-                                                <button class="btn p-0 delete" onclick="userdelete('{{Crypt::encryptString($driverlist->id)}}')">
-                                                <i class="fa fa-times deletebtn"></i>
-                                                </button>
+                                                 @if($driverlist->role == 'driver')
+                                                    <button class="btn p-0 delete" onclick="userdelete('{{ Crypt::encryptString($driverlist->id) }}')">
+                                                        <i class="fa fa-times deletebtn"></i>
+                                                    </button>
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach

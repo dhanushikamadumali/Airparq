@@ -18,21 +18,9 @@
                                   {{-- <div class="cloud1"> <img src="{{asset('account/img/hero/cloud1.png')}}"  alt=""></div> --}}
                                   {{-- <div class="cloud2"> <img src="{{asset('account/img/hero/cloud1.png')}}"  alt=""></div> --}}
                                 <div class="col-12 col-md-6">
-                                    <h2 class="display-3 hero-title crouselheding1" style=" font-weight: bold" >
-                                        Seamless
-                                    <h2 class="display-3 hero-title crouselheding2" style=" font-weight: bold" >
-                                         Parking
-                                    </h2>
-                                    <h2 class="display-3 hero-title crouselheding3" style=" font-weight: bold" >
-                                        Stress-Free Travel
-                                    </h2>
-
+                                    <p  class="display-3 hero-title crouselheding1" style=" font-weight: 600;letter-spacing: -0.1px;" > Seamless <br/>Parking<br/>Stress-Free Travel</p>
                                 </div>
-                                {{-- <div class="col-12 col-md-6 plain" >
-                                     <img src="{{asset('account/img/hero/plain.png')}}"  alt="">
-                                </div> --}}
-
-                            </div>
+                             </div>
                         </div>
                     </div>
                 </div>
@@ -46,17 +34,9 @@
                         <div class="container">
                             <div class="row">
                                 {{-- <div class="col-12 col-xxl-6 col-xl-7 col-md-10"> --}}
-                                      <div class="col-12 col-md-6">
-                                        <h2 class="display-3 hero-title crouselheding1" style=" font-weight: bold" >
-                                            Seamless
-                                        <h2 class="display-3 hero-title crouselheding2" style=" font-weight: bold" >
-                                             Parking
-                                        </h2>
-                                        <h2 class="display-3 hero-title crouselheding3" style=" font-weight: bold" >
-                                            Stress-Free Travel
-                                        </h2>
-
-                                    </div>
+                                <div class="col-12 col-md-6">
+                                    <p  class="display-3 hero-title crouselheding1" style=" font-weight: 600;letter-spacing: -0.1px;" > Seamless <br/>Parking<br/>Stress-Free Travel</p>
+                                </div>
                                 {{-- </div> --}}
                             </div>
                         </div>
@@ -71,18 +51,8 @@
                     <div class="hero-caption text-sm-start">
                         <div class="container">
                             <div class="row">
-                                {{-- <div class="col-12 col-xxl-6 col-xl-7 col-md-10"> --}}
-                                      <div class="col-12 col-md-6">
-                                        <h2 class="display-3 hero-title crouselheding1" style=" font-weight: bold" >
-                                            Seamless
-                                        <h2 class="display-3 hero-title crouselheding2" style=" font-weight: bold" >
-                                             Parking
-                                        </h2>
-                                        <h2 class="display-3 hero-title crouselheding3" style=" font-weight: bold" >
-                                            Stress-Free Travel
-                                        </h2>
-
-                                    {{-- </div> --}}
+                                <div class="col-12 col-md-6">
+                                    <p  class="display-3 hero-title crouselheding1" style="font-weight: 600;letter-spacing: -0.1px;" > Seamless <br/>Parking<br/>Stress-Free Travel</p>
                                 </div>
                             </div>
                         </div>

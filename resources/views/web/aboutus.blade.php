@@ -11,11 +11,8 @@
         <div class="bg-content container">
             <div class="hero-page-title">
                 <span class="hero-sub-title">About Us</span>
-                <h1 class="display-3 hero-title crouselheding1" style="font-weight:600" >
-                    Discover the AIRPARQ Difference
-                </h1>
+                <p class="display-3 hero-title crouselheding1" style="font-weight: 600;letter-spacing: -0.1px;" >  Discover the AIRPARQ Difference</p>
             </div>
-
         </div>
     </section>
     <!-- /Title -->

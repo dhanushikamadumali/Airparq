@@ -173,7 +173,7 @@
                             <div class="form-group">
                                 <label>Logo</label>
                                 <input type="file" class="form-control" id="image" name="image" value="{{$csetting1->image}}"/>
-                                <img  src="{{asset('assets/img/'.$csetting1->image)}}" alt="{{  $csetting1->image }}" style="width: 50px; height: 50px;">
+                                <img  src="{{asset('assets/img/'.$csetting1->image)}}" alt="{{  $csetting1->image }}" style="width: 100px">
                                 @error('image')
                                 <div style="color:red">{{$message}}</div>
                                 @enderror

@@ -48,6 +48,7 @@ class Customer extends Authenticatable
             'password' => 'hashed',
         ];
     }
+   
 
 }
 

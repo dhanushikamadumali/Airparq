@@ -150,7 +150,7 @@
                             </li>
                             <li style="font-weight:600;font-size:15px;color:#FFD31C">Trusted Our Service</li>
                             <li class="link-item">
-                                <h3 style="color:white"><a href="https://www.trustpilot.com/review/airparq.co.uk"><img alt="Trustpilot reviews" width="140" src="https://cdn.trustpilot.net/brand-assets/4.3.0/logo-white.svg"></a></h3>
+                                <h3 style="color:white"><a href="https://www.trustpilot.com/review/airparq.co.uk" target="_blank"><img alt="Trustpilot reviews" width="140" src="https://cdn.trustpilot.net/brand-assets/4.3.0/logo-white.svg"></a></h3>
                             </li>
                         </ul>
                     </div>

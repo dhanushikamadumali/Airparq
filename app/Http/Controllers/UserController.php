@@ -27,7 +27,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $userlists = User::all();
+        $userlists = User::orderBy('created_at', 'asc')->get();
         $driverlists = User::getDriverAdmin();
         // $superadminlists = User::getSuperAdmin();
         // $userlists = User::all();
@@ -39,8 +39,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        $csetting= Setting::select('image')->get();
-        return view('user.create',compact('csetting'));
+        // $csetting= Setting::select('image')->get();
+        return view('user.create');
     }
 
     /**
@@ -92,9 +92,9 @@ class UserController extends Controller
      */
     public function edit(User $user,$id)
     {
-        $csetting= Setting::select('image')->get();
+        // $csetting= Setting::select('image')->get();
         $user = $user::find(Crypt::decryptString($id));
-        return view('user.edit', compact('user','csetting'));
+        return view('user.edit', compact('user'));
     }
 
     /**

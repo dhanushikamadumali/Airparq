@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Setting;
 use App\Http\Middleware\CompanySettings;
+use Illuminate\Http\Request;
 
 class TerminalController extends Controller
 {
@@ -20,9 +21,9 @@ class TerminalController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $terminallists = Terminal::all();
+        $terminallists = Terminal::getAllTerminalDetails($request)->paginate(5);
         return view('terminal.index',compact('terminallists'));
     }
 

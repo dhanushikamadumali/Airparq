@@ -205,16 +205,14 @@ function contactdelete(x){
 // terminal delete end
 
 
-// get chart details monthly booking
+// get chart details month to date  booking
 document.addEventListener('DOMContentLoaded', function () {
     fetch('/admin/getmontlybooking') // Assuming this PHP script returns the data
         .then(response => response.json())
         .then(data => {
-
-            // console.log(data);
             // Extract labels and data from the response
-            const labels = data.labels; // ['January', 'February', 'March', 'April', 'May']
-            const revenue = data.data;  // [65, 59, 80, 81, 56]
+            const labels = data.labels; // e.g., ['1', '2', '3', '4', ...]
+            const revenue = data.data;  // e.g., [65, 59, 80, 81, ...]
 
             var options = {
                 series: [{
@@ -222,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     data: revenue
                 }],
                 chart: {
-                    type: 'area',
+                    type: 'line',
                     height: 350,
                     toolbar: {
                         show: false
@@ -230,6 +228,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 xaxis: {
                     categories: labels,
+                    title: {
+                        text: 'Date of the Month',
+                        style: {
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            color: '#333'
+                        }
+                    },
                     axisBorder: {
                         show: false
                     },
@@ -241,6 +247,103 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 },
                 yaxis: {
+                    title: {
+                        text: 'Booking Count',
+                        style: {
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            color: '#333'
+                        }
+                    },
+                    labels: {
+                        formatter: function (value) {
+                            return value;
+                        }
+                    },
+                    axisBorder: {
+                        show: false
+                    },
+                    axisTicks: {
+                        show: false
+                    }
+                },
+                grid: {
+                    show: true,
+                    borderColor: '#e0e0e0',
+                },
+                fill: {
+                    type: 'solid',
+                    colors: ['#21b0d3']
+                },
+                stroke: {
+                    show: true,
+                    curve: 'smooth',
+                    colors: ['#ff8c1a'],
+                    width: 2
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                tooltip: {
+                    enabled: true
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#monthlyRevenueChart"), options);
+            chart.render();
+        });
+});
+
+// get chart details today income booking
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('/admin/gettodayincomebooking') // Assuming this PHP script returns the data
+        .then(response => response.json())
+        .then(data => {
+            // Extract labels and data from the response
+            const labels = data.labels; // e.g., ['1', '2', '3', '4', ...]
+            const revenue = data.data;  // e.g., [65, 59, 80, 81, ...]
+
+            var options = {
+                series: [{
+                    name: 'Today Income Booking',
+                    data: revenue
+                }],
+                chart: {
+                    type: 'line',
+                    height: 350,
+                    toolbar: {
+                        show: false
+                    }
+                },
+                xaxis: {
+                    categories: labels,
+                    title: {
+                        text: 'Today',
+                        style: {
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            color: '#333'
+                        }
+                    },
+                    axisBorder: {
+                        show: false
+                    },
+                    axisTicks: {
+                        show: false
+                    },
+                    labels: {
+                        rotate: -45
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: 'Booking Count',
+                        style: {
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            color: '#333'
+                        }
+                    },
                     labels: {
                         formatter: function (value) {
                             return value;
@@ -275,7 +378,186 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             };
 
-            var chart = new ApexCharts(document.querySelector("#monthlyRevenueChart"), options);
+            var chart = new ApexCharts(document.querySelector("#TodayIncomeBookingChart"), options);
+            chart.render();
+        });
+});
+
+
+// get chart details month to date  booking revenue
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('/admin/getcurrentmonthrevenue') // Assuming this PHP script returns the data
+        .then(response => response.json())
+        .then(data => {
+            // Extract labels and data from the response
+            const labels = data.labels; // e.g., ['1', '2', '3', '4', ...]
+            const revenue = data.data;  // e.g., [65, 59, 80, 81, ...]
+
+            var options = {
+                series: [{
+                    name: 'Month to date Revenue',
+                    data: revenue
+                }],
+                chart: {
+                    type: 'line',
+                    height: 350,
+                    toolbar: {
+                        show: false
+                    }
+                },
+                xaxis: {
+                    categories: labels,
+                    title: {
+                        text: 'Date of the Month',
+                        style: {
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            color: '#333'
+                        }
+                    },
+                    axisBorder: {
+                        show: false
+                    },
+                    axisTicks: {
+                        show: false
+                    },
+                    labels: {
+                        rotate: -45
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: 'Booking Revenue',
+                        style: {
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            color: '#333'
+                        }
+                    },
+                    labels: {
+                        formatter: function (value) {
+                            return value;
+                        }
+                    },
+                    axisBorder: {
+                        show: false
+                    },
+                    axisTicks: {
+                        show: false
+                    }
+                },
+                grid: {
+                    show: true,
+                    borderColor: '#e0e0e0',
+                },
+                fill: {
+                    type: 'solid',
+                    colors: ['#21b0d3']
+                },
+                stroke: {
+                    show: true,
+                    curve: 'smooth',
+                    colors: ['#00e64d'],
+                    width: 2
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                tooltip: {
+                    enabled: true
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#monthtoDateBookingRevenueChart"), options);
+            chart.render();
+        });
+});
+
+// get chart details today revenue
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('/admin/gettodayincomerevenue') // Assuming this PHP script returns the data
+        .then(response => response.json())
+        .then(data => {
+            // Extract labels and data from the response
+            const labels = data.labels; // e.g., ['1', '2', '3', '4', ...]
+            const revenue = data.data;  // e.g., [65, 59, 80, 81, ...]
+
+            var options = {
+                series: [{
+                    name: 'Today Revenue',
+                    data: revenue
+                }],
+                chart: {
+                    type: 'line',
+                    height: 350,
+                    toolbar: {
+                        show: false
+                    }
+                },
+                xaxis: {
+                    categories: labels,
+                    title: {
+                        text: 'Today',
+                        style: {
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            color: '#333'
+                        }
+                    },
+                    axisBorder: {
+                        show: false
+                    },
+                    axisTicks: {
+                        show: false
+                    },
+                    labels: {
+                        rotate: -45
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: 'Today Booking Revenue',
+                        style: {
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            color: '#333'
+                        }
+                    },
+                    labels: {
+                        formatter: function (value) {
+                            return value;
+                        }
+                    },
+                    axisBorder: {
+                        show: false
+                    },
+                    axisTicks: {
+                        show: false
+                    }
+                },
+                grid: {
+                    show: true,
+                    borderColor: '#e0e0e0',
+                },
+                fill: {
+                    type: 'solid',
+                    colors: ['#21b0d3']
+                },
+                stroke: {
+                    show: true,
+                    curve: 'smooth',
+                    colors: ['#ff3333'],
+                    width: 2
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                tooltip: {
+                    enabled: true
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#TodayIncomeBookingRevenueChart"), options);
             chart.render();
         });
 });

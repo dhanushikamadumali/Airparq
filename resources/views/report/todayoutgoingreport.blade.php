@@ -3,7 +3,7 @@
 <div class="container">
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Current Month Report</h3>
+            <h3 class="fw-bold mb-3">Today Outgoing Report</h3>
                 <ul class="breadcrumbs mb-3">
                     <li class="separator">
                         <i class="icon-arrow-right"></i>
@@ -17,7 +17,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                         <a href="{{asset('admin/currentmonthpdf')}}">
+                         <a href="{{asset('admin/todayoutgoingpdf')}}">
                             <button class="btn page_btn" >
                                     PDF
                             </button>
@@ -35,12 +35,12 @@
                             </tr>
                             </thead>
                             <tbody>
-                              @foreach ($currentmonthbookinglists as $currentmonthbookinglist)
+                              @foreach ($todayoutgoingbookinglists as $todayoutgoingbookinglist)
                             <tr>
-                                <td>{{$currentmonthbookinglist->booking_code}}</td>
-                                <td>{{$currentmonthbookinglist->first_name}} {{$currentmonthbookinglist->last_name}}</td>
-                                 <td>{{$currentmonthbookinglist->email}}</td>
-                                <td>{{$currentmonthbookinglist->phone_no}}</td>
+                                 <td>{{$todayoutgoingbookinglist->booking_code}}</td>
+                                <td>{{$todayoutgoingbookinglist->first_name}} {{$todayoutgoingbookinglist->last_name}}</td>
+                                <td>{{$todayoutgoingbookinglist->email}}</td>
+                                <td>{{$todayoutgoingbookinglist->phone_no}}</td>
                             </tr>
                             @endforeach
                             </tbody>

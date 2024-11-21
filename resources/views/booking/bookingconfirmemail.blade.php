@@ -46,24 +46,20 @@ For what reason would it be advisable for me to think about business content? Th
     <tr>
         <td align="center" style="background-color: #eeeeee;" bgcolor="#eeeeee">
         <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
-              <tr>
-                <td align="center" valign="top" style="font-size:0; padding: 35px;" bgcolor="#1a2035">
-                <div style="display:inline-block; max-width:50%; min-width:100px; vertical-align:top; width:100%;">
-                     <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
-                        <tr>
-                            <td align="center">
-                                 <td align="center" valign="top" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 36px; font-weight: 800; line-height: 48px;" class="mobile-center">
-                                    <!-- Middle column with the image -->
-                                    <img src="{{ asset('assets/img/whitepng.png') }}" style="width:250px; height:60px; display: block; margin: 0 auto;" />
-                                </td>
+             <tr>
+                <td align="center" valign="top" style="font-size:0; padding: 10px; height: 50px;" bgcolor="#FFD31C">
+                 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
+                    <tr>
+                             <td align="center" valign="top" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 36px;" class="mobile-center">
+                                <!-- Middle column with the image -->
+                                <img src="{{ asset('assets/img/logo.jpg') }}" style="width:250px; display: block; margin: 0 auto;" />
                             </td>
-                        </tr>
-                    </table>
-                </div>
+                    </tr>
+                </table>
                 </td>
             </tr>
             <tr>
-                <td align="center" style="padding: 35px 35px 20px 35px; background-color: #ffffff;" bgcolor="#ffffff">
+                <td align="center" style="background-color: #ffffff;" bgcolor="#ffffff">
                 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
                     <tr>
                         <td align="center" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 25px;">
@@ -74,7 +70,7 @@ For what reason would it be advisable for me to think about business content? Th
                         </td>
                     </tr>
                     <tr>
-                        <td align="left" style="padding-top: 20px;">
+                        <td align="left" style="padding: 35px; background-color: #ffffff;" bgcolor="#ffffff">
                             <table cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
                                     <td width="75%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;">
@@ -128,7 +124,7 @@ For what reason would it be advisable for me to think about business content? Th
                         </td>
                     </tr>
                     <tr>
-                        <td align="left" style="padding-top: 20px;">
+                        <td align="left" style="padding: 35px;">
                             <table cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px; border-top: 3px solid #eeeeee; border-bottom: 3px solid #eeeeee;">
@@ -173,7 +169,7 @@ For what reason would it be advisable for me to think about business content? Th
                                         <p style="text-align:justify">On your return, once you have collected your luggage and are about to clear Customs, please call the number provided when your car was dropped off.
                                         Make your way to the same place where you dropped the vehicle off, (Level 4 of the Short Stay car park) and your car will be ready and waiting for you in Row B next to the lift/pay machine</p>
                                         <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">Terminal 3 - sat-nav postcode: TW6 1QG</p>
-                                        <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">erminal 3 - Departure Instructions</p>
+                                        <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">Terminal 3 - Departure Instructions</p>
                                          <p style="text-align:justify">From the M25 exit at Junction 15, follow the signs for Terminals 1, 2 & 3 all the way round following onto the Western Perimeter Road.
                                         Go through the main tunnel to the Central Terminal Area for Terminals 1, 2 & 3.
                                         Exiting the tunnel, keep in the 1st lane and follow signs for Terminal 3 Short Stay Carpark (Carpark 3).
@@ -205,14 +201,25 @@ For what reason would it be advisable for me to think about business content? Th
                             </p>
                         </td>
                     </tr>
-                      <tr>
+                    <tr>
+                        <td align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 24px;">
+                            <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">
+                                If you didn't create an account using this email address, please ignore this email.
+                            </p>
+                            <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">
+                                If you have any questions or require further assistance, please don't hesitate to contact us at contact@airparq.co.uk or +44 7464 777258.
+                            </p>
+                            <p>Thank you for choosing Airpaq</p>
+                        </td>
+                    </tr>
+                    <tr>
                         <td align="center" style="padding: 35px; background-color: #ffffff;" bgcolor="#ffffff">
                         <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
                             <tr>
                                 <td align="center">
                                      <img
                                         src="{{ asset('assets/img/logo.jpg') }}"
-                                        width="40" height="40" style="display: block; border: 0px;"
+                                         style="display: block; border: 0px;height:20px"
                                     />
                                 </td>
                             </tr>
@@ -226,14 +233,7 @@ For what reason would it be advisable for me to think about business content? Th
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
-                                <td align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 24px;">
-                                    <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">
-                                        If you didn't create an account using this email address, please ignore this email.
-                                    </p>
-                                    <p>Thank You</p>
-                                </td>
-                            </tr>
+
                         </table>
                         </td>
                     </tr>

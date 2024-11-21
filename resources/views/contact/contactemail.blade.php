@@ -37,11 +37,6 @@ div[style*="margin: 16px 0;"] { margin: 0 !important; }
 </style>
 <body style="margin: 10 !important; padding: 0 !important; background-color: #eeeeee;" bgcolor="#eeeeee">
 
-
-{{-- <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: Open Sans, Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
-For what reason would it be advisable for me to think about business content? That might be little bit risky to have crew member like them.
-</div> --}}
-
 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding:10px;margin-top:60px;margin-bottom:60px">
     <tr>
         <td align="center" style="background-color: #eeeeee;" bgcolor="#eeeeee">
@@ -64,38 +59,42 @@ For what reason would it be advisable for me to think about business content? Th
                     <tr>
                         <td align="center" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 25px;">
                             <h2 style="font-size: 30px; font-weight: 800; line-height: 36px; color: #333333; margin: 0;">
-                                password Reset
+                                Frequently Asked Questions
                             </h2>
                         </td>
                     </tr>
                 </table>
                 </td>
             </tr>
-            <tr>
+                 <tr>
                 <td align="center" style="padding: 35px; background-color: #ffffff;" bgcolor="#ffffff">
                 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
-
-                    <tr>
-                        <td align="center" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 24px;">
-                            <p>
-                                 <p style="text-align:justify">You are receiving this mail because we received a password reset request for your account.</p>
-                                <a href="{{ route('validateresetpassword', ['token' => $token]) }}"
-                                   style="background-color:#212529; color: #ffffff; padding: 10px 20px; text-decoration: none; font-size: 16px; font-weight: bold; border-radius: 5px; display: inline-block;text-align: center">
-                                   Reset Password
-                                </a>
-                                <p style="text-align:justify">This password reset link will expire in 60 minutes.
-                                </p>
-                                <p style="text-align:justify">If you did not request a password reset no further action is required.</p>
-                            </p>
+                     <tr>
+                        <td width="75%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;">
+                            Name
+                        </td>
+                        <td width="25%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; padding: 10px;">
+                            {{$data['name']}}
                         </td>
                     </tr>
-                    <tr>
-                        <td align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 24px;">
-                             <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">
-                                If you have any questions or require further assistance, please don't hesitate to contact us at contact@airparq.co.uk or +44 7464 777258.
-                            </p>
-                            <p>Thank you</p>
+                     <tr>
+                        <td width="75%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;">
+                            Email
                         </td>
+                        <td width="25%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; padding: 10px;">
+                            {{$data['email']}}
+                        </td>
+                    </tr>
+                         <tr>
+                            <td width="75%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;">
+                                Massage
+                            </td>
+                            <td width="25%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; padding: 10px;">
+                                {{$data['comment']}}
+                            </td>
+                        </tr>
+                    </table>
+                    </td>
                     </tr>
                     <tr>
                         <td align="center" style="padding: 35px; background-color: #ffffff;" bgcolor="#ffffff">
@@ -118,6 +117,7 @@ For what reason would it be advisable for me to think about business content? Th
                                     </p>
                                 </td>
                             </tr>
+
                         </table>
                         </td>
                     </tr>
@@ -128,5 +128,6 @@ For what reason would it be advisable for me to think about business content? Th
         </td>
     </tr>
 </table>
+
 </body>
 </html>

@@ -10,9 +10,7 @@
         <div class="bg-content container">
             <div class="hero-page-title">
                 <span class="hero-sub-title">Contact Us</span>
-                <h1 class="display-3 hero-title crouselheding1" style="font-weight:600">
-                    Connect with AIRPARQ Today!
-                </h1>
+                <p class="display-3 hero-title crouselheding1" style="font-weight: 600;letter-spacing: -0.1px;" >Connect with AIRPARQ Today!</p>
             </div>
         </div>
     </section>

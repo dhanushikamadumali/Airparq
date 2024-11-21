@@ -1,4 +1,3 @@
-<link href="{{asset('account/img/logos/logo.png')}}" rel="shortcut icon" type="image/png">
 <!-- Fonts and icons -->
 <script src="{{asset('assets/js/plugin/webfont/webfont.min.js')}}"></script>
 <script>

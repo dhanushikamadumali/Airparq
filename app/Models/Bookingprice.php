@@ -22,4 +22,13 @@ class Bookingprice extends Pivot
 
     }
 
+      //all promocode details
+      public static function getAllPromoDetails($request)
+      {
+          $allbookingprice = Bookingprice::when($request->search, function ($query) use ($request) {
+                  $query->where('datecount', 'LIKE', '%' . $request->search . '%');
+              });
+          return $allbookingprice;
+      }
+
 }
