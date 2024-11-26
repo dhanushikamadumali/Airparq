@@ -37,8 +37,33 @@ class BookingController extends Controller
      */
     public function index(Request $request)
     {
-        $allbookinglists = Booking::getCustomerByBookingId($request)->paginate(6);
-        return view('booking.index',compact('allbookinglists'));
+        if ($request->has('search') || $request->has('status')) {
+            // Check if status is set
+            if ($request->has('status')) {
+                // Validate the status to ensure it's either 0 or 1
+                $status = in_array($request->status, [0, 1]) ? $request->status : null;
+            }
+            $allbookinglists = Booking::with('customer:id,first_name,email,phone_no')
+                ->when($request->search, function ($query) use ($request) {
+                    $query->where(function ($query) use ($request) {
+                        $query->where('booking_code', 'LIKE', '%' . $request->search . '%')
+                              ->orWhereHas('customer', function ($query) use ($request) {
+                                  $query->where('first_name', 'LIKE', '%' . $request->search . '%');
+                              });
+                    });
+                })
+                ->when(isset($status), function ($query) use ($status) {
+                    $query->where('status', $status); // Filter by status if provided
+                })
+                ->orderBy('created_at', 'desc')
+                ->paginate(6);
+        } else {
+            // Default: Show all bookings if no filters are applied
+            $allbookinglists = Booking::with('customer:id,first_name,email,phone_no')
+                ->orderBy('created_at', 'desc')
+                ->paginate(6);
+        }
+        return view('booking.index', compact('allbookinglists'));
     }
     /**
      * Store a newly created resource in storage.
@@ -97,7 +122,6 @@ class BookingController extends Controller
 
     public function handlePaymentSuccess(Request $request)
     {
-
         $session_id = $request->input('session_id');
         $bookingData = session('booking_data');
 
@@ -242,12 +266,9 @@ class BookingController extends Controller
                 $booking->phone_no,
             ];
         });
-
         // Return as JSON
         return response()->json(['data' => $data]);
     }
-
-
      /**
      * date filter .
      */

@@ -56,7 +56,7 @@
                 <div class="d-xl-flex align-items-xl-center pb-4">
                     <div class="block-title me-auto">
                         <small class="sub-title ">How It Works</small>
-                          <h1 class="headingtitle">Arrival</h1>
+                          <h1 class="headingtitle undelinetitle">Arrival</h1>
                     </div>
                 </div>
                 <!-- /Title -->
@@ -127,7 +127,7 @@
                    <div class="d-xl-flex align-items-xl-center pb-4">
                         <div class="block-title me-auto">
                             <small class="sub-title">How It Works</small>
-                             <h1 class="headingtitle">Return</h2>
+                             <h1 class="headingtitle undelinetitle">Return</h2>
                              {{-- <img src="{{asset('assets/img/line.png')}}"  alt="" style="width:300px;height:30px" /> --}}
                         </div>
                     </div>
@@ -170,7 +170,7 @@
                 <div class="d-xl-flex align-items-xl-center pb-4">
                     <div class="block-title me-auto">
                          <small class="sub-title">Why Coose Us</small>
-                         <h1 class="headingtitle">Why AIRPARQ Stands Out</h2>
+                         <h1 class="headingtitle undelinetitle">Why AIRPARQ Stands Out</h2>
                     </div>
                 </div>
                 <!-- /Title -->

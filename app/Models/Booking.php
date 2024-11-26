@@ -44,19 +44,21 @@ class Booking extends Pivot
     public static function getCustomerByBookingId($request)
     {
         $allbooking = Booking::with('customer:id,first_name,email,phone_no')
-            ->when($request->search, function ($query) use ($request) {
-                $query->where(function ($query) use ($request) {
-                    $query->where('booking_code', 'LIKE', '%' . $request->search . '%')
-                          ->orWhereHas('customer', function ($query) use ($request) {
-                              $query->where('first_name', 'LIKE', '%' . $request->search . '%');
-                          });
-                });
-            })
+        ->when($request->search, function ($query) use ($request) {
+            $query->where(function ($query) use ($request) {
+                $query->where('booking_code', 'LIKE', '%' . $request->search . '%')
+                      ->orWhereHas('customer', function ($query) use ($request) {
+                          $query->where('first_name', 'LIKE', '%' . $request->search . '%');
+                      });
+            });
+        })
+        ->when($request->status, function ($query) use ($request) {
+            $query->where('status', $request->status);
+        })
+        ->orderBy('created_at', 'desc') // Sorts results by the latest booking
+       ;
 
-            ->orderBy('created_at', 'desc') // Sorts results by the latest booking
-           ;
-
-        return $allbooking;
+    return $allbooking;
 
 
     }

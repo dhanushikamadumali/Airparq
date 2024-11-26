@@ -82,11 +82,6 @@
                     <span class="sub-item">Today Outcoming Bookings</span>
                   </a>
                 </li>
-                 <li>
-                  <a href="{{route('statusfilterbooking')}}">
-                    <span class="sub-item">Status Filter</span>
-                  </a>
-                </li>
               </ul>
             </div>
           </li>

@@ -59,7 +59,7 @@
                 <div class="block-title me-auto">
                     <div class="block-title me-auto">
                         <small class="sub-title" >Great experience</small>
-                        <h1 class="headingtitle">Why choose us</h1>
+                        <h1 class="headingtitle undelinetitle">Why choose us</h1>
                     </div>
                 </div>
             </div>

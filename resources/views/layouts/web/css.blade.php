@@ -274,5 +274,28 @@
         }
     }
 
+     .undelinetitle {
+        position: relative;
+        font-size: 24px; /* Adjust font size as needed */
+        display: inline-block;
+      }
+
+      .undelinetitle::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -2px; /* Adjust position below the text */
+        width: 100%;
+        height: 5px; /* Adjust thickness of the underline */
+        background: linear-gradient(to right, #ff7e5f, #feb47b); /* Define your gradient colors */
+        transform-origin: left;
+        transform: scaleX(1);
+        transition: transform 0.3s ease;
+        border-radius: 10px; /* Rounds both left and right ends */
+      }
+
+      .undelinetitle:hover::after {
+        transform: scaleX(1.2); /* Add hover effect if desired */
+      }
 
 </style>

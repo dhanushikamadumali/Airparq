@@ -272,7 +272,8 @@
                 <div class="d-xl-flex align-items-xl-center pb-4">
                     <div class="block-title me-auto">
                         <small class="sub-title" >Why AIRPARQ</small>
-                        <h1 class="headingtitle">Meet & Greet Airport Parking?</h1>
+                        <div class="headingtitle undelinetitle">Meet & Greet Airport Parking?</div>
+                        {{-- <div class="a">This is some text with an underline.</div> --}}
                     </div>
                 </div>
                 <!-- /Title -->
@@ -324,7 +325,7 @@
             <!-- Title -->
             <div class="d-xl-flex align-items-xl-center pb-4">
                 <div class="block-title me-auto">
-                    <h2 class="headingtitle">How does it work?</h2>
+                    <h2 class="headingtitle undelinetitle">How does it work?</h2>
                 </div>
             </div>
             <!-- /Title -->
@@ -437,7 +438,7 @@
                       <!-- Content -->
                     <div class="mb-5">
                         <div class="block-title">
-                             <h2 class="headingtitle">Frequently Asked Questions</h2>
+                             <h2 class="headingtitle ">Frequently Asked Questions</h2>
                         </div>
                         <div class="accordion accordion-flush accordion-why mb-4" id="acdWhy">
                             <div class="accordion-item " style="background-color:#0E233E;color:#fff">

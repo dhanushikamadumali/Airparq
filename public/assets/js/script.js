@@ -767,3 +767,10 @@ function bookingdetailscancle(x){
 
 }
 // booking cancle end
+
+document.getElementById('filter-form').addEventListener('submit', function (e) {
+    const url = new URL(this.action);
+    url.searchParams.delete('page'); // Remove 'page' parameter to reset pagination
+    this.action = url.toString();
+});
+

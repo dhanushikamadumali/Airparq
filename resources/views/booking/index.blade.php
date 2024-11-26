@@ -36,7 +36,13 @@
                               <div class="col-md-5">
                                 <input type="text" class="form-control" value="" name="search" id="search"  placeholder="Search.."/>
                             </div>
-                            
+                            <div class="col-md-3">
+                                 <select class="form-control form-select dropdown-select shadow-sm" id="status" name="status">
+                                    <option value>Select Status</option>
+                                    <option value="1">Completed</option>
+                                    <option value="0">Cancle</option>
+                                </select>
+                            </div>
                             <div class="col-md-2">
                                 <button type="submit" class="btn page_btn searchbtn" style="width:100%" >
                                         Search
@@ -96,7 +102,8 @@
                             @endforeach
                             </tbody>
                         </table>
-                            {{$allbookinglists->links() }}
+                            {{ $allbookinglists->links() }}
+
                         </div>
                     </div>
                 </div>
