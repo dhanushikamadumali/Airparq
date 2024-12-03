@@ -386,7 +386,7 @@
         <!-- /Shopping cart -->
     </div>
     <!-- Why -->
-    <section class="p-top-90 p-bottom-90 " data-aos="fade">
+    <section class="p-top-50 p-bottom-50 " data-aos="fade">
         <div class="container">
             <div class="row g-0">
                 <div class="col-12 col-xl-1 order-0 order-xl-1"></div>

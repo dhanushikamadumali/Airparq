@@ -7,7 +7,7 @@
                 <div class="col-12 col-xl-3 col-md-6">
                     <!-- Brand -->
                     <div class="footer-widget ">
-                        <a href="{{route('/')}}" class="brand-img aboutus">
+                        <a href="{{route('/')}}" class="brand-img">
                               @if(empty($csetting) || empty($csetting['image']))
                                 <img
                                     src="{{ asset('assets/img/logo.png') }}"
@@ -61,7 +61,7 @@
                 </div>
                 <div class="col-12 col-xl-3 col-md-6">
                     <!-- Quick Links -->
-                    <div class="footer-widget aboutus">
+                    <div class="footer-widget">
                         <h2 class="h4 pb-3" style="font-size:20px ">Company</h2>
                         <ul class="footer-link">
                             <li class="link-item">
@@ -78,7 +78,7 @@
                     <!-- /Quick Links -->
                 </div>
                 <div class="col-12 col-xl-3 col-md-6">
-                    <div class="footer-widget aboutus">
+                    <div class="footer-widget">
                         <h2 class="h4 pb-3" style="font-size:20px">Polices</h2>
                           <ul class="footer-link">
                             <li class="link-item">
@@ -91,7 +91,7 @@
                     </div>
                 </div>
                  <div class="col-12 col-xl-3 col-md-6">
-                    <div class="footer-widget aboutus">
+                    <div class="footer-widget">
                         <h2 class="h4 pb-3" style="font-size:20px">Follow Us</h2>
                           <ul class="footer-link">
                             <li class="link-item">

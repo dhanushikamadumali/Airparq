@@ -193,11 +193,9 @@
 
 
 
-     <div class="p-top-50 p-bottom-90 bg-gray-gradient " data-aos="fade" id="terminalview" style="margin-top:20px">
+     <div class="p-top-50 p-bottom-50 bg-gray-gradient " data-aos="fade" id="terminalview" style="margin-top:20px">
         <!-- Shopping cart -->
         <section class="container" id="step1">
-
-
               <!-- /Book tour -->
             @if($allterminallists !== null && count($allterminallists) > 0)
 

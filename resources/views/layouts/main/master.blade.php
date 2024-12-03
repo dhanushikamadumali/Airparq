@@ -17,11 +17,13 @@
     {{-- notify css --}}
     @notifyCss
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
     {{-- script --}}
     <script src="{{asset('assets/js/script.js')}}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
    {{-- css --}}
    @include('layouts.main.css')
   </head>

@@ -16,12 +16,12 @@
     </section>
     <!-- /Title -->
     <!-- About -->
-    <section class="bg-gray-gradient p-bottom-90" data-aos="fade">
+    <section class="bg-gray-gradient p-bottom-50" data-aos="fade">
         <div class="container">
             <div class="row">
                 <div class="col-12 col-xl-6">
                     <!-- Contac Information -->
-                    <div class="p-top-90 mb-4">
+                    <div class="p-top-50 mb-4">
                         <div class="border-bottom pb-4 mb-4">
                             <h1 class="headingtitle">Ready to help you!</h1>
                         </div>

@@ -57,6 +57,8 @@ Route::prefix('account')->group(function () {
 
     Route::get('/success', [App\Http\Controllers\BookingController::class, 'handlePaymentSuccess'])->name('success');
 
+
+
     // Guest routes (for customers who are not logged in)
     Route::middleware('guest:account')->group(function() {
         // Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])->name('customer.login');
@@ -118,7 +120,15 @@ Route::prefix('admin')->group(function(){
         Route::post('/uploadvehiclephoto',[App\Http\Controllers\BookingController::class,'uploadvehiclephoto'])->name('uploadvehiclephoto');
         Route::post('/upload',[App\Http\Controllers\BookingController::class, 'upload'])->name('upload');
 
-        });
+
+        Route::get('/viewbooking/{id}', [App\Http\Controllers\BookingController::class, 'viewBooking'])->name('viewbooking');
+
+        Route::get('/get-images/{id}', [App\Http\Controllers\BookingController::class, 'getImages'])->name('getImages');
+
+          // booking details
+        Route::get('/zoomimage/{id}',[App\Http\Controllers\BookingController::class,'zoomimage'])->name('zoomimage');
+
+    });
     Route::middleware([AdminMiddleware::class . ':admin'])->group(function () {
         // booking details
         Route::get('/editbooking/{id}',[App\Http\Controllers\BookingController::class,'edit'])->name('editbooking');

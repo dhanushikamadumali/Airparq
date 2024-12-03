@@ -481,4 +481,20 @@ class BookingController extends Controller
 
 
 
+    public function zoomimage(Booking $booking,$id)
+    {
+        $booking = $booking::editbookingdetailsbyid(Crypt::decryptString($id));
+        if (isset($booking[0]->image) && !empty($booking[0]->image)) {
+            $images = json_decode($booking[0]->image, true);
+            $firstImage = $images[0] ?? null; // Get the first image or null if none exist
+
+        } else {
+            $images = [];
+            $firstImage = null;
+        }
+        return response()->json([
+            'images' => $images,
+            'firstImage' => $firstImage,
+        ]);
+    }
 }

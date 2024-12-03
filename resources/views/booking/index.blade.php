@@ -97,13 +97,21 @@
                                     <button class="btn p-0 delete" onclick="bookingdetailsdelete('{{Crypt::encryptString($allbookinglist->id)}}')">
                                     <i class="fa fa-times deletebtn"></i>
                                     </button>
+                                    <button
+                                        type="button"
+                                        class="btn p-0"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#zoomImageModal"
+                                        onclick="loadZoomImage('{{ route('zoomimage', Crypt::encryptString($allbookinglist->id)) }}')">
+                                        <i class="fa-solid fa-image" style="color:#660066"></i>
+                                    </button>
+
                                 </td>
                             </tr>
                             @endforeach
                             </tbody>
                         </table>
                             {{ $allbookinglists->links() }}
-
                         </div>
                     </div>
                 </div>
@@ -111,6 +119,30 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+
+
+<!-- Button to Launch Modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="zoomImageModal" tabindex="-1" aria-labelledby="zoomImageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="zoomImageModalLabel">Image View</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Dynamic content will be loaded here -->
+        <div id="zoomImageContent">
+          <p>Loading...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- Modal for Camera -->
 <div id="cameraModal" class="modal fade" tabindex="-1" role="dialog">
@@ -136,12 +168,115 @@
     </div>
 </div>
 
-<!-- Hidden form for uploading photos -->
-{{-- <form id="upload-form">
-    @csrf
-    <input type="hidden" name="row_id" id="row_id">
-    <input type="hidden" name="photos" id="photos">
-</form> --}}
+
+
 
 @endsection
+
+<script>
+    function loadZoomImage(route) {
+        const zoomImageContent = document.getElementById('zoomImageContent');
+
+        // Show loading indicator
+        zoomImageContent.innerHTML = '<p>Loading...</p>';
+
+        // Fetch the data from the server
+        fetch(route)
+            .then(response => response.json())
+            .then(data => {
+                const { images, firstImage } = data;
+
+                if (!images || images.length === 0) {
+                    zoomImageContent.innerHTML = '<p>No images available.</p>';
+                    return;
+                }
+
+                // Construct asset path base
+                const assetPath = "{{ asset('assets/vehicleimage') }}/";
+
+                // Build the modal content with zoom functionality
+                const thumbnails = images.map(image => `
+                    <img
+                        src="${assetPath}${image}"
+                        alt="Thumbnail"
+                        class="thumbnail"
+                        style="width: 100px; height: 100px; padding: 10px; cursor: pointer;"
+                        onclick="updateLargeImage('${assetPath}${image}')"
+                    >
+                `).join('');
+
+                const firstImagePath = firstImage ? `${assetPath}${firstImage}` : '';
+
+                zoomImageContent.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <div class="zoom-container">
+                                    <div id="imageZoom" style="
+                                        --url:url('${firstImagePath}');
+                                        --zoom-x: 0%; --zoom-y: 0%;
+                                        --display: none;">
+                                        <img src="${firstImagePath}" alt="" style="width: 100%; height: auto;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+
+                                <div class="d-flex flex-wrap">
+                                    ${thumbnails}
+                                </div>
+
+                        </div>
+                    </div>
+                `;
+            })
+            .catch(error => {
+                console.error('Error loading image data:', error);
+                zoomImageContent.innerHTML = '<p>Error loading content. Please try again.</p>';
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Function to update the large image and reset styles
+        window.updateLargeImage = (imageSrc) => {
+            const imageZoom = document.getElementById('imageZoom');
+            if (imageZoom) {
+                imageZoom.style.setProperty('--url', `url(${imageSrc})`);
+                imageZoom.style.setProperty('--display', 'none'); // Ensure zoom is hidden initially
+
+                const imgElement = imageZoom.querySelector('img');
+                if (imgElement) {
+                    imgElement.src = imageSrc;
+                }
+            }
+        };
+
+        // Zoom behavior for the modal
+        document.body.addEventListener('mousemove', (event) => {
+            const imageZoom = document.getElementById('imageZoom');
+            if (imageZoom && imageZoom.contains(event.target)) {
+                imageZoom.style.setProperty('--display', 'block');
+
+                const pointer = {
+                    x: (event.offsetX * 100) / imageZoom.offsetWidth,
+                    y: (event.offsetY * 100) / imageZoom.offsetHeight,
+                };
+
+                imageZoom.style.setProperty('--zoom-x', `${pointer.x}%`);
+                imageZoom.style.setProperty('--zoom-y', `${pointer.y}%`);
+            }
+        });
+
+        document.body.addEventListener('mouseout', (event) => {
+            const imageZoom = document.getElementById('imageZoom');
+            if (imageZoom && imageZoom.contains(event.target)) {
+                imageZoom.style.setProperty('--display', 'none');
+            }
+        });
+    });
+
+
+
+</script>
 

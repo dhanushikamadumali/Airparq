@@ -84,20 +84,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-      document.getElementById('form_view').addEventListener('click', function() {
+    document.getElementById('form_view').addEventListener('click', function() {
         var bookingForm = document.getElementById('booking_details_form');
         var terminalView = document.getElementById('terminalview');
+          var step1 = document.getElementById('step1');
         // Toggle form visibility
         if (bookingForm.classList.contains('d-none')) {
             bookingForm.classList.remove('d-none');
-            terminalView.classList.add('d-none');
+            terminalView.style.visibility = 'hidden';
+            step1.style.display = 'none'
             this.textContent = 'Show Terminal';
+
+            // Add margin-bottom: 0 when the booking form is shown
+            bookingForm.style.marginBottom = '0';
         } else {
             bookingForm.classList.add('d-none');
-            terminalView.classList.remove('d-none');
+            terminalView.style.display = 'block'; // Show terminalview again
             this.textContent = 'Amend';
+
+            // Optionally, reset margin-bottom when the form is hidden
+            bookingForm.style.marginBottom = ''; // Reset to default
         }
     });
+
 
     document.addEventListener('DOMContentLoaded', function() {
         const chooseButtons = document.querySelectorAll('.choose-terminal');

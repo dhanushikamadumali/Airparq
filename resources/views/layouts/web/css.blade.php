@@ -18,8 +18,6 @@
         }
        /* Media query for mobile view (up to 768px) */
     @media (max-width: 768px) {
-
-
         .nav-link.active span {
             color: #EBC51E; /* Set the color you want for mobile view */
         }
@@ -85,14 +83,14 @@
         #terminalview {
             display: block;
         }
+        
         #booking_detailsform {
             display: none; /* Hide the booking form by default */
+            margin-bottom:0px;
         }
          #form_view1 {
             display: block; /* Show on mobile */
         }
-
-
     }
     @media (min-width: 1200px) {
          /*home page booking form*/
@@ -228,11 +226,7 @@
         animation-timeline:view();
         animation-range: cover 25% cover 40%;
     }
-     .aboutus{
-        animation: zoomIn 2s ease-in-out forwards;
-        animation-timeline:view();
-        animation-range: cover 25% cover 40%;
-    }
+
     .headingtitle{
         animation: leftIn 2s ease-in-out forwards;
 

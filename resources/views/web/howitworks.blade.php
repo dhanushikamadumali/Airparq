@@ -16,14 +16,14 @@
         </section>
         <!-- /Title -->
         <!-- About -->
-        <section class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade">
+        <section class="p-top-50 p-bottom-50 bg-gray-gradient" data-aos="fade">
             <div class="container">
                 <div class="row g-0">
                     <div class="col-12 col-xl-6 order-1 order-xl-0">
                         <!-- Image -->
-                        <div class="image-info image-info-vertical me-xl-5 aboutus">
+                        <div class="image-info me-xl-5 aboutus">
                             <div class="image-center rounded">
-                                <img src="{{asset('account/img/img41.jpg')}}" style="height:350px;width:450px" alt="">
+                                <img src="{{asset('account/img/img41.jpg')}}" style="height:350px;width:500px" alt="">
                             </div>
                         </div>
                         <!-- /Image -->
@@ -36,10 +36,10 @@
                                     <h1 class="headingtitle">Celebrate Effortless Travel</h1>
                                 </div>
                             </div>
-                            <p  class="descriptionpara" style="font-size:15px;text-align: justify">
+                            <p  class="descriptionpara" style="font-size:15px">
                                 Experience unparalleled convenience with AIRPARQ'S Meet & Greet parking service, where every detail is meticulously crafted to elevate your travel experience. Whether you're commencing your journey from or returning to Heathrow Airport's Terminals 2, 3, 4, or 5, our streamlined parking process ensures a seamless transition from curb to terminal..
                             </p>
-                            <p class="descriptionpara" style="font-size:15px;text-align: justify">
+                            <p class="descriptionpara" style="font-size:15px">
                                 With our dedicated team of professionals at your service, rest assured that your vehicle will be securely parked while you embark on your travels. Say goodbye to the hassle of searching for parking spaces and navigating crowded airport lots—trust AIRPARQ to start your journey with ease and efficiency.</small>
                             </p>
                         </div>
@@ -50,7 +50,7 @@
         </section>
         <!-- /About -->
         <!-- Categories -->
-        <section class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade">
+        <section class="p-top-50 p-bottom-50 bg-gray-gradient" data-aos="fade">
             <div class="container">
                 <!-- Title -->
                 <div class="d-xl-flex align-items-xl-center pb-4">
@@ -164,7 +164,7 @@
         </section>
         <!-- /Categories -->
          <!-- Tour types -->
-        <section class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade">
+        <section class="p-top-50 p-bottom-50 bg-gray-gradient" data-aos="fade">
             <div class="container">
                 <!-- Title -->
                 <div class="d-xl-flex align-items-xl-center pb-4">

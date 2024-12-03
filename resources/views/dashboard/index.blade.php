@@ -150,14 +150,19 @@
               <div class="col col-stats ms-3 ms-sm-0">
                  <div class="numbers">
                   <p class="card-category">Repeat Customer Current Month </p>
-                  <h4 class="card-title">{{$currentmonthrepeatecustomer[0]['total_count']}}</h4>
+                  <h4 class="card-title">
+                    @if($currentmonthrepeatecustomer == null || count($currentmonthrepeatecustomer) == 0)
+                        0
+                    @else
+                        {{$currentmonthrepeatecustomer[0]['total_count']}}
+                    @endif
+                  </h4>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
     </div>
     <div class="row">
         <div class="col-md-6">
@@ -165,11 +170,9 @@
           <div class="card-header">
             <div class="card-head-row">
               <div class="card-title">Month to date bookings</div>
-
             </div>
           </div>
             <!-- Canvas for the daily sales chart -->
-
             <!-- Legend Container (if needed) -->
             <div id="monthlyRevenueChart"></div>
         </div>
