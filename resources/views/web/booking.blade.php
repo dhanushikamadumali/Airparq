@@ -16,7 +16,7 @@
         </div>
         </div>
     </section>
-    <section id="booking_details_form" class="d-none d-md-block"  class="hero">
+    <section id="booking_details_form" class="d-none d-md-block"  class="hero" style="margin-bottom:30px">
         <div class="bg-content container" style="padding-top:30px">
             {{-- <div class="" > --}}
                 <div class="row g-0 justify-content-between">
@@ -190,15 +190,10 @@
             {{-- </div> --}}
         </div>
     </section>
-
-
-
-     <div class="p-top-50 p-bottom-50 bg-gray-gradient " data-aos="fade" id="terminalview" style="margin-top:20px">
-        <!-- Shopping cart -->
+     <div class="p-top-50 p-bottom-50 bg-gray-gradient" id="terminalview" style="margin-top:20px">        <!-- Shopping cart -->
         <section class="container" id="step1">
               <!-- /Book tour -->
             @if($allterminallists !== null && count($allterminallists) > 0)
-
              <div class="row g-3 g-xl-4">
                  @foreach ($allterminallists as $terminallist)
                 <div class="col-12 col-xl-3 col-md-6">
@@ -211,7 +206,7 @@
                             <p style="text-align: justify;font-size:15px">{{$terminallist->description}}</p>
                              <div style="display: flex;align-items: center;width: 100%;">
                                 <div style="font-weight:bold;font-size:30px">
-                                    £{{$tPrice ?? 50.99}}
+                                    £{{ round($tPrice ?? 50.99, 2) }}
                                 </div>
                                 <button type="button" class="btn btn-primary  choose-terminal" style="font-size:12px;margin-left:50px" value="{{$terminallist->id}}">
                                     CHOOSE

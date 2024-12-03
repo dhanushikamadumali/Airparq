@@ -284,13 +284,11 @@ class BookingController extends Controller
         $from_date = $request->input('from_date');
         $to_date = $request->input('to_date');
         $filterdata =Booking::getfilterdatedetails($from_date,$to_date);
-
         // Transform data into the format required by DataTables
         $data =  $filterdata->map(function($booking) {
             // Encrypt ID for the action URLs
             $encryptedId = Crypt::encryptString($booking->id);
             // Create HTML for action buttons
-
             $buttons = '
              <a href="' . route('editbooking', Crypt::encryptString($booking->id)) . '">
                 <i class="fa fa-edit editbtn"></i>
@@ -307,15 +305,29 @@ class BookingController extends Controller
             <button class="btn p-0 delete" onclick="bookingdetailsdelete(\'' . Crypt::encryptString($booking->id) . '\')">
                 <i class="fa fa-times deletebtn"></i>
             </button>
+              <button
+                type="button"
+                class="btn p-0"
+                data-bs-toggle="modal"
+                data-bs-target="#zoomImageModal"
+                 data-url="' . route('zoomimage', Crypt::encryptString($booking->id)) . '">
+                <i class="fa-solid fa-image" style="color:#660066"></i>
+            </button>
             ';
-
-
+            $statusBadge = '';
+            if ($booking->status == 0) {
+                $statusBadge = '<span class="badge badge-danger">Cancel</span>';
+            } elseif ($booking->status == 1) {
+                $statusBadge = '<span class="badge badge-success">Success</span>';
+            }
             return [
                 $booking->booking_code,
-                $booking->first_name." ". $booking->last_name,
+                $booking->first_name,
                 $booking->email,
                 $booking->phone_no,
+                $statusBadge,
                 $buttons
+
             ];
         });
 

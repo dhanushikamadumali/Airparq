@@ -65,7 +65,7 @@ class Booking extends Pivot
     public static  function getfilterstatusetails($status)
     {
         return DB::table('booking')
-            ->select('booking.id', 'booking.booking_code', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
+            ->select('booking.id', 'booking.booking_code','customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
             ->join('customer', 'booking.customer_id', '=', 'customer.id')
             ->where('status', '=', $status)
             ->orderByDesc('booking.id')
@@ -74,7 +74,7 @@ class Booking extends Pivot
     public static  function getfilterdatedetails($from_date, $to_date)
     {
         return DB::table('booking')
-            ->select('booking.id', 'booking.booking_code', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
+            ->select('booking.id', 'booking.booking_code','booking.status', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
             ->join('customer', 'booking.customer_id', '=', 'customer.id')
             ->whereDate('parking_from_date', '>=', $from_date)
             ->whereDate('parking_till_date', '<=', $to_date)

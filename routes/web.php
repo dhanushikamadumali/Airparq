@@ -120,12 +120,7 @@ Route::prefix('admin')->group(function(){
         Route::post('/uploadvehiclephoto',[App\Http\Controllers\BookingController::class,'uploadvehiclephoto'])->name('uploadvehiclephoto');
         Route::post('/upload',[App\Http\Controllers\BookingController::class, 'upload'])->name('upload');
 
-
-        Route::get('/viewbooking/{id}', [App\Http\Controllers\BookingController::class, 'viewBooking'])->name('viewbooking');
-
-        Route::get('/get-images/{id}', [App\Http\Controllers\BookingController::class, 'getImages'])->name('getImages');
-
-          // booking details
+        // booking details
         Route::get('/zoomimage/{id}',[App\Http\Controllers\BookingController::class,'zoomimage'])->name('zoomimage');
 
     });

@@ -171,7 +171,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6">
                                          <div class="form-group">
-                                            <label>Parking Till Time</label>
+                                            <label>Flight Arrival Date</label>
                                              <input type="text" class="form-control" id="flight_arrival_date"  name="flight_arrival_date" value="{{$booking[0]->flight_arrival_date}}" readonly/>
                                              @error('flight_arrival_date')
                                             <div style="color:red">{{$message}}</div>

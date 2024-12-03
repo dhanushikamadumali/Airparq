@@ -9,6 +9,10 @@
             font-size:30px;
             font-weight:bold;
         }
+        .bookingheadingtitle{
+            font-size:30px;
+            font-weight:bold;
+        }
         .cardtitle{
             font-size:1rem;
             font-weight:600;
@@ -83,7 +87,7 @@
         #terminalview {
             display: block;
         }
-        
+
         #booking_detailsform {
             display: none; /* Hide the booking form by default */
             margin-bottom:0px;
@@ -103,7 +107,7 @@
 
     /*navbar booking btn */
     .bookingbtn{
-        font-size:10px;
+        font-size:12px;
         border-radius:30px;
         border-top-right-radius:0;
         transition:0.5s;

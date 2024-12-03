@@ -1,8 +1,7 @@
 @extends('layouts.web.master')
 @section('content')
  <!-- Main -->
-<main>
-         <!-- Book tour -->
+<main>         <!-- Book tour -->
         <section id="book-tour" class="hero" data-aos="fade">
             <div class="bg-content container">
                 <div class="p-top-90 p-bottom-90">
@@ -13,7 +12,7 @@
                                   <div class="card border-0 shadow p-lg-2 bg-light-gray" >
                                     <div class="card-body">
                                         <div class="mb-4">
-                                            <h1 class="headingtitle">Secure Your Spot with AIRPARQ Today!</h1>
+                                            <h1 class="bookingheadingtitle">Secure Your Spot with AIRPARQ Today!</h1>
                                         </div>
                                         <form  class="row g-3" action="{{route('bookingdetailstep2')}}" method="post">
                                             @csrf

@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer class="footer p-top-90 p-bottom-90" data-aos="fade">
+<footer class="footer p-top-50 p-bottom-50">
     <!-- Footer top -->
     <div class="footer-top">
         <div class="container">

@@ -176,10 +176,8 @@
 <script>
     function loadZoomImage(route) {
         const zoomImageContent = document.getElementById('zoomImageContent');
-
         // Show loading indicator
         zoomImageContent.innerHTML = '<p>Loading...</p>';
-
         // Fetch the data from the server
         fetch(route)
             .then(response => response.json())

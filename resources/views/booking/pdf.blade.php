@@ -40,34 +40,29 @@
                                <p style="margin-top: 110px">{{$bookingdetails[0]->vehicle_reg}}</p>
                                <p> {{$bookingdetails[0]->vehicle_manufacturer}} {{$bookingdetails[0]->vehicle_model}}  {{$bookingdetails[0]->vehicle_color}}</p>
                                <p>{{$bookingdetails[0]->parking_till_time}}  {{$bookingdetails[0]->parking_till_date}}</p>
-
                            </div>
                     </div>
                     </div>
-
                     </div>
                     <!-- /Account -->
                 </div>
-
             </div>
-
     </div>
+     <!-- Cancel Button -->
+    <button class="btn btn-danger" onclick="cancelBooking()">Cancel</button>
     <input type="text" value="{{$bookingdetails[0]->id}}" name="ids" hidden="hidden">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
     <script>
         $(document).ready(function() {
             var printContents = document.getElementById('printableArea').innerHTML;
             var originalContents = document.body.innerHTML;
-
             document.body.innerHTML = printContents;
-
             window.print();
+            window.history.back();
         });
             document.body.innerHTML = originalContents;
-
-
+            window.history.back();
     </script>
-
 </body>
 </html>
 

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Middleware\CompanySettings;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\Contactemail;
+use App\Notifications\Customercontactconfirm;
 
 class ContactController extends Controller
 {
@@ -42,6 +43,8 @@ class ContactController extends Controller
         try{
             Contact::create($request->all());
             Notification::route('mail',  'admin@airparq.com')->notify(new Contactemail($request->all()));
+            Notification::route('mail',  $request['email'])->notify(new Customercontactconfirm($request->all()));
+
             notify()->success('Successfully insert Contact!','Success!',[
                 'position' => 'bottom-right'
             ]);

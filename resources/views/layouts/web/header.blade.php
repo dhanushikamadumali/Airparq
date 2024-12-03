@@ -1,5 +1,5 @@
 <!-- Header -->
-<header id="header" data-aos="fade">
+<header id="header">
     <!-- Header Topbar -->
     @if($promoList !== null && count($promoList) > 0)
        <div class="header-topbar">

@@ -194,27 +194,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6 col-lg-6">
-                                         <div class="form-group">
-                                            <label>Parking Till Time</label>
-                                             <input type="date" class="form-control" id="flight_arrival_date"  name="flight_arrival_date" value="{{$booking[0]->flight_arrival_date}}"/>
-                                             @error('flight_arrival_date')
-                                            <div style="color:red">{{$message}}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-6">
-                                          <div class="form-group">
-                                            <label>Flight Arrival Time</label>
-                                              <input type="time" class="form-control" id="flight_arrival_time"  name="flight_arrival_time" value="{{$booking[0]->flight_arrival_time}}"/>
-                                             @error('flight_arrival_time')
-                                            <div style="color:red">{{$message}}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
+                                  <div class="row">
                                      <div class="col-md-6 col-lg-6">
                                           <div class="form-group">
                                             <label>Flight Departure Date</label>
@@ -237,8 +217,84 @@
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6">
                                          <div class="form-group">
+                                            <label>Flight Arrival Date</label>
+                                             <input type="date" class="form-control" id="flight_arrival_date"  name="flight_arrival_date" value="{{$booking[0]->flight_arrival_date}}"/>
+                                             @error('flight_arrival_date')
+                                            <div style="color:red">{{$message}}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6">
+                                          <div class="form-group">
+                                            <label>Flight Arrival Time</label>
+                                              <input type="time" class="form-control" id="flight_arrival_time"  name="flight_arrival_time" value="{{$booking[0]->flight_arrival_time}}"/>
+                                             @error('flight_arrival_time')
+                                            <div style="color:red">{{$message}}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6">
+                                         <div class="form-group">
                                             <label>Airport</label>
-                                             <input type="text" class="form-control" id="airport"  name="airport" value="{{$booking[0]->airport}}"/>
+                                             <select class="form-select dropdown-select shadow-sm" id="airport" name="airport">
+                                                <option value="London Heathrow" {{ $booking[0]->airport == 'London Heathrow' ? 'selected' : '' }}>London Heathrow</option>
+                                                <option value="New York JFK" {{ $booking[0]->airport == 'New York JFK' ? 'selected' : '' }}>New York JFK</option>
+                                                <option value="Tokyo Narita" {{ $booking[0]->airport == 'Tokyo Narita' ? 'selected' : '' }}>Tokyo Narita</option>
+                                                  <option value="Birmingham" {{ $booking[0]->airport == 'Birmingham' ? 'selected' : '' }} >Birmingham</option>
+                                                <option value="Gatwick" {{ $booking[0]->airport == 'Gatwick' ? 'selected' : '' }}>Gatwick</option>
+                                                <option value="Heathrow" {{ $booking[0]->airport == 'Heathrow' ? 'selected' : '' }}>Heathrow</option>
+                                                <option value="Luton Airport" {{ $booking[0]->airport == 'Luton Airport' ? 'selected' : '' }}>Luton Airport</option>
+                                                <option value="Southampton Port" {{ $booking[0]->airport == 'Southampton Port' ? 'selected' : '' }}>Southampton Port</option>
+                                                <option value="Southend" {{ $booking[0]->airport == 'Southend' ? 'selected' : '' }}>Southend</option>
+                                                <option value="Stansted" {{ $booking[0]->airport == 'Stansted' ? 'selected' : '' }}>Stansted</option>
+                                                   <optgroup label="Other Airports">
+                                                        <option value="Aberdeen" {{ $booking[0]->airport == 'Aberdeen' ? 'selected' : '' }}>Aberdeen</option>
+                                                        <option value="Atlanta Airport" {{ $booking[0]->airport == 'Atlanta Airport' ? 'selected' : '' }}>Atlanta Airport</option>
+                                                        <option value="Belfast City (George Best)" {{ $booking[0]->airport == 'Belfast City (George Best)' ? 'selected' : '' }}>Belfast City (George Best)</option>
+                                                        <option value="Belfst International" {{ $booking[0]->airport == 'Belfast International' ? 'selected' : '' }}>Belfast International</option>
+                                                        <option value="Blackpool Tower" {{ $booking[0]->airport == 'Blackpool Tower' ? 'selected' : '' }}>Blackpool Tower</option>
+                                                        <option value="Bournemouth" {{ $booking[0]->airport == 'Bournemouth' ? 'selected' : '' }}>Bournemouth</option>
+                                                        <option value="Brisbane" {{ $booking[0]->airport == 'Brisbane' ? 'selected' : '' }}>Brisbane</option>
+                                                        <option value="Bristol" {{ $booking[0]->airport == 'Bristol' ? 'selected' : '' }}>Bristol</option>
+                                                        <option value="Budapest Airport" {{ $booking[0]->airport == 'Budapest Airport' ? 'selected' : '' }}>Budapest Airport</option>
+                                                        <option value="Cardiff" {{ $booking[0]->airport == 'Cardiff<' ? 'selected' : '' }}>Cardiff</option>
+                                                        <option value="Cork" {{ $booking[0]->airport == 'Cork' ? 'selected' : '' }}>Cork</option>
+                                                        <option value="Dallas Fort Worth" {{ $booking[0]->airport == 'Dallas Fort Worth' ? 'selected' : '' }}>Dallas Fort Worth</option>
+                                                        <option value="Doncaster-Sheffield (Robin Hood)" {{ $booking[0]->airport == 'Doncaster-Sheffield (Robin Hood)' ? 'selected' : '' }}>Doncaster-Sheffield (Robin Hood)</option>
+                                                        <option value="Dublin" {{ $booking[0]->airport == 'Dublin' ? 'selected' : '' }}>Dublin</option>
+                                                        <option value="Durham Tees Valley" {{ $booking[0]->airport == 'Durham Tees Valley' ? 'selected' : '' }}>Durham Tees Valley</option>
+                                                        <option value="East Midlands" {{ $booking[0]->airport == 'East Midlands' ? 'selected' : '' }}>East Midlands</option>
+                                                        <option value="Edinburgh" {{ $booking[0]->airport == 'Edinburgh' ? 'selected' : '' }}>Edinburgh</option>
+                                                        <option value="Exeter" {{ $booking[0]->airport == 'Exeter' ? 'selected' : '' }}>Exeter</option>
+                                                        <option value="Frankfurt Airport" {{ $booking[0]->airport == 'Frankfurt Airport' ? 'selected' : '' }}>Frankfurt Airport</option>
+                                                        <option value="Glasgow International" {{ $booking[0]->airport == 'Glasgow International' ? 'selected' : '' }}>Glasgow International</option>
+                                                        <option value="Glasgow Prestwick" {{ $booking[0]->airport == 'Glasgow Prestwick' ? 'selected' : '' }}>Glasgow Prestwick</option>
+                                                        <option value="Gran Canaria" {{ $booking[0]->airport == 'Gran Canaria' ? 'selected' : '' }}>Gran Canaria</option>
+                                                        <option value="Humberside" {{ $booking[0]->airport == 'Humberside' ? 'selected' : '' }}>Humberside </option>
+                                                        <option value="Inverness" {{ $booking[0]->airport == 'Inverness' ? 'selected' : '' }}>Inverness</option>
+                                                        <option value="Isle of Man" {{ $booking[0]->airport == 'Isle of Man' ? 'selected' : '' }}>Isle of Man</option>
+                                                        <option value="Kuala Lumpur International Airport" {{ $booking[0]->airport == 'Kuala Lumpur International Airport' ? 'selected' : '' }}>Kuala Lumpur International Airport</option>
+                                                        <option value="Leeds Bradford" {{ $booking[0]->airport == 'Leeds Bradford' ? 'selected' : '' }}>Leeds Bradford</option>
+                                                        <option value="Liverpool" {{ $booking[0]->airport == 'Liverpool' ? 'selected' : '' }}>Liverpool</option>
+                                                        <option value="London City" {{ $booking[0]->airport == 'London City' ? 'selected' : '' }}>London City</option>
+                                                        <option value="Manchester" {{ $booking[0]->airport == 'Manchester' ? 'selected' : '' }}>Manchester</option>
+                                                        <option value="Newcastle" {{ $booking[0]->airport == 'Newcastle' ? 'selected' : '' }}>Newcastle</option>
+                                                        <option value="Norwich" {{ $booking[0]->airport == 'Norwich' ? 'selected' : '' }}>Norwich</option>
+                                                        <option value="NS Treinen" {{ $booking[0]->airport == 'NS Treinen' ? 'selected' : '' }}>NS Treinen</option>
+                                                        <option value="Orlando International Airport" {{ $booking[0]->airport == 'Orlando International Airport' ? 'selected' : '' }}>Orlando International Airport</option>
+                                                        <option value="Paris Charles De Gaulle" {{ $booking[0]->airport == 'Paris Charles De Gaulle' ? 'selected' : '' }}>Paris Charles De Gaulle</option>
+                                                        <option value="Paris Orly" {{ $booking[0]->airport == 'Paris Orly' ? 'selected' : '' }}>Paris Orly</option>
+                                                        <option value="San Francisco International" {{ $booking[0]->airport == 'San Francisco International' ? 'selected' : '' }}>San Francisco International</option>
+                                                        <option value="Shannon" {{ $booking[0]->airport == 'Shannon' ? 'selected' : '' }}>Shannon</option>
+                                                        <option value="Southampton Airport" {{ $booking[0]->airport == 'Southampton Airport' ? 'selected' : '' }}>Southampton Airport</option>
+                                                        <option value="Sydney" {{ $booking[0]->airport == 'Sydney' ? 'selected' : '' }}>Sydney</option>
+                                                        <option value="Toronto Pearson International" {{ $booking[0]->airport == 'Toronto Pearson International' ? 'selected' : '' }}>Toronto Pearson International</option>
+                                                        <option value="Washington Dulles International Airport" {{ $booking[0]->airport == 'Washington Dulles International Airport' ? 'selected' : '' }}>Washington Dulles International Airport</option>
+                                                </optgroup>
+                                            </select>
                                              @error('text')
                                             <div style="color:red">{{$message}}</div>
                                             @enderror

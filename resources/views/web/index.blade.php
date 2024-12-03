@@ -320,7 +320,7 @@
     </section>
     <!-- /Featured -->
     <!-- Tour types -->
-    <section class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade">
+    <section class="p-top-50 p-bottom-50 bg-gray-gradient" data-aos="fade">
         <div class="container">
             <!-- Title -->
             <div class="d-xl-flex align-items-xl-center pb-4">
@@ -363,7 +363,7 @@
         </div>
     </section>
     <!-- /Tour types -->
-     <div class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade">
+     <div class="p-top-50 p-bottom-50 bg-gray-gradient" data-aos="fade">
          <!-- Title -->
         <div class="text-center mb-4">
             <div class="block-title">
@@ -386,7 +386,7 @@
         <!-- /Shopping cart -->
     </div>
     <!-- Why -->
-    <section class="p-top-50 p-bottom-50 " data-aos="fade">
+    <section class="p-top-50 p-bottom-20 " data-aos="fade">
         <div class="container">
             <div class="row g-0">
                 <div class="col-12 col-xl-1 order-0 order-xl-1"></div>
