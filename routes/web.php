@@ -106,6 +106,9 @@ Route::prefix('admin')->group(function(){
         // outgoing
         Route::get('/outgoingbooking',[App\Http\Controllers\BookingController::class,'outgoingbooking'])->name('outgoingbooking');
         Route::post('/getfilteroutgoingbooking',[App\Http\Controllers\BookingController::class,'getfilteroutgoingbooking'])->name('getfilteroutgoingbooking');
+         // today registered booking
+         Route::get('/todayregisteredbooking',[App\Http\Controllers\BookingController::class,'todayregisteredbooking'])->name('todayregisteredbooking');
+        //  Route::post('/getfiltertodayregisteredbooking',[App\Http\Controllers\BookingController::class,'getfiltertodayregisteredbooking'])->name('todayregisteredbooking');
         // print booking
          Route::get('/printbookingdetails/{id}',[App\Http\Controllers\ReportController::class,'printbookingdetails'])->name('printbookingdetails');
          Route::get('/printbooking/{id}',[App\Http\Controllers\BookingController::class,'printbooking'])->name('printbooking');

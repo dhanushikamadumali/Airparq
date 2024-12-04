@@ -405,6 +405,15 @@ class BookingController extends Controller
         return response()->json(['data' => $data]);
     }
 
+     /**
+     * today registered booking .
+     */
+    public function todayregisteredbooking()
+    {
+        $today = Carbon::today()->toDateString();
+        $filterdata =Booking::getfiltertodayregisterdbooking($today);
+        return view('booking.todayregisteredbooking',compact('filterdata'));
+    }
     public function printbooking(Booking $booking,$id){
 
         $bookingdetails = Booking::bookingdetailsbyid($id);

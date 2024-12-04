@@ -104,6 +104,17 @@ class Booking extends Pivot
             ->get();
     }
 
+    // get filte today regidterd booking
+    public static  function getfiltertodayregisterdbooking($today)
+    {
+        return DB::table('booking')
+            ->select('booking.id', 'booking.booking_code', 'booking.parking_from_time','booking.status','customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
+            ->join('customer', 'booking.customer_id', '=', 'customer.id')
+            ->whereDate('booking.created_at', '=', $today)
+            ->orderByDesc('booking.created_at')
+            ->get();
+    }
+
     public static function bookingdetailsbyid($id)
     {
         return DB::table('booking')

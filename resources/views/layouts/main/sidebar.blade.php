@@ -82,6 +82,11 @@
                     <span class="sub-item">Today Outcoming Bookings</span>
                   </a>
                 </li>
+                <li>
+                  <a href="{{route('todayregisteredbooking')}}">
+                    <span class="sub-item">Today Registered Bookings</span>
+                  </a>
+                </li>
               </ul>
             </div>
           </li>
