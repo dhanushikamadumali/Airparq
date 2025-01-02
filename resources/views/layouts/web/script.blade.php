@@ -51,7 +51,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
      // Select all 'Choose' buttons
-        const chooseButtons = document.querySelectorAll('.choose-terminal');
+        const chooseButtons = document.querySelectorAll('.choose-terminal1');
         chooseButtons.forEach(button => {
             button.addEventListener('click', function() {
                 // Set values for the hidden inputs based on button data attributes
@@ -64,7 +64,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+//document.addEventListener('DOMContentLoaded', function () {
+     // Select all 'Choose' buttons
+      //  const chooseButtons = document.querySelectorAll('.choose-terminal1');
+      //  chooseButtons.forEach(button => {
+      //      button.addEventListener('click', function() {
+                // Set values for the hidden inputs based on button data attributes
+       //         const terminalid =  this.getAttribute('value');
+        //        document.getElementById('selected_terminal_id').value = this.getAttribute('value');
+                // Submit the form
+        //        document.getElementById('bookingForm').submit();
+        //    });
+      //  });
 
+//});
   //contact form
     const code = new URLSearchParams(window.location.search).get('code');
 
@@ -96,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.addEventListener('DOMContentLoaded', function() {
-        const chooseButtons = document.querySelectorAll('.choose-terminal');
+        const chooseButtons = document.querySelectorAll('.choose-terminal1');
      chooseButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const terminalId = this.getAttribute('value');
@@ -107,7 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
      document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('.editsearch').addEventListener('click', function() {
-
             // Collect form values
             let parkingFromDate = document.querySelector('#parking_from_date').value;
             let fromTime = document.querySelector('#parking_from_time').value;
@@ -201,4 +213,40 @@ document.addEventListener('DOMContentLoaded', function () {
             observer.observe(element);
         });
     });
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Add event listener to the "Next" button
+        document.getElementById('guestbtn').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get form data
+            const form = document.getElementById('guestForm');
+            const formData = new FormData(form);
+
+            // Send AJAX request
+            fetch('/your-controller-route', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content // CSRF token for Laravel
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Form submitted successfully');
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+
+      
+
+
+
+
 </script>

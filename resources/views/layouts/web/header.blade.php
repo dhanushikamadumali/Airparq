@@ -2,19 +2,13 @@
 <header id="header">
     <!-- Header Topbar -->
     @if($promoList !== null && count($promoList) > 0)
-       <div class="header-topbar">
+       <div class="header-topbar" style="text-align:center">
           <div class="container-fluid">
-             <div class="row g-0 justify-content-center">
-                @foreach ($promoList as $value)
-                   <div class="col-3 col-md-1">
-                      <div class="d-flex align-items-center">
-                         <span style="color:white; font-size:11px;align-content: center;">
-                            {{$value->promo_code}} {{$value->discount_amount}} {{ $value->discount_type == 'percent' ? '%' : '' }}
-                         </span>
-                      </div>
-                   </div>
-                @endforeach
-             </div>
+            <div class="row g-0 justify-content-center">
+                <span style="color:white; font-size:14px;font-weight:600">
+                    15% OFF on all bookings (Promo Code "{{$promoList[0]->promo_code}}")
+                </span>
+            </div>
           </div>
        </div>
     @elseif($promoList === null)
@@ -33,15 +27,13 @@
                         <img
                             src="{{ asset('assets/img/logo.png') }}"
                             alt="navbar brand"
-                            class="navbar-brand"
-                            style="width:200px;height:60px"
+                            class="navbar-brand navbar-brand-logo"
                         />
                     @else
                         <img
                             src="{{ asset('assets/img/' . $csetting['image']) }}"
                             alt="navbar brand"
-                            class="navbar-brand"
-                            style="width:200px;height:60px"
+                            class="navbar-brand navbar-brand-logo"
                         />
                     @endif
                 </a>
@@ -52,15 +44,13 @@
                                 <img
                                     src="{{ asset('assets/img/logo.png') }}"
                                     alt="navbar brand"
-                                    class="navbar-brand"
-                                    style="width:200px;height:60px"
+                                    class="navbar-brand navbar-brand-logo"
                                 />
                             @else
                                 <img
                                     src="{{ asset('assets/img/' . $csetting['image']) }}"
                                     alt="navbar brand"
-                                    class="navbar-brand"
-                                    style="width:200px;height:60px"
+                                    class="navbar-brand navbar-brand-logo"
                                 />
                             @endif
                         </a>

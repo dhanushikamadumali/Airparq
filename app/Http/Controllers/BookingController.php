@@ -26,6 +26,8 @@ use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CancleBookingEmail;
 use App\Models\Customer;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class BookingController extends Controller
 {
@@ -110,14 +112,12 @@ class BookingController extends Controller
             ]);
 
             return redirect($response['url']);
-
-        }catch(Exception $e){
-            notify()->error('Failed to Booking.', 'Error', [
-                'position' => 'top-right'
-            ]);
-            return redirect()->back();
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            Log::error('Stripe Checkout Failed', ['error' => $e->getMessage()]);
+            // Return error to user with a flash message
+            return redirect()->back()->withErrors(['stripe_error' => 'Failed to process booking. Please try again.']);
         }
-
     }
 
     public function handlePaymentSuccess(Request $request)
@@ -132,20 +132,16 @@ class BookingController extends Controller
         try {
             $stripe = new \Stripe\StripeClient(Config::get('stripe.stripe_secret_key'));
             $session = $stripe->checkout->sessions->retrieve($session_id);
-
             if ($session->payment_status === 'paid') {
-
                 // Insert booking details into the database
                 $validatedData = $bookingData['validated_data'];
-
                 $validatedData['booking_code'] = $bookingData['booking_code'];
                 $validatedData['price'] = $bookingData['price'];
                 $validatedData['flight_arrival_date'] = $bookingData['flight_arrival_date'];
                 $validatedData['flight_departure_date'] = $bookingData['flight_departure_date'];
-
                 Booking::create($validatedData);
                 // Send confirmation email
-                $customer = Customer::FindOrFail($validatedData['customer_id']);
+                // $customer = Customer::FindOrFail($validatedData['customer_id']);
                 $users = [
                     $validatedData['email'],// Customer's email (assuming you store it in the booking model)
                     "admin@airparq.com"// Admin's email (set in the .env file)
@@ -164,7 +160,110 @@ class BookingController extends Controller
             return redirect()->route('showcheckout'); // Adjust to your desired route
         }
     }
+    public function storeguestbooking(StoreBookingRequest $request)
+    {
+        try {
+            $validated = $request->validate([
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'email' => 'required',
+                'phone_no' => 'required',
+            ]);
 
+            $flight_arrival_date = Carbon::parse($request->input('flight_arrival_date'));
+            $flight_departure_date = Carbon::parse($request->input('flight_departure_date'));
+
+            $latestBooking = Booking::orderBy('id', 'desc')->first();
+            $nextId = $latestBooking ? $latestBooking->id + 1 : 1;
+            $bookingCode = 'B' . str_pad($nextId, 5, '0', STR_PAD_LEFT);
+
+            $stripe1 = new \Stripe\StripeClient(Config::get('stripe.stripe_secret_key'));
+            $roundno = round($request->input('price'), 2);
+            $totalAmount = $roundno * 100;
+            $redirectUrl = route('guestsuccess'); // Success route
+            $failedUrl = route('failed'); // Failed route
+
+            $response = $stripe1->checkout->sessions->create([
+                'line_items' => [
+                    [
+                        'price_data' => [
+                            'product_data' => [
+                                'name' => 'AirParq Booking',
+                            ],
+                            'unit_amount' => $totalAmount,
+                            'currency' => 'GBP',
+                        ],
+                        'quantity' => 1,
+                    ],
+                ],
+                'mode' => 'payment',
+                'success_url' => $redirectUrl . '?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => $failedUrl,
+            ]);
+
+            // Store temporary booking details in the session
+            session([
+                'booking_data' => [
+                    'email' => $validated['email'],
+                    'customer_id' => 1,
+                    'booking_code' => $bookingCode,
+                    'price' => $roundno,
+                    'flight_arrival_date' => $flight_arrival_date,
+                    'flight_departure_date' => $flight_departure_date,
+                    'validated_data' => $request->all(),
+                ],
+            ]);
+
+            return redirect($response['url']);
+        } catch (\Throwable $e) {
+            // Log the error for debugging (optional)
+            Log::error('Booking Error: ' . $e->getMessage());
+            // Redirect back with the error message
+            return redirect()->back()->with('error', 'Failed to process booking. Please try again.');
+        }
+    }
+
+
+    public function handleGuestPaymentSuccess(Request $request)
+    {
+        $session_id = $request->input('session_id');
+        $bookingData = session('booking_data');
+
+        if (!$bookingData || !$session_id) {
+            notify()->error('Invalid payment session.', 'Error');
+            return redirect()->route('guestshowcheckout'); // Adjust to your desired route
+        }
+        try {
+            $stripe1 = new \Stripe\StripeClient(Config::get('stripe.stripe_secret_key'));
+            $session = $stripe1->checkout->sessions->retrieve($session_id);
+            if ($session->payment_status === 'paid') {
+                // Insert booking details into the database
+                $validatedData = $bookingData['validated_data'];
+                $validatedData['customer_id'] =  $bookingData['customer_id'];
+                $validatedData['booking_code'] = $bookingData['booking_code'];
+                $validatedData['price'] = $bookingData['price'];
+                $validatedData['flight_arrival_date'] = $bookingData['flight_arrival_date'];
+                $validatedData['flight_departure_date'] = $bookingData['flight_departure_date'];
+
+                Booking::create($validatedData);
+                // Send confirmation email
+                $users = [
+                    $validatedData['email'],// Customer's email (assuming you store it in the booking model)
+                    "admin@airparq.com"// Admin's email (set in the .env file)
+                ];
+                Notification::route('mail', $users)->notify(new Confirmationemail($validatedData));
+                notify()->success('Payment successful! Booking confirmed.', 'Success');
+                return redirect()->route('completepage'); // Adjust to your success page route
+            } else {
+                notify()->error('Payment not completed.', 'Error');
+                return redirect()->route('guestshowcheckout'); // Adjust to your desired route
+            }
+        } catch (Exception $e) {
+            Log::error('Booking creation failed: ' . $e->getMessage());
+            notify()->error('An error occurred while verifying payment.', 'Error');
+            return redirect()->route('guestshowcheckout'); // Adjust to your desired route
+        }
+    }
 
     /**
      * Display the specified resource.
@@ -455,8 +554,6 @@ class BookingController extends Controller
 
          }
     }
-
-
     public function cancle(Booking $booking,$id)
     {
         try{

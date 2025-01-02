@@ -1,3 +1,4 @@
+<link href="{{asset('assets/img/kaiadmin/favicon.png')}}" rel="shortcut icon" type="image/png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@1.0.4/dist/simple-notify.css" />
 <link href="{{asset('account/img/logos/logo.png')}}" rel="shortcut icon" type="image/png">
 <link href="{{asset('account/css/theme-1.min.css')}}" rel="stylesheet">
@@ -20,18 +21,38 @@
         .navbarlink{
             margin-left:380px;
         }
+     @media (max-width: 1024px) {
+        .nav-link.active span {
+            color: #EBC51E; /* Set the color you want for mobile view */
+        }
+         .navbarlink{
+            margin-left:0px;
+        }
+         .header-navbar .navbar .nav-link{
+            font-size:20px;
+        }
+
+     }
        /* Media query for mobile view (up to 768px) */
     @media (max-width: 768px) {
         .nav-link.active span {
             color: #EBC51E; /* Set the color you want for mobile view */
         }
-        .bookingbtn{
-            background-color:#FFD31C;
-        }
-         .navbarlink {
+        .navbarlink {
             margin-left: 0; /* Remove margin on mobile view */
         }
+        .header-navbar .navbar .nav-link{
+            font-size:20px;
+        }
     }
+    /* Default styles for .bookingbtn */
+    .bookingbtn {
+        font-size: 12px; /* Default font size */
+        border-radius: 30px;
+        border-top-right-radius: 0;
+        transition: 0.5s;
+    }
+
     #toggleButton {
         display: none;
     }
@@ -106,13 +127,13 @@
     /* navbar font size*/
 
     /*navbar booking btn */
-    .bookingbtn{
+    {{-- .bookingbtn{
         font-size:12px;
         border-radius:30px;
         border-top-right-radius:0;
         transition:0.5s;
 
-    }
+    } --}}
     .bookingbtn:hover{
         border-top-right-radius:30px;
         background-color:white;
@@ -258,7 +279,7 @@
         filter: brightness(0) invert(1); /* Keeps it white for both collapsed and expanded states */
     }
     .navbar-nav .nav-item .nav-link.active {
-         color: white;               /* Text color */
+         color: white;             /* Text color */
 
     }
     @media (max-width: 768px) {
@@ -295,5 +316,71 @@
       .undelinetitle:hover::after {
         transform: scaleX(1.2); /* Add hover effect if desired */
       }
+
+
+    @media (max-width: 768px) {
+        /* Styles for mobile view */
+         .header-topbar {
+            padding-top: 28px;
+            padding-bottom: 28px;
+            text-align:center;
+        }
+
+    }
+
+    /* Default (desktop) styles */
+    .navbar-brand-logo {
+        width: 200px;
+        height: 60px;
+    }
+
+    /* Mobile-specific styles */
+    @media (max-width: 768px) {
+        .navbar-brand-logo {
+            width: 170px;
+            height: 50px;
+        }
+    }
+    /* Extra small devices (if needed) */
+    @media (max-width: 576px) {
+        .navbar-brand-logo {
+            width: 140px;
+            height: 50px;
+        }
+    }
+    /* General styles for input[type="date"] */
+    input[type="date"] {
+        appearance: none; /* Ensure consistency across browsers */
+        background-color: #fff; /* Clean background */
+        padding: 8px; /* Standard padding for better visuals */
+        border: 1px solid #ccc; /* Border for styling */
+        border-radius: 4px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor for clarity */
+    }
+    /* Optional: Customize native calendar picker indicator */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        cursor: pointer; /* Ensure it's clickable */
+        opacity: 1; /* Fully visible */
+        display: block; /* Default display */
+    }
+    /* Optional: Remove padding adjustments for mobile view */
+    @media (max-width: 768px) {
+        input[type="date"] {
+            padding-right: 8px; /* Adjust padding if needed */
+        }
+    }
+    /* Ensure placeholder is visible in mobile view */
+    @media (max-width: 768px) {
+        input[type="date"]::placeholder {
+            color: #666; /* Make placeholder more visible */
+            font-size: 14px;
+        }
+    }
+
+    /* For the placeholder effect */
+    input[type="date"].has-placeholder {
+        color: #999; /* Lighter color for the placeholder */
+    }
+
 
 </style>

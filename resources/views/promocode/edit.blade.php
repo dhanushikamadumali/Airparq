@@ -67,7 +67,7 @@
                 id="discount_type"
                 name="discount_type"
                 >
-                <option value="defult_value" {{$promocode->discount_type == 'defult_value' ? 'selected' : ''}} >Defult Value</option>
+                <option value="defult_value" {{$promocode->discount_type == 'defult_value' ? 'selected' : ''}} >Discount</option>
                 <option value="percent" {{$promocode->discount_type == 'percent' ? 'selected' : ''}}>Percent</option>
                 </select>
             </div>

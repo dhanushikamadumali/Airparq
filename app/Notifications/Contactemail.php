@@ -36,11 +36,11 @@ class Contactemail extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject('Q & A email')
+                    ->subject('AIRPARQ Contact Email')
                     ->view('contact.contactemail',['data'=>$this->data]);
 
 
-                    
+
 
     }
 

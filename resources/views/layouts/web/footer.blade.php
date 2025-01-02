@@ -12,15 +12,13 @@
                                 <img
                                     src="{{ asset('assets/img/logo.png') }}"
                                     alt="navbar brand"
-                                    class="navbar-brand"
-                                style="width:200px;height:60px"
+                                    class="navbar-brand navbar-brand-logo"
                                 />
                             @else
                                 <img
                                     src="{{ asset('assets/img/whitepng.png')}}"
                                     alt="navbar brand"
-                                    class="navbar-brand"
-                                style="width:250px;height:60px"
+                                    class="navbar-brand navbar-brand-logo"
                                 />
                             @endif
                         </a>
@@ -148,7 +146,7 @@
                                 </ul>
 
                             </li>
-                            <li style="font-weight:600;font-size:15px;color:#FFD31C">Trusted Our Service</li>
+                            <li style="font-weight:600;font-size:15px;color:#FFD31C">Rate Us</li>
                             <li class="link-item">
                                 <h3 style="color:white"><a href="https://www.trustpilot.com/review/airparq.co.uk" target="_blank"><img alt="Trustpilot reviews" width="140" src="https://cdn.trustpilot.net/brand-assets/4.3.0/logo-white.svg"></a></h3>
                             </li>

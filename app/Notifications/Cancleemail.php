@@ -37,7 +37,7 @@ class Cancleemail extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                        ->subject('Your AIRPARQ Booking Cancle')
+                        ->subject('AIRPARQ Booking Cancle')
                         ->view('booking.canclebookingemail',['data'=>$this->data]);
     }
 

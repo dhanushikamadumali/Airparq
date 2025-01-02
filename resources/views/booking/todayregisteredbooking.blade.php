@@ -15,71 +15,73 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
+                      <div class="card">
+                          <div class="card-body">
+                            <div class="table-responsive">
+                                <table
+                                    id="todayregisteredbookingrangetable"
+                                    class="display table table-striped table-hover"
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone No</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($filterdata as $data)
+                                        <td>{{$data->booking_code}}</td>
+                                        <td>{{$data->first_name}} </td>
+                                        <td>{{$data->email}}</td>
+                                        <td>{{$data->phone_no}}</td>
+                                        <td>
+                                         @if ($data->status == 0)
+                                            <span class="badge badge-danger">Cancel</span>
+                                         @endif
+                                        @if ($data->status == 1)
+                                            <span class="badge badge-success">Success</span>
+                                        @endif
+                                         </td>
+                                        <td>
+                                            <a href="{{ route('editbooking',Crypt::encryptString($data->id))}}">
+                                                <i class="fa fa-edit editbtn"></i>
+                                            </a>
+                                            <button class="open_camera btn p-0 camerabtn" data-row-id="{{$data->id }}">
+                                                <i class="fas fa-camera"></i>
+                                            </button>
+                                            <a href="{{route('printbooking1',$data->id)}}">
+                                            <i class="fas fa-print print"></i>
+                                            </a>
+                                             <a href="{{ route('viewbooking',Crypt::encryptString($data->id))}}">
+                                                <i class="far fa-eye viewbtn"></i>
+                                            </a>
+                                              <button class="btn p-0 cancle" onclick="bookingdetailscancle('{{Crypt::encryptString($data->id)}}')">
+                                            <i class="fas fa-ban canclebtn"></i>
+                                            </button>
+                                            <button class="btn p-0 delete" onclick="bookingdetailsdelete('{{Crypt::encryptString($data->id)}}')">
+                                            <i class="fa fa-times deletebtn"></i>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn p-0"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#zoomImageModal"
+                                                onclick="loadZoomImage('{{ route('zoomimage', Crypt::encryptString($data->id)) }}')">
+                                                <i class="fa-solid fa-image" style="color:#660066"></i>
+                                            </button>
+                                        </td>
+                                        @endforeach
+                                    </tbody>
+                                </table>
 
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table
-                                id="todayregisteredbookingrangetable"
-                                class="display table table-striped table-hover"
-                            >
-                                <thead>
-                                    <tr>
-                                        <th>Code</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Phone No</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($filterdata as $data)
-                                    <td>{{$data->booking_code}}</td>
-                                    <td>{{$data->first_name}} </td>
-                                    <td>{{$data->email}}</td>
-                                    <td>{{$data->phone_no}}</td>
-                                    <td>
-                                     @if ($data->status == 0)
-                                        <span class="badge badge-danger">Cancel</span>
-                                     @endif
-                                    @if ($data->status == 1)
-                                        <span class="badge badge-success">Success</span>
-                                    @endif
-                                     </td>
-                                    <td>
-                                        <a href="{{ route('editbooking',Crypt::encryptString($data->id))}}">
-                                            <i class="fa fa-edit editbtn"></i>
-                                        </a>
-                                        <button class="open_camera btn p-0 camerabtn" data-row-id="{{$data->id }}">
-                                            <i class="fas fa-camera"></i>
-                                        </button>
-                                        <a href="{{route('printbooking1',$data->id)}}">
-                                        <i class="fas fa-print print"></i>
-                                        </a>
-                                         <a href="{{ route('viewbooking',Crypt::encryptString($data->id))}}">
-                                            <i class="far fa-eye viewbtn"></i>
-                                        </a>
-                                          <button class="btn p-0 cancle" onclick="bookingdetailscancle('{{Crypt::encryptString($data->id)}}')">
-                                        <i class="fas fa-ban canclebtn"></i>
-                                        </button>
-                                        <button class="btn p-0 delete" onclick="bookingdetailsdelete('{{Crypt::encryptString($data->id)}}')">
-                                        <i class="fa fa-times deletebtn"></i>
-                                        </button>
-                                        <button
-                                            type="button"
-                                            class="btn p-0"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#zoomImageModal"
-                                            onclick="loadZoomImage('{{ route('zoomimage', Crypt::encryptString($data->id)) }}')">
-                                            <i class="fa-solid fa-image" style="color:#660066"></i>
-                                        </button>
-                                    </td>
-                                    @endforeach
-                                </tbody>
-                            </table>
-
+                            </div>
                         </div>
-                    </div>
+                      </div>
+
                     </div>
                 </div>
             </div>

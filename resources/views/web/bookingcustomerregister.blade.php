@@ -14,8 +14,19 @@
                                 <div class="border-bottom mb-4">
                                     <h1 class="h2 text-body-emphasis">Register</h1>
                                 </div>
-                                    <form method="POST" action="{{ route('storeregister') }}">
+                                    <form method="POST" action="{{ route('storebookingcustomerregister') }}">
                                     @csrf
+                                     <input type="hidden" id="promocode" name="promocode" value="{{$pCode}}">
+                                    <input type="hidden" id="airport" name="airport" value="{{$airport}}">
+                                    <input type="hidden" class="form-control shadow-sm" id="parking_from_date" name="parking_from_date"  value={{$fDate}}>
+                                    <input type="hidden" class="form-control shadow-sm" id="parking_from_time" name="parking_from_time" value={{$fTime}}>
+                                    <input type="hidden" class="form-control shadow-sm" id="parking_till_time" name="parking_till_time" value={{$tTime}}>
+                                    <input type="hidden" class="form-control shadow-sm" id="parking_till_date" name="parking_till_date"  value={{$tDate}}>
+                                    <input type="hidden" class="form-control shadow-sm" id="bookingprice" name="bookingprice"  value={{$price}}>
+                                    <input type="hidden" class="form-control shadow-sm" id="bookingdiscount" name="bookingdiscount"value={{$discount}}>
+                                    <input type="hidden" class="form-control shadow-sm" id="price" name="price"  value={{ $tPrice}}>
+                                    <input type="hidden" class="form-control shadow-sm" id="inbound_terminal" name="inbound_terminal"  value={{$terminalid}}>
+                                    <input type="hidden" class="form-control shadow-sm" id="inbound_terminal_name" name="inbound_terminal_name"  value={{$terminalname}}>
                                     <div class="border-bottom pb-4">
                                         <div class="mb-4">
                                             <label>First Name<span class="text-danger">*</span></label>
@@ -74,9 +85,9 @@
                                         </button>
                                     </div>
                                     </form>
-                                    <div class="mt-4">
+                                    {{-- <div class="mt-4">
                                         <span>Already have an account? <a href="{{route('showlogin')}}">Login</a></span>
-                                    </div>
+                                    </div> --}}
 
                             </div>
                         </div>

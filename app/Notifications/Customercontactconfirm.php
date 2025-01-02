@@ -35,8 +35,9 @@ class Customercontactconfirm extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+
         return (new MailMessage)
-                    ->subject('Q & A confirm email')
+                    ->subject('Airparq Contact Email')
                     ->view('contact.customerconfirmemail',['data'=>$this->data]);
     }
 

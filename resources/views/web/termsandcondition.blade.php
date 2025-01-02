@@ -9,7 +9,6 @@
         </div>
         <div class="bg-content container">
             <div class="hero-page-title">
-
                 <h1 class="display-3 hero-title">
                     Terms & Conditions
                 </h1>
@@ -18,18 +17,18 @@
     </section>
     <!-- /Title -->
     <!-- About -->
-    <section class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade">
+    <section class="p-top-20 p-bottom-20 bg-gray-gradient" data-aos="fade">
         <div class="container">
             <div class="row g-0">
 
                 <div class="col-12 col-xl-12 order-0 order-xl-1">
                     <!-- Content -->
-                    <div class="pt-xl-4 mb-xl-0 mb-5">
+                    <div class="pt-xl-4 mb-xl-0">
                         <div class="block-title">
                             <h2 class="h1 title lh-sm">Terms & Conditions</h2>
                         </div>
-                         <p class="title font-size-16 line-height-26 pt-4 pb-2" style="text-align: justify" >
-                        <h5> BOOKINGS AND SERVICE</h5> <br>
+                         <p class="title font-size-16 line-height-26" style="text-align: justify" >
+                        <h5> BOOKINGS AND SERVICE</h5>
                             <p style="text-align: justify">1.1 We confirm bookings made on our website or phone by issuing a booking reference via email. All terms and conditions are deemed to have been accepted at the point confirmation is made.</p>
                             <p style="text-align: justify"> 1.2 Where a meet & greet service has been booked, whilst every effort is made to ensure that collections and deliveries of the vehicle are made at the requested times. We do not accept any responsibility for delays of its service, caused as a result of circumstances beyond our control, such as traffic congestion, delayed flights, road accidents, security alerts, severe weather conditions, luggage delays and immigration delays. This list is not exhaustive.</p>
                             <p style="text-align: justify" >1.3 Where a third-party service provider is used, they will have their own terms and conditions. If you require a copy of these, please ask, however, we will do our best to make you aware of anything you need to know. Once your booking is complete, our role will be as an intermediary between you and the service provider, booking details will be provided with the supplier and we will send you a booking reference number by email on behalf of the supplier.</p>
@@ -37,7 +36,7 @@
                             <p style="text-align: justify">1.5 AIRPARQ reserves the right not to accept or fulfill a booking.</p>
                             <p style="text-align: justify">1.6 Bookings through the AIRPARQ website are deemed to be made when validated by the issue of a booking reference number.</p>
 
-                            <h5> PRICES AND PAYMENT</h5><br>
+                            <h5> PRICES AND PAYMENT</h5>
                             <p style="text-align: justify"> 2.1 Discounts and savings cannot be used with any other offer or promotion.</p>
                             <p style="text-align: justify">2.2 Full payment or booked service is due prior to the commencement of the service.</p>
                             <p style="text-align: justify"> 2.3 Where a park & ride service is booked, if ther are any extra charges including amounts due for extra days, these must be paid prior to you leaving the car park.</p>
@@ -68,7 +67,7 @@
                              <p style="text-align: justify">4.13 In the event that your vehicle needs to be repaired as a result of our negligence, it must be carried out by our own approved organisation. It will be your responsibility to deliver and collect the car from the garage at your own cost. We cannot authorise or agree for any works to be carried out by dealerships that have not been approved, even in the event of the vehicle forgoing its warranty. The company reserves the right to undertake repairs to your vehicle on your behalf in a manner which restores it to the condition in which it arrived at the car park.</p>
                             <p style="text-align: justify">4.14 Our drivers do not consent to being filmed. Therefore, in some cases dash cams may be disconnected.</p>
 
-                            <h5> EXCLUSION AND LIMITS OF OUR RESPONSIBILITY</h5> <br>
+                            <h5> EXCLUSION AND LIMITS OF OUR RESPONSIBILITY</h5>
                              <p style="text-align: justify"> 5.1 If a third party product is purchased, the company acts only as a booking agent for the service provider, the company is liable to the customer only for losses directly arising from any negligence of the company in processing a booking. Any claims by the customer in respect of the delivery of the product must be made against the service provider and subject to its terms and conditions.</p>
                              <p style="text-align: justify"> 5.2 Vehicles parked by the customers personally at a car park/hotel do so entirely at their own risk.</p>
                              <p style="text-align: justify"> 5.3 Loss or damage should be covered by your own insurance. No vehicles will be covered for Theft/Fire/Flood/Malicious damage or any other intervening act of nature whilst the vehicle is parked in our custody.</p>
@@ -110,7 +109,7 @@
                              <p style="text-align: justify">9.2 Please do not leave any house or other keys on your car key ring or in the vehicle. No responsibility is accepted in the event that they are lost or misplaced. </p>
                              <p style="text-align: justify">9.3 Please do not leave any Sat Navs in the vehicle. </p>
                              <p style="text-align: justify">  9.4 Although all measures will be taken to ensure the security of the car parks, this cannot be guaranteed at all times by AIRPARQ. Your vehicle insurance must cover you for the parking of the vehicle in a car park for all eventualities. </p>
-                            <h5> SAFETY IN THE CAR PARK</h5> <br>
+                            <h5> SAFETY IN THE CAR PARK</h5>
                              <p style="text-align: justify"> 10.1 When entering the car park drive slowly and carefully in the car park and follow the directional signs. Do not drive more than 5MPH.</p>
 
                              <p style="text-align: justify"> 10.2 After parking your vehicle at a Park & Ride service, go to the reception area nearest exit. These are signposted. Please do not wander around the car park, as car parks are dangerous. Keep careful control of your children and do not allow them to play in the car park, children must be supervised at all times. </p>

@@ -58,7 +58,7 @@
                             id="discount_type"
                             name="discount_type"
                             >
-                            <option value="defult_value">Defult Value</option>
+                            <option value="defult_value">Discount</option>
                             <option value="percent">Percent</option>
                             </select>
                         </div>

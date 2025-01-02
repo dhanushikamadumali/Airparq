@@ -1,11 +1,13 @@
     @extends('layouts.web.master')
-    @section('content')      <!-- Main -->
+    @section('content')
+      <!-- Main -->
     <main>
+
         <div class="p-top-90 p-bottom-90 bg-gray-gradient" data-aos="fade">
                 <section class="container" id="step2"  >
                 <div class="row g-0">
                       <div class="col-12 col-xl-8">
-                         <form class="search-tour-form" action="{{route('storebooking')}}" method="post">
+                         <form class="search-tour-form" action="{{route('storeguestbooking')}}" method="post">
                         @csrf
                         <div class="pe-xl-4 me-xl-2">
                              <!-- Booking & Payment -->
@@ -28,34 +30,54 @@
                                             <input type="hidden" class="form-control shadow-sm" id="inbound_terminal" name="inbound_terminal"  value={{$terminalid}}>
                                             <input type="hidden" class="form-control shadow-sm" id="inbound_terminal_name" name="inbound_terminal_name"  value={{$terminalname}}>
 
-                                             <input type="hidden" class="form-control shadow-sm" id="parking_from_hour" name="parking_from_hour" value={{$fHour}}>
+                                            <input type="hidden" class="form-control shadow-sm" id="parking_from_hour" name="parking_from_hour" value={{$fHour}}>
                                              <input type="hidden" class="form-control shadow-sm" id="parking_from_min" name="parking_from_min" value={{$fMin}}>
                                              <input type="hidden" class="form-control shadow-sm" id="parking_till_hour" name="parking_till_hour" value={{$tHour}}>
                                              <input type="hidden" class="form-control shadow-sm" id="parking_till_min" name="parking_till_min" value={{$fMin}}>
 
-                                             <input type="hidden" id="customer_id" name="customer_id" value="{{$cusid ?? ''}}">
+                                             {{-- <input type="hidden" id="customer_id" name="customer_id" value="{{$cusid ?? ''}}"> --}}
                                                 <div class="col-12 col-md-6">
                                                     <div class="mb-2">
-                                                        <label class="form-label" for="first_name" style="font-size:1rem">First Name</label>
-                                                        <input type="text" class="form-control shadow-sm" id="first_name" name="first_name"  value="{{$cusfname ?? ''}}" required>
+                                                        <label class="form-label" for="first_name" style="font-size:1rem">First Name<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control shadow-sm" id="first_name" name="first_name"  value="" required>
+                                                         @error('first_name')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-6">
                                                     <div class="mb-2">
-                                                        <label class="form-label" for="last_name"  style="font-size:1rem">Last Name</label>
-                                                        <input type="text" class="form-control shadow-sm" id="last_name" name="last_name"  value="{{$cuslname ?? ''}}" required >
+                                                        <label class="form-label" for="last_name"  style="font-size:1rem">Last Name<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control shadow-sm" id="last_name" name="last_name"  value="" required >
+                                                         @error('last_name')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-6">
                                                     <div class="mb-2">
-                                                        <label class="form-label" for="email"  style="font-size:1rem">Email</label>
-                                                        <input type="email" class="form-control shadow-sm" id="email" name="email" value="{{$cusemail ?? ''}}" required>
+                                                        <label class="form-label" for="email"  style="font-size:1rem">Email<span class="text-danger">*</span></label>
+                                                        <input type="email" class="form-control shadow-sm" id="email" name="email" value="" required>
+                                                         @error('email')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-6">
                                                     <div class="mb-2">
-                                                        <label class="form-label" for="phone_no"  style="font-size:1rem">Phone</label>
-                                                        <input type="text" class="form-control shadow-sm" id="phone_no" name="phone_no"  value="{{$cusphoneno ?? ''}}" required >
+                                                        <label class="form-label" for="phone_no"  style="font-size:1rem">Phone<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control shadow-sm" id="phone_no" name="phone_no"  value="" required >
+                                                        @error('phone_no')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -63,7 +85,7 @@
                                         <div class="border-bottom pb-4 mb-4">
                                             <h3 class="h4 mb-4" style="font-size:1rem;font-weight:600">Flight Information</h3>
                                              <div class="row g-3">
-                                                  <div class="col-12 col-md-6">
+                                                 <div class="col-12 col-md-6">
                                                     <div class="mb-2">
                                                         <label class="form-label" for="inbound_flightno"  style="font-size:1rem">Outbound  Terminal<span class="text-danger">*</span></label>
                                                         <select class="form-select dropdown-select shadow-sm" id="outbound_terminal" name="outbound_terminal">
@@ -95,16 +117,18 @@
                                                          </select> --}}
                                                     </div>
                                                 </div>
-                                                <div class="col-12 col-md-6">
-                                                <div class="mb-2">
-                                                    <label class="form-label" for="inbound_flight_number"  style="font-size:1rem">Inbound Flight Number<span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control shadow-sm" id="inbound_flight_number " name="inbound_flight_number" required  >
-                                                         <label style="font-size:1rem"><span >*</span> Important so we can monitor return flights to improve our service to you </label>                                                             @error('inbound_flight_number')
-                                                        <div style="color:red">{{$message}}</div>
-                                                        @enderror
-                                                          </div>
-                                                </div>
-                                                
+
+
+                                                 <div class="col-12 col-md-6">
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="inbound_flight_number"  style="font-size:1rem">Inbound Flight Number<span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control shadow-sm" id="inbound_flight_number " name="inbound_flight_number" required  >
+                                                             <label style="font-size:1rem"><span >*</span> Important so we can monitor return flights to improve our service to you </label>                                                             @error('inbound_flight_number')
+                                                            <div style="color:red">{{$message}}</div>
+                                                            @enderror
+                                                              </div>
+                                                    </div>
+                                                                 
                                                   <div class="col-12 col-md-6">
                                                     <div class="mb-2">
                                                         <label class="form-label" for="flight_departure_date"  style="font-size:1rem">Flight Departure Date</label>
@@ -196,8 +220,8 @@
                                             <div class="row g-3">
                                                 <div class="col-12 col-md-6">
                                                     <div class="mb-2">
-                                                        <label class="form-label" for="vehicle_reg"  style="font-size:1rem">Vehicle Registration</label>
-                                                        <input type="text" class="form-control shadow-sm" id="vehicle_reg" name="vehicle_reg" >
+                                                         <label>Vehicle Registration<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control shadow-sm" id="vehicle_reg" name="vehicle_reg" required >
                                                           @error('vehicle_reg')
                                                         <div style="color:red">{{$message}}</div>
                                                         @enderror
@@ -205,7 +229,7 @@
                                                 </div>
                                                 <div class="col-12 col-md-6">
                                                     <div class="mb-2">
-                                                        <label class="form-label" for="vehicle_manufacturer"  style="font-size:1rem">Vehicle Manufaturer</label>
+                                                        <label>Vehicle Manufacturer<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control shadow-sm" id="vehicle_manufacturer" name="vehicle_manufacturer"  >
                                                           @error('vehicle_manufacturer')
                                                         <div style="color:red">{{$message}}</div>
@@ -214,7 +238,7 @@
                                                 </div>
                                                 <div class="col-12 col-md-6">
                                                     <div class="mb-2">
-                                                        <label class="form-label" for="vehicle_model"  style="font-size:1rem">Vehicle Model</label>
+                                                        <label>Vehicle Model<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control shadow-sm" id="vehicle_model"  name="vehicle_model" >
                                                          @error('vehicle_model')
                                                         <div style="color:red">{{$message}}</div>
@@ -223,7 +247,7 @@
                                                 </div>
                                                 <div class="col-12 col-md-6">
                                                     <div class="mb-2">
-                                                        <label class="form-label" for="vehicle_color"  style="font-size:1rem">Vehicle Colour</label>
+                                                        <label>Vehicle Colour<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control shadow-sm" id="vehicle_color" name="vehicle_color" >
                                                         @error('vehicle_color')
                                                         <div style="color:red">{{$message}}</div>
@@ -248,16 +272,16 @@
                                     <div class="border-bottom pb-4 mb-4">
                                         <h3 class="h5 mb-2" style="font-size:1rem;font-weight:200">Parking Start From</h3>
                                         <div class="mb-2">
-                                            <small class="me-2">Date : <span id="fromDate">{{ $fromDate =date('d-m-Y', strtotime($fDate));}}</span></small>
+                                              <small class="me-2">Date : <span id="fromDate">{{ $fromDate =date('d-m-Y', strtotime($fDate));}}</span></small>
                                         </div>
                                          <div class="d-flex flex-column">
-                                            <small class="mb-2">Time : <span id="fromTime">{{$fHour}}:{{$fMin}}</span></small>
+                                              <small class="mb-2">Time : <span id="fromTime">{{$fHour}}:{{$fMin}}</span></small>
                                         </div>
                                     </div>
                                     <div class="border-bottom pb-4 mb-4">
                                         <h3 class="h5 mb-2" style="font-size:1rem;font-weight:400">Parking Till</h3>
                                         <div class="mb-2">
-                                            <small class="me-2">Date : <span id="tillDate">{{$tillDate= date('d-m-Y', strtotime($tDate));}}</span></small>
+                                               <small class="me-2">Date : <span id="tillDate">{{$tillDate= date('d-m-Y', strtotime($tDate));}}</span></small>
                                         </div>
                                         <div class="d-flex flex-column">
                                             <small class="mb-2">Time : <span id="tillTime">{{$tHour}}:{{$tMin}}</span></small>
@@ -276,7 +300,7 @@
                                         <div class="mt-1">
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <strong >Discount:</strong>
-                                                <span class="fw-semibold text-body-emphasis"<span id="discount">{{$discount}}%</span></span>
+                                                <span class="fw-semibold text-body-emphasis"><span id="discount">{{$discount}}%</span></span>
                                             </div>
                                         </div>
                                     </div>
@@ -303,7 +327,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- /Selected tours -->
+                        <!-- Selected tours -->
                     </div>
                 </div>
                </section>

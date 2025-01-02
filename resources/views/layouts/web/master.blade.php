@@ -14,8 +14,8 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="Themenix.com">
-     <meta name="csrf-token" content="{{ csrf_token() }}">
-      {{-- notify css --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    {{-- notify css --}}
     @notifyCss
     {{-- css --}}
     @include('layouts.web.css')

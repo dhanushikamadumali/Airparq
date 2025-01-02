@@ -36,7 +36,7 @@ class Confirmationemail extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject('Your AIRPARQ Booking Confirmation')
+                    ->subject('AIRPARQ Booking Confirmation')
                    ->view('booking.bookingconfirmemail',['data'=>$this->data]);
 
     }

@@ -57,7 +57,18 @@ Route::prefix('account')->group(function () {
 
     Route::get('/success', [App\Http\Controllers\BookingController::class, 'handlePaymentSuccess'])->name('success');
 
+    // Route::post('/handleguestcheckout', [App\Http\Controllers\BookingController::class, 'handleGuestCheckout'])->name('guestcheckout');
+    Route::post('/selectcustomerlogin', [App\Http\Controllers\WebController::class, 'selectCustomerlogin'])->name('selectcustomerlogin');
+    Route::get('/selectcustomerloginview', [App\Http\Controllers\WebController::class, 'selectcustomerloginview'])->name('selectcustomerloginview');
 
+    Route::get('/showbookingcustomerregister', [App\Http\Controllers\WebController::class, 'showbookingcustomerregister'])->name('showbookingcustomerregister');
+    Route::post('/storebookingcustomerregister', [App\Http\Controllers\WebController::class, 'storebookingcustomerregister'])->name('storebookingcustomerregister');
+
+    Route::get('/guestshowcheckout', [App\Http\Controllers\WebController::class, 'guestshowcheckout'])->name('guestshowcheckout');
+    Route::post('/storeguestbooking', [App\Http\Controllers\BookingController::class, 'storeguestbooking'])->name('storeguestbooking');
+
+    Route::get('/guestsuccess', [App\Http\Controllers\BookingController::class, 'handleGuestPaymentSuccess'])->name('guestsuccess');
+    Route::post('/returningcustomerlogin', [App\Http\Controllers\WebController::class, 'returningcustomerlogin'])->name('returningcustomerlogin');
 
     // Guest routes (for customers who are not logged in)
     Route::middleware('guest:account')->group(function() {

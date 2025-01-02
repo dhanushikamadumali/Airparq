@@ -26,33 +26,31 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Middleware\CompanySettings;
 use App\Http\Middleware\AllPromoCode;
 
-
 class WebController extends Controller
 {
     public function __construct(){
         $this->middleware(CompanySettings::class);
         $this->middleware(AllPromoCode::class);
     }
-
      /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $fDate =  Session::get('fromDate');
-        $fTime =  Session::get('fromTime');
+        $fHour =  Session::get('fromHour');
+        $fMin =  Session::get('fromMin');
         $tDate =  Session::get('tillDate');
-        $tTime =  Session::get('tillTime');
+        $tHour =  Session::get('tillHour');
+        $tMin =  Session::get('tillMin');
         $tPrice =  Session::get('totalPrice');
         $pCode =  Session::get('promoCode');
         $airport =  Session::get('airport');
-        return view('web.index',compact('fDate','fTime','tDate','tTime','tPrice','pCode','airport'));
+        return view('web.index',compact('fDate','fHour','fMin','tDate','tHour','tMin','tPrice','pCode','airport'));
     }
 
     // customer login view
-
     public function showlogin(){
-
         return view('web.login');
     }
 
@@ -65,6 +63,7 @@ class WebController extends Controller
 
         if (Auth::guard('account')->attempt(['email' => $request->email, 'password' => $request->password])) {
             return redirect()->intended(route('/'));
+            // return property_exists($this, 'redirectTo') ? $this->redirectTo : session('pre-url');
         }
 
         return back()->withErrors([
@@ -79,7 +78,6 @@ class WebController extends Controller
 
     // insert customer
     public function storeregister(StoreCustomerRequest $request){
-
         $validatedData = $request->all();
         $account = Customer::create([
             'first_name' => $validatedData['first_name'],
@@ -88,25 +86,18 @@ class WebController extends Controller
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
         ]);
-
         Auth::guard('account')->login($account);
         return Redirect::route('showlogin');
-
-
         // return redirect()->route('customer.dashboard');
-
     }
     public function accountLogout(Request $request)
     {
          // Log out the user using the 'account' guard
          Auth::guard('account')->logout();  // <-- Correct way to access the guard
-
          // Invalidate the session
          $request->session()->invalidate();
-
          // Regenerate the session token to prevent session fixation attacks
          $request->session()->regenerateToken();
-
          // Redirect to the login page (or any other page you prefer)
          return redirect('/account/login')->with('success', 'You have been logged out.');
 
@@ -131,80 +122,180 @@ class WebController extends Controller
 
         $allterminallists = Terminal::all();
         $fDate =  Session::get('fromDate');
-        $fTime =  Session::get('fromTime');
+        $fHour =  Session::get('fromHour');
+        $fMin =  Session::get('fromMin');
         $tDate =  Session::get('tillDate');
-        $tTime =  Session::get('tillTime');
+        $tHour =  Session::get('tillHour');
+        $tMin =  Session::get('tillMin');
         $tPrice =  Session::get('totalPrice');
         $pCode =  Session::get('promoCode');
         $airport =  Session::get('airport');
-
-        return view('web.booking',compact('allterminallists','fDate','fTime','tDate','tTime','tPrice','pCode','airport'));
+        return view('web.booking',compact('allterminallists','fDate','fHour','fMin','tDate','tHour','tMin','tPrice','pCode','airport'));
     }
     //show bookingone page
     public function showbookingone(){
 
         $fDate =  Session::get('fromDate');
-        $fTime =  Session::get('fromTime');
+        $fHour =  Session::get('fromHour');
+        $fMin =  Session::get('fromMin');
         $tDate =  Session::get('tillDate');
-        $tTime =  Session::get('tillTime');
+        $tHour =  Session::get('tillHour');
+        $tMin =  Session::get('tillMin');
         $tPrice =  Session::get('totalPrice');
         $pCode =  Session::get('promoCode');
         $airport =  Session::get('airport');
-
-        return view('web.bookingone',compact('fDate','fTime','tDate','tTime','tPrice','pCode','airport'));
+        return view('web.bookingone',compact('fDate','fHour','fMin','tDate','tHour','tMin','tPrice','pCode','airport'));
     }
     // show checkout page
     public function showcheckout(){
 
         $allterminallists = Terminal::all();
         $fDate =  Session::get('fromDate');
-        $fTime =  Session::get('fromTime');
+        $fHour =  Session::get('fromHour');
+        $fMin =  Session::get('fromMin');
         $tDate =  Session::get('tillDate');
-        $tTime =  Session::get('tillTime');
+        $tHour =  Session::get('tillHour');
+        $tMin =  Session::get('tillMin');
         $tPrice =  Session::get('totalPrice');
         $pCode =  Session::get('promocode');
         $airport =  Session::get('airport');
 
         $price =  Session::get('price');
         $discount =  Session::get('discount');
-        $cusid =  Session::get('cusid');
-        $cusfname =  Session::get('cusfirstname');
-        $cuslname =  Session::get('cuslastname');
-        $cusemail =  Session::get('cusemail');
-        $cusphoneno =  Session::get('cusphoneno');
         $terminalid =  Session::get('terminalid');
         $terminalname =  Session::get('terminalname');
+         // Initialize variables
+         $cusid = null;
+         $cusfname = null;
+         $cuslname = null;
+         $cusemail = null;
+         $cusphoneno = null;
 
-        return view('web.checkout',compact('allterminallists','terminalid','fDate','fTime','tDate','tTime','tPrice','pCode','price','discount','cusfname','cuslname','cusemail','cusphoneno','terminalname','cusid','airport'));
+         // Check if the customer is logged in
+         if (Auth::guard('account')->check()) {
+             $customer = Auth::guard('account')->user();
+             $cusid = $customer->id;
+             $cusfname = $customer->first_name;
+             $cuslname = $customer->last_name;
+             $cusemail = $customer->email;
+             $cusphoneno = $customer->phone_no;
 
+             // Store in session
+             Session::put('cusid', $cusid);
+             Session::put('cusfirstname', $cusfname);
+             Session::put('cuslastname', $cuslname);
+             Session::put('cusemail', $cusemail);
+             Session::put('cusphoneno', $cusphoneno);
+         } elseif (Session::has('cusid')) {
+             // Retrieve existing session data
+             $cusid = Session::get('cusid');
+             $cusfname = Session::get('cusfirstname');
+             $cuslname = Session::get('cuslastname');
+             $cusemail = Session::get('cusemail');
+             $cusphoneno = Session::get('cusphoneno');
+         }
+        return view('web.checkout',compact('allterminallists','terminalid','fDate','fHour','fMin','tDate','tHour','tMin','tPrice','pCode','price','discount','cusfname','cuslname','cusemail','cusphoneno','terminalname','cusid','airport'));
     }
 
-    public function bookingdetailstep2(Request $request){
+    public function bookingdetailstep2(Request $request)
+    {
 
         $validatedData = $request->validate([
             'airport' => 'required|string',
             'parking_from_date' => 'required|date',
-            'parking_from_time' => 'required',
             'parking_till_date' => 'required|date',
-            'parking_till_time' => 'required',
+            'parking_from_hour' => 'required',
+            'parking_from_min'=> 'required',
+            'parking_till_hour'=> 'required',
+            'parking_till_min'=>'required',
             'promocode' => 'nullable|string',
-
         ]);
 
         $allterminallists = Terminal::all();
+        // Parse the dates using Carbon
+        $fromDate = Carbon::parse($request->input('parking_from_date'));
+        $tillDate = Carbon::parse($request->input('parking_till_date'));
+        // Calculate the difference in days and include the last day (+1)
+        $dayscount = $fromDate->diffInDays($tillDate);
+        if ($dayscount > 32) {
+            session()->flash('error', 'Parking dates must be within 31 days');
+            return back(); // Stop further processing
+        }
+        $bookingprice = Bookingprice::getbookingcount($dayscount);
+        // Check if the booking price is null or empty
+        if (empty($bookingprice) || $bookingprice->isEmpty()) {
+            session()->flash('error', 'No price found for the selected days. Please check your input.');
+            return back(); // Redirect back with an error message
+        }
+        $price = $bookingprice[0]->booking_price;
+        $promocode = $request->input('promocode');
+        $totalprice = $price;
+        if (!empty($promocode)) {
+            $promodetails = Promocode::getpromodetails($promocode);
+            if (!empty($promodetails) && !$promodetails->isEmpty()) {
+                $discountamount = $promodetails[0]->discount_amount; // Get promo code discount
+                $discounttype = $promodetails[0]->discount_type;     // Get promo code discount type
+                if ($discounttype == "percent") {
+                    $discountprice = $price / 100 * $discountamount;
+                    $totalprice = $price - $discountprice;
+                } else {
+                    $discountprice = $discountamount;
+                    $totalprice = $price - $discountprice;
+                }
+            } else {
+                $totalprice = $price;
+            }
+        } else {
+            $totalprice = $price;
+        }
+        // Store session values
+        $fromDate = Carbon::parse($request->input('parking_from_date'))->format('Y-m-d');
+        $fromHour = $request->input('parking_from_hour');
+        $fromMin = $request->input('parking_from_min');
+        $tillDate = Carbon::parse($request->input('parking_till_date'))->format('Y-m-d');
+        $tillHour = $request->input('parking_till_hour');
+        $tillMin = $request->input('parking_till_min');
+
+        session()->put('fromDate', $fromDate);
+        session()->put('fromHour', $fromHour);
+        session()->put('fromMin', $fromMin);
+        session()->put('tillDate', $tillDate);
+        session()->put('tillHour', $tillHour);
+        session()->put('tillMin', $tillMin);
+        session()->put('totalPrice', $totalprice);
+        session()->put('promoCode', $promocode);
+        session()->put('airport', $request->input('airport'));
+        return Redirect::route('showbooking');
+    }
+
+
+    public function bookingdetailstep3(Request $request){
+        // Check if selected_terminal_id is provided
+        if (!$request->input('selected_terminal_id')) {
+            notify()->error('Terminal ID is required!', 'Missing Data', [
+                'position' => 'top-right',
+                'closeButton' => true,
+            ]);
+            // Redirect back or handle accordingly
+            return back();
+        }
+        $terminaldetails = Terminal::getterminaldetails($request->input('selected_terminal_id'));//get terminal details
+
          // Parse the dates using Carbon
          $fromDate = Carbon::parse($request->input('parking_from_date'));
          $tillDate = Carbon::parse($request->input('parking_till_date'));
-
         // Calculate the difference in days and include the last day (+1)
-        $dayscount = $fromDate->diffInDays($tillDate);
-
+        $dayscount =  $fromDate->diffInDays($tillDate);
         if($dayscount > 32){
             notify()->error('Parking dates must be within 31 days', 'Error');
             return back(); // Stop further processing
         }
         $bookingprice = Bookingprice::getbookingcount($dayscount);
-
+         // Check if the booking price is null or empty
+         if (empty($bookingprice) || $bookingprice->isEmpty()) {
+            session()->flash('error', 'No price found for the selected days. Please check your input.');
+            return back(); // Redirect back with an error message
+        }
         // This will output the difference in days
         $price = $bookingprice[0]->booking_price;
 
@@ -233,30 +324,31 @@ class WebController extends Controller
         }else{
             $totalprice = $price;
         }
-         // Retrieve query parameters
-        //  $terminalId = $request->input('terminal_id');
-         $fromDate = Carbon::parse($request->input('parking_from_date'))->format('Y-m-d');
-         $fromTime = $request->input('parking_from_time');
-         $tillDate = Carbon::parse($request->input('parking_till_date'))->format('Y-m-d');
-         $tillTime = $request->input('parking_till_time');
 
-         Session::put('fromDate', $fromDate);
-         Session::put('fromTime', $fromTime);
-         Session::put('tillDate', $tillDate);
-         Session::put('tillTime', $tillTime);
-         Session::put('totalPrice', $totalprice);
-         Session::put('promoCode', $promocode);
+        $fromDate = Carbon::parse($request->input('parking_from_date'))->format('Y-m-d');
+        $fromHour = $request->input('parking_from_hour');
+        $fromMin = $request->input('parking_from_min');
+        $tillDate = Carbon::parse($request->input('parking_till_date'))->format('Y-m-d');
+        $tillHour = $request->input('parking_till_hour');
+        $tillMin = $request->input('parking_till_min');
+
+         Session::put('price', $price);
+         Session::put('discount', $discountamount ?? 0);
+         Session::put('terminalid', $request->input('selected_terminal_id'));
+         Session::put('terminalname', $terminaldetails[0]->name);
          Session::put('airport', $request->input('airport'));
+         Session::put('promocode', $promocode);
 
-         return Redirect::route('showbooking');
-        //  return view('web.booking',compact('fromDate','fromTime','tillDate','tillTime','promocode','allterminallists','totalprice'));
+        //  Session::put('fromHour',$fromHour);
+        //  Session::put('fromMin',$fromMin);
+        //  Session::put('tillHour',$tillHour);
+        //  Session::put('tillMin',$tillMin);
+
+         return Redirect::route('showcheckout');
+
     }
 
-    public function bookingdetailstep3(Request $request){
-        //check if the user is authenticated unser the 'account' quard
-        if(!Auth::guard('account')->check()){
-            return  Redirect::route('showlogin');
-        }
+    public function selectcustomerlogin(Request $request){
         // Check if selected_terminal_id is provided
         if (!$request->input('selected_terminal_id')) {
             notify()->error('Terminal ID is required!', 'Missing Data', [
@@ -267,34 +359,32 @@ class WebController extends Controller
             return back();
         }
         $terminaldetails = Terminal::getterminaldetails($request->input('selected_terminal_id'));//get terminal details
-         // If authenticated, retrieve the authenticated user details
-         $customer = Auth::guard('account')->user();
-         $cuid = $customer->id;
-
-         $cufirstname = $customer->first_name; // or $customer->fname depending on your model
-         $culastname = $customer->last_name; // or $customer->lname depending on your model
-         $cuemail = $customer->email; // or $customer->email depending on your model
-         $cuphoneno = $customer->phone_no; // or $customer->phone_no depending on your model
-
          // Parse the dates using Carbon
          $fromDate = Carbon::parse($request->input('parking_from_date'));
          $tillDate = Carbon::parse($request->input('parking_till_date'));
         // Calculate the difference in days and include the last day (+1)
+         // Check if fromDate is greater than or equal to tillDate
+        //  if ($fromDate->greaterThanOrEqualTo($tillDate)) {
+        //      session()->flash('error', 'Parking start date must be before the end date.');
+        //      return back(); // Stop further processing
+        //  }
         $dayscount =  $fromDate->diffInDays($tillDate);
 
         if($dayscount > 32){
             notify()->error('Parking dates must be within 31 days', 'Error');
             return back(); // Stop further processing
         }
-
         $bookingprice = Bookingprice::getbookingcount($dayscount);
+         // Check if the booking price is null or empty
+         if (empty($bookingprice) || $bookingprice->isEmpty()) {
+            session()->flash('error', 'No price found for the selected days. Please check your input.');
+            return back(); // Redirect back with an error message
+        }
         // This will output the difference in days
         $price = $bookingprice[0]->booking_price;
-
         $promocode = $request->input('promocode');
         // Initialize the total price to the original price
         $totalprice = $price;
-
         if (!empty($promocode)) {
             $promodetails = Promocode::getpromodetails($promocode);
             // Check if the promo code exists and has details
@@ -324,44 +414,235 @@ class WebController extends Controller
 
          Session::put('price', $price);
          Session::put('discount', $discountamount ?? 0);
-         Session::put('cusid', $cuid);
-         Session::put('cusfirstname', $cufirstname);
-         Session::put('cuslastname', $culastname);
-         Session::put('cusemail', $cuemail);
-         Session::put('cusphoneno', $cuphoneno);
          Session::put('terminalid', $request->input('selected_terminal_id'));
          Session::put('terminalname', $terminaldetails[0]->name);
          Session::put('airport', $request->input('airport'));
          Session::put('promocode', $promocode);
 
-         return Redirect::route('showcheckout');
+         return Redirect::route('selectcustomerloginview');
 
     }
+
+    public function selectcustomerloginview(){
+
+        $allterminallists = Terminal::all();
+        $fDate =  Session::get('fromDate');
+        $fHour =  Session::get('fromHour');
+        $fMin =  Session::get('fromMin');
+        $tDate =  Session::get('tillDate');
+        $tHour =  Session::get('tillHour');
+        $tMin =  Session::get('tillMin');
+        $tPrice =  Session::get('totalPrice');
+        $pCode =  Session::get('promocode');
+        $airport =  Session::get('airport');
+
+        $price =  Session::get('price');
+        $discount =  Session::get('discount');
+        $terminalid =  Session::get('terminalid');
+        $terminalname =  Session::get('terminalname');
+
+        return view('web.logincustomerguest',compact('allterminallists','terminalid','fDate','fHour','fMin','tDate','tHour','tMin','tPrice','pCode','price','discount','terminalname','airport'));
+
+    }
+
+     // customer register view
+     public function showbookingcustomerregister(){
+
+        $allterminallists = Terminal::all();
+        $fDate =  Session::get('fromDate');
+        $fHour =  Session::get('fromHour');
+        $fMin =  Session::get('fromMin');
+        $tDate =  Session::get('tillDate');
+        $tHour =  Session::get('tillHour');
+        $tMin =  Session::get('tillMin');
+        $tPrice =  Session::get('totalPrice');
+        $pCode =  Session::get('promocode');
+        $airport =  Session::get('airport');
+
+        $price =  Session::get('price');
+        $discount =  Session::get('discount');
+        $terminalid =  Session::get('terminalid');
+        $terminalname =  Session::get('terminalname');
+
+        return view('web.bookingcustomerregister',compact('allterminallists','terminalid','fDate','fHour','fMin','tDate','tHour','tMin','tPrice','pCode','price','discount','terminalname','airport'));
+    }
+
+    // insert customer
+    public function storebookingcustomerregister(StoreCustomerRequest $request){
+
+        $allterminallists = Terminal::all();
+        $fDate =  Session::get('fromDate');
+        $fHour =  Session::get('fromHour');
+        $fMin =  Session::get('fromMin');
+        $tDate =  Session::get('tillDate');
+        $tHour =  Session::get('tillHour');
+        $tMin =  Session::get('tillMin');
+        $tPrice =  Session::get('totalPrice');
+        $pCode =  Session::get('promocode');
+        $airport =  Session::get('airport');
+
+        $price =  Session::get('price');
+        $discount =  Session::get('discount');
+        $terminalid =  Session::get('terminalid');
+        $terminalname =  Session::get('terminalname');
+
+        $validatedData = $request->all();
+        $account = Customer::create([
+            'first_name' => $validatedData['first_name'],
+            'last_name' => $validatedData['last_name'],
+            'phone_no' => $validatedData['phone_no'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
+        ]);
+
+        Auth::guard('account')->login($account);
+
+        $cusid = null;
+        $cusfname = null;
+        $cuslname = null;
+        $cusemail = null;
+        $cusphoneno = null;
+
+        // Check if the customer is logged in
+        if (Auth::guard('account')->check()) {
+            $customer = Auth::guard('account')->user();
+            $cusid = $customer->id;
+            $cusfname = $customer->first_name;
+            $cuslname = $customer->last_name;
+            $cusemail = $customer->email;
+            $cusphoneno = $customer->phone_no;
+
+            // Store in session
+            Session::put('cusid', $cusid);
+            Session::put('cusfirstname', $cusfname);
+            Session::put('cuslastname', $cuslname);
+            Session::put('cusemail', $cusemail);
+            Session::put('cusphoneno', $cusphoneno);
+        } elseif (Session::has('cusid')) {
+            // Retrieve existing session data
+            $cusid = Session::get('cusid');
+            $cusfname = Session::get('cusfirstname');
+            $cuslname = Session::get('cuslastname');
+            $cusemail = Session::get('cusemail');
+            $cusphoneno = Session::get('cusphoneno');
+        }
+        // return Redirect::route('showlogin');
+        // return redirect()->route('customer.dashboard');
+        return view('web.checkout',compact('allterminallists','terminalid','fDate','fHour','fMin','tDate','tHour','tMin','tPrice','pCode','price','discount','cusfname','cuslname','cusemail','cusphoneno','terminalname','cusid','airport'));
+    }
+
+    // show checkout page
+    public function guestshowcheckout(){
+
+        $allterminallists = Terminal::all();
+        $fDate =  Session::get('fromDate');
+        $fHour =  Session::get('fromHour');
+        $fMin =  Session::get('fromMin');
+        $tDate =  Session::get('tillDate');
+        $tHour =  Session::get('tillHour');
+        $tMin =  Session::get('tillMin');
+        $tPrice =  Session::get('totalPrice');
+        $pCode =  Session::get('promocode');
+        $airport =  Session::get('airport');
+
+        $price =  Session::get('price');
+        $discount =  Session::get('discount');
+        $terminalid =  Session::get('terminalid');
+        $terminalname =  Session::get('terminalname');
+
+        return view('web.guestcheckout',compact('allterminallists','terminalid','fDate','fHour','fMin','tDate','tHour','tMin','tPrice','pCode','price','discount','terminalname','airport'));
+
+    }
+
+
+    // Insert customer
+    public function returningcustomerlogin(Request $request)
+    {
+        // Validate the login request
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        // Attempt to log in the customer using the 'account' guard
+        if (Auth::guard('account')->attempt(['email' => $request->email, 'password' => $request->password])) {
+            // Fetch the authenticated customer
+            $customer = Auth::guard('account')->user();
+            $cusid = $customer->id;
+            $cusfname = $customer->first_name;
+            $cuslname = $customer->last_name;
+            $cusemail = $customer->email;
+            $cusphoneno = $customer->phone_no;
+            // Store the customer ID in the session
+            Session::put('cusid', $cusid);
+            Session::put('cusfirstname', $cusfname);
+            Session::put('cuslastname', $cuslname);
+            Session::put('cusemail', $cusemail);
+            Session::put('cusphoneno', $cusphoneno);
+
+            // Fetch session data and any required details for the checkout page
+            $allterminallists = Terminal::all();
+            $fDate = Session::get('fromDate');
+            $fHour =  Session::get('fromHour');
+            $fMin =  Session::get('fromMin');
+            $tDate =  Session::get('tillDate');
+            $tHour =  Session::get('tillHour');
+            $tMin =  Session::get('tillMin');
+            $tPrice = Session::get('totalPrice');
+            $pCode = Session::get('promocode');
+            $airport = Session::get('airport');
+            $price = Session::get('price');
+            $discount = Session::get('discount');
+            $terminalid = Session::get('terminalid');
+            $terminalname = Session::get('terminalname');
+
+            $cusid = Session::get('cusid');
+            $cusfname = Session::get('cusfirstname');
+            $cuslname = Session::get('cuslastname');
+            $cusemail = Session::get('cusemail');
+            $cusphoneno = Session::get('cusphoneno');
+
+            // Redirect to the checkout page with all necessary data
+            return view('web.checkout', compact(
+                'allterminallists',
+                'terminalid',
+                'fDate',
+                'fHour',
+                'fMin',
+                'tDate',
+                'tHour',
+                'tMin',
+                'tPrice',
+                'pCode',
+                'price',
+                'discount',
+                'terminalname',
+                'cusid',
+                'airport',
+                'cusfname','cuslname','cusemail','cusphoneno'
+            ));
+        }
+        // If authentication fails, return back with error
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
+    }
+
+
     public function bookingedit(Request $request){
 
         try {
             // Validate the request
             $request->validate([
                 'parking_from_date' => 'required|date',
-                'from_time' => 'required',
                 'parking_till_date' => 'required|date',
-                'till_time' => 'required',
+                'parking_from_hour' => 'required',
+                'parking_from_min'=> 'required',
+                'parking_till_hour'=> 'required',
+                'parking_till_min'=>'required',
                 'promocode' => 'nullable|string',
                 'airport' => 'required|string'
             ]);
-               if(!Auth::guard('account')->check()){
-                return  Redirect::route('showlogin');
-            }
-
-            // If authenticated, retrieve the authenticated user details
-            $customer = Auth::guard('account')->user();
-            $cuid = $customer->id;
-
-            $cufirstname = $customer->first_name; // or $customer->fname depending on your model
-            $culastname = $customer->last_name; // or $customer->lname depending on your model
-            $cuemail = $customer->email; // or $customer->email depending on your model
-            $cuphoneno = $customer->phone_no; // or $customer->phone_no depending on your model
-
             // Parse the dates using Carbon
             $fromDate = Carbon::parse($request->input('parking_from_date'));
             $tillDate = Carbon::parse($request->input('parking_till_date'));
@@ -369,10 +650,17 @@ class WebController extends Controller
            // Calculate the difference in days and include the last day (+1)
            $dayscount =  $fromDate->diffInDays($tillDate);
            if($dayscount > 32){
-                notify()->error('Parking dates must be within 31 days', 'Error');
+                session()->flash('error', 'Parking dates must be within 31 days', 'Error');
                 return back(); // Stop further processing
             }
            $bookingprice = Bookingprice::getbookingcount($dayscount);
+        //    dd($bookingprice);
+
+              // Check if the booking price is null or empty
+              if (empty($bookingprice) || $bookingprice->isEmpty()) {
+                session()->flash('error', 'No price found for the selected days. Please check your input.');
+                return back(); // Redirect back with an error message
+            }
             // This will output the difference in days
             $price = $bookingprice[0]->booking_price;
 
@@ -411,13 +699,6 @@ class WebController extends Controller
             // Perform the price calculations and session updates (your existing logic)
              Session::put('totalPrice', $totalprice);
              Session::put('discount', $discountamount ?? 0);
-             Session::put('cusid', $cuid);
-             Session::put('cusfirstname', $cufirstname);
-             Session::put('cuslastname', $culastname);
-             Session::put('cusemail', $cuemail);
-             Session::put('cusphoneno', $cuphoneno);
-            //  Session::put('terminalid', $request->input('selected_terminal_id'));
-            //  Session::put('terminalname', $terminaldetails[0]->name);
              Session::put('airport', $request->input('airport'));
              Session::put('promoCode', $promocode);
              Session::put('fromDate', $fromDate);
@@ -450,7 +731,6 @@ class WebController extends Controller
     public function termsandcondition(){
         return view('web.termsandcondition');
     }
-
     //show privacypolicy page
     public function privacypolicy(){
         return view('web.privacypolice');
@@ -483,10 +763,10 @@ class WebController extends Controller
     }
     //show validatereset password
     public function validateresetpassword(Request $request,$token){
-
        $oldtoken  =  AcoountPasswordResetToken::where('token',$token)->first();
        $oldtoken = $oldtoken->token;
        if(!$token){
+
             notify()->error('Email is invalid', 'Erorr');
             return Redirect::route('showlogin');
        }
@@ -520,6 +800,11 @@ class WebController extends Controller
         notify()->success('Password Reset Scuccessfully', 'Success');
         return Redirect::route('showlogin');
 
+    }
+
+     //
+     public function selectCustomer(){
+        return view('web.selectcustomer');
     }
 
 }

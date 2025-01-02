@@ -17,7 +17,7 @@ class ResetPasswordMail extends Mailable
      * Create a new message instance.
      */
     protected $token;
-    
+
     public function __construct($token)
     {
         $this->token = $token;
@@ -29,7 +29,7 @@ class ResetPasswordMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reset Password Mail',
+            subject: 'AIRPARQ Reset Password Mail',
         );
     }
 

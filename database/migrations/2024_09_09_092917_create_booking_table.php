@@ -23,9 +23,7 @@ return new class extends Migration
             $table->string('vehicle_color' )->nullable();
             $table->json('image' )->nullable();
             $table->date('parking_from_date')->nullable();
-            $table->time('parking_from_time')->nullable();
             $table->date('parking_till_date' )->nullable();
-            $table->time('parking_till_time' )->nullable();
             $table->integer('inbound_terminal')->nullable();
             $table->integer('outbound_terminal')->nullable();
             $table->string('inbound_flight_number' )->nullable();
@@ -34,6 +32,10 @@ return new class extends Migration
             $table->date('flight_arrival_date')->nullable();
             $table->time('flight_departure_time')->nullable();
             $table->date('flight_departure_date' )->nullable();
+            $table->integer('parking_from_hour' )->nullable();
+            $table->integer('parking_from_min' )->nullable();
+            $table->integer('parking_till_hour' )->nullable();
+            $table->integer('parking_till_min' )->nullable();
             $table->string('airport' )->nullable();
             $table->integer('status')->default(1);
             $table->timestamps();
