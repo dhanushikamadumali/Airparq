@@ -5,6 +5,8 @@
 <link href="{{asset('account/css/theme-2.min.css')}}" rel="stylesheet">
 <link href="{{asset('account/css/theme-3.min.css')}}" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="sweetalert2.min.css">
+  {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"> --}}
 <style>
         .headingtitle{
             font-size:30px;
@@ -348,38 +350,155 @@
             height: 50px;
         }
     }
-    /* General styles for input[type="date"] */
-    input[type="date"] {
-        appearance: none; /* Ensure consistency across browsers */
-        background-color: #fff; /* Clean background */
-        padding: 8px; /* Standard padding for better visuals */
-        border: 1px solid #ccc; /* Border for styling */
-        border-radius: 4px; /* Rounded corners */
-        cursor: pointer; /* Pointer cursor for clarity */
-    }
-    /* Optional: Customize native calendar picker indicator */
-    input[type="date"]::-webkit-calendar-picker-indicator {
-        cursor: pointer; /* Ensure it's clickable */
-        opacity: 1; /* Fully visible */
-        display: block; /* Default display */
-    }
-    /* Optional: Remove padding adjustments for mobile view */
-    @media (max-width: 768px) {
-        input[type="date"] {
-            padding-right: 8px; /* Adjust padding if needed */
-        }
-    }
-    /* Ensure placeholder is visible in mobile view */
-    @media (max-width: 768px) {
-        input[type="date"]::placeholder {
-            color: #666; /* Make placeholder more visible */
-            font-size: 14px;
-        }
+
+
+    /* Style for modal header with background image */
+    .modal-header {
+      background-image: url('{{asset('account/img/welcomeimg.jpg')}}'); /* Replace with your image URL */
+      background-size: cover;
+      background-position: center;
+      color: white;
     }
 
-    /* For the placeholder effect */
-    input[type="date"].has-placeholder {
-        color: #999; /* Lighter color for the placeholder */
+    .modal-title {
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: for better readability */
+    }
+
+    /* Additional styling for the modal body */
+    .modal-body {
+      font-size: 16px;
+    }
+     .webview {
+        display: block;
+      }
+      .mobileview {
+        display: none;
+      }
+
+      /* For smaller screens (max-width: 768px) */
+      @media (max-width: 768px) {
+        .webview {
+          display: none;
+        }
+        .mobileview {
+          display: block;
+        }
+      }
+    /* For the parking from date */
+    input#parking_from_date:invalid+span::after {
+        content: "Start Date";
+        position: absolute;
+        left: 50px;
+        top: 10px;
+        color: gray; /* You can change this */
+
+
+        /* For mobile devices (max-width: 767px) */
+        @media (max-width: 767px) {
+             left: 20px;
+        }
+        /* For very small devices (max-width: 480px) */
+        @media (max-width: 480px) {
+             left: 20px;
+        }
+        /* For ultra-small devices (max-width: 320px) */
+        @media (max-width: 320px) {
+             left: 20px;
+        }
+
+
+    }
+    /* For the parking till date */
+    input#parking_till_date:invalid+span::after {
+        content: "Return Date";
+        position: absolute;
+        left: 50px;
+        top: 10px;
+        color: gray; /* You can change this */
+
+        /* For mobile devices (max-width: 767px) */
+        @media (max-width: 767px) {
+             left: 20px;
+        }
+        /* For very small devices (max-width: 480px) */
+        @media (max-width: 480px) {
+             left: 20px;
+        }
+        /* For ultra-small devices (max-width: 320px) */
+        @media (max-width: 320px) {
+             left: 20px;
+        }
+
+    }
+    /* Hide the content when the input is focused and invalid */
+    input[type="date"]:focus:invalid+span::after {
+        display: none;
+    }
+    /* Make the placeholder text transparent when the field is not focused */
+    input:not(:focus):invalid {
+        color: transparent;
+    }
+    /* Label styling */
+    label.wrapper {
+        position: relative;
+        padding-left: 20px; /* Adjust if needed to make space for the label */
+        width: 290px;
+        margin-left: -20px;
+    }
+    /* For mobile devices (max-width: 767px) */
+    @media (max-width: 767px) {
+        label.wrapper {
+            width: 100%; /* Make label take full width on mobile */
+            margin-left: 0; /* Reset margin */
+            padding-left: 10px; /* Adjust padding for mobile */
+        }
+    }
+    /* For very small devices (max-width: 480px) */
+    @media (max-width: 480px) {
+        label.wrapper {
+            width: 100%; /* Ensure full width on small screens */
+            margin-left: 0; /* Reset margin */
+            padding-left: 5px; /* Further adjust padding on small devices */
+        }
+    }
+    /* For ultra-small devices (max-width: 320px) */
+    @media (max-width: 320px) {
+        label.wrapper {
+            width: 100%; /* Full width for smallest screens */
+            margin-left: 0; /* Reset margin */
+            padding-left: 3px; /* Reduce padding for very small screens */
+        }
+    }
+    /* Label styling */
+    label.bookingwrapper {
+        position: relative;
+        padding-left: 20px; /* Adjust if needed to make space for the label */
+        width: 550px;
+        margin-left: -20px;
+    }
+     /* For mobile devices (max-width: 767px) */
+    @media (max-width: 767px) {
+        label.bookingwrapper {
+            width: 100%; /* Make label take full width on mobile */
+            margin-left: 0; /* Reset margin */
+            padding-left: 10px; /* Adjust padding for mobile */
+        }
+    }
+    /* For very small devices (max-width: 480px) */
+    @media (max-width: 480px) {
+        label.bookingwrapper {
+            width: 100%; /* Ensure full width on small screens */
+            margin-left: 0; /* Reset margin */
+            padding-left: 5px; /* Further adjust padding on small devices */
+        }
+    }
+    /* For ultra-small devices (max-width: 320px) */
+    @media (max-width: 320px) {
+        label.bookingwrapper {
+            width: 100%; /* Full width for smallest screens */
+            margin-left: 0; /* Reset margin */
+            padding-left: 3px; /* Reduce padding for very small screens */
+        }
     }
 
 

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Today All Outgoing Booking</title>
+    <title>Today All Booking</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 </head>
 <style>
@@ -16,28 +16,19 @@
     }
 </style>
 <body>
-    <h1>Today All Outgoing Bookings</h1>
-    <p>Date : {{ $date }}</p>
+    <h1>All Email List</h1>
     <br/>
     <br/>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>BCODE</th>
-                <th>CNAME</th>
-                <th>EMAIL</th>
-                <th>PHONE NO</th>
-                <th>P TILL TIME</th>
+                <th>Email</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($bookings as $booking)
+            @foreach($emails as $email)
             <tr>
-                <td>{{ $booking->booking_code }}</td>
-                <td>{{ $booking->first_name }}{{ $booking->last_name }}</td>
-                <td>{{ $booking->email }}</td>
-                <td>{{ $booking->phone_no}}</td>
-                <td>{{ $booking->parking_till_hour}}:{{ $booking->parking_till_min}}</td>
+                <td>{{ $email->email }}</td>
             </tr>
             @endforeach
         </tbody>

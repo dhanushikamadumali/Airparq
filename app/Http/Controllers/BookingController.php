@@ -144,7 +144,7 @@ class BookingController extends Controller
                 // $customer = Customer::FindOrFail($validatedData['customer_id']);
                 $users = [
                     $validatedData['email'],// Customer's email (assuming you store it in the booking model)
-                    "admin@airparq.com"// Admin's email (set in the .env file)
+                    "bookingsairparq@gmail.com"// Admin's email (set in the .env file)
                 ];
                 Notification::route('mail', $users)->notify(new Confirmationemail($validatedData));
 
@@ -167,8 +167,21 @@ class BookingController extends Controller
                 'first_name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
                 'email' => 'required',
-                'phone_no' => 'required',
+                'password' => 'required|confirmed|min:8',
+                'phone_no' => 'required|digits:10',
             ]);
+            // Create the customer
+            $account = Customer::create([
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'phone_no' => $validated['phone_no'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+            ]);
+            Auth::guard('account')->login($account);
+            $customer = Auth::guard('account')->user();
+            $cusid = $customer->id;
+            $email = $customer->email;
 
             $flight_arrival_date = Carbon::parse($request->input('flight_arrival_date'));
             $flight_departure_date = Carbon::parse($request->input('flight_departure_date'));
@@ -184,6 +197,7 @@ class BookingController extends Controller
             $failedUrl = route('failed'); // Failed route
 
             $response = $stripe1->checkout->sessions->create([
+
                 'line_items' => [
                     [
                         'price_data' => [
@@ -204,8 +218,8 @@ class BookingController extends Controller
             // Store temporary booking details in the session
             session([
                 'booking_data' => [
-                    'email' => $validated['email'],
-                    'customer_id' => 1,
+                    'email' => $email,
+                    'customer_id' =>  $cusid,
                     'booking_code' => $bookingCode,
                     'price' => $roundno,
                     'flight_arrival_date' => $flight_arrival_date,
@@ -229,6 +243,7 @@ class BookingController extends Controller
         $session_id = $request->input('session_id');
         $bookingData = session('booking_data');
 
+
         if (!$bookingData || !$session_id) {
             notify()->error('Invalid payment session.', 'Error');
             return redirect()->route('guestshowcheckout'); // Adjust to your desired route
@@ -249,7 +264,7 @@ class BookingController extends Controller
                 // Send confirmation email
                 $users = [
                     $validatedData['email'],// Customer's email (assuming you store it in the booking model)
-                    "admin@airparq.com"// Admin's email (set in the .env file)
+                    "bookingsairparq@gmail.com"// Admin's email (set in the .env file)
                 ];
                 Notification::route('mail', $users)->notify(new Confirmationemail($validatedData));
                 notify()->success('Payment successful! Booking confirmed.', 'Success');
@@ -573,7 +588,7 @@ class BookingController extends Controller
                 $customer = Customer::FindOrFail($canclebooking->customer_id);
                 $users = [
                     $customer->email, // Customer's email (assuming you store it in the booking model)
-                    "admin@airparq.com"// Admin's email (set in the .env file)
+                    "bookingsairparq@gmail.com"// Admin's email (set in the .env file)
                 ];
                 Notification::route('mail', $users)->notify(new Cancleemail($canclebooking));
                 return response()->json([

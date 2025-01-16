@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Crypt;
 use App\Models\Setting;
 use App\Http\Middleware\CompanySettings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\SendEmail;
+
 
 
 class BookingpriceController extends Controller
@@ -38,28 +43,56 @@ class BookingpriceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBookingpriceRequest $request)
+    public function store(Request $request)
     {
-        try{
-
-            if($request->datecount>31){
-                notify()->error('Can not insert this day count', 'Error', [
-                    'position' => 'top-right' // Change this to your desired position
-                ]);
-                return back();
-
-            }
-            Bookingprice::create($request->all());
-
-            notify()->success('Successfully insert booking price!','Success!',[
-                'position' => 'bottom-right'
+        try {
+            // Validate the file input
+            $validator = Validator::make($request->all(), [
+                'csv_file' => 'required|mimes:csv,txt|max:2048',
             ]);
-        }catch(Exception $e){
-            notify()->error('Failed to insert booking price', 'Error', [
-                'position' => 'top-right' // Change this to your desired position
+
+            if ($validator->fails()) {
+                notify()->error('Invalid file format', 'Error', [
+                    'position' => 'top-right'
+                ]);
+                return Redirect::route('allbookingprice');
+            }
+
+            // Open the file and read its contents
+            if ($file = $request->file('csv_file')) {
+                // Delete all previous data in the table
+                Bookingprice::truncate(); // Clears the entire table
+
+                $path = $file->getRealPath();
+                $data = array_map('str_getcsv', file($path)); // Convert CSV rows to an array
+
+                // Process the data
+                foreach ($data as $key => $row) {
+                    if ($key === 0) {
+                        // Skip the header row
+                        continue;
+                    }
+
+                    // Insert data into the database
+                    Bookingprice::create([
+                        'datecount' => $row[0], // Map to your database columns
+                        'booking_price' => $row[1],
+                        // Add more columns as needed
+                    ]);
+                }
+
+                notify()->success('Successfully inserted booking prices!', 'Success!', [
+                    'position' => 'bottom-right'
+                ]);
+            }
+        } catch (Exception $e) {
+            notify()->error('Failed to insert booking prices. Error: ' . $e->getMessage(), 'Error', [
+                'position' => 'top-right'
             ]);
         }
-         return Redirect::route('allbookingprice');
+
+        return Redirect::route('allbookingprice');
+
     }
 
     /**
@@ -73,11 +106,15 @@ class BookingpriceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Bookingprice $bookingprice,$id)
-    {
-        $bookingprice = $bookingprice::Find(Crypt::decryptString($id));
-        return view('bookingprice.edit',compact('bookingprice'));
-    }
+    // public function edit()
+    // {
+    //     $pricelists = Bookingprice::all();
+    //     $data = [
+    //         'bookingprices' => $pricelists,
+    //     ];
+    //     $pdf = PDF::loadView('bookingprice.allbookingpricepdf', $data);
+    //     return $pdf->download('allbookingpricelists.pdf');
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -115,6 +152,29 @@ class BookingpriceController extends Controller
 
         }
     }
+
+    public function send(Request $request)
+    {
+        // try{
+        //     Notification::route('mail', $request->input('email'))->notify(new sendmail());
+        //     notify()->success('Sucessfully Updated bookingprice!');
+        // }catch(Exception $e){
+        //     notify()->error('Failed to Update bookingprice');
+        // }
+        // return Redirect::route('allbookingprice');
+        try{
+            SendEmail::create($request->all());
+            notify()->success('Successfully insert','Success!',[
+                'position' => 'bottom-right'
+            ]);
+        }catch(Exception $e){
+            notify()->error('Failed to insert.', 'Error', [
+                'position' => 'top-right' // Change this to your desired position
+            ]);
+        }
+        return back();
+    }
+
 }
 
 

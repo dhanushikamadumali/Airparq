@@ -7,7 +7,7 @@
                 <section class="container" id="step2"  >
 
 
-                <div class="row g-0">
+                <div class="row g-3">
                     <div class="col-12 col-xl-1">
 
                     </div>

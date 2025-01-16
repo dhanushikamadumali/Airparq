@@ -100,10 +100,11 @@
                                                 {{ session('success') }}
                                             </div>
                                         @endif
-                                       <label style="font-size:15px">Select Airport</label>
+                                       <label style="font-size:15px">Flying From</label>
                                          <div class="input-icon-group">
                                             <label for="txtKeyword" class="input-icon hicon hicon-flights-pin"></label>
-                                             <select class="form-select dropdown-select shadow-sm" id="airport" name="airport">
+                                             <select class="form-select dropdown-select shadow-sm" id="airport" name="airport" required autofocus>
+                                             <option>Select Airport</option>
                                                 <option value="London Heathrow" {{ $airport == 'London Heathrow' ? 'selected' : '' }}>London Heathrow</option>
                                                 {{-- <option value="London Gatwick" {{ $airport == 'London Gatwick' ? 'selected' : '' }} >London Gatwick</option> --}}
                                                 {{-- <option value="Stansted Airport" {{ $airport == 'Stansted Airport' ? 'selected' : '' }}>Stansted Airport</option> --}}
@@ -113,26 +114,38 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row g-3 g-xl-2 mb-20">
-                                    <div class="col-12 col-md-8">
-                                         <label style="font-size:15px">Start Date</label>
+                                  <div class="row mb-20">
+                                     <div class="col-6 col-md-6">
+                                    <label style="font-size:15px">Parking From</label>
+                                    </div>
+                                     <div class="col-6 col-md-6">
+                                          <label style="font-size:15px">Drop of Time</label>
+                                     </div>
+
+                                  </div>
+                                <div class="row mb-20">
+                                    <div class="col-6 col-md-6">
                                         <div class="mb-0">
-                                            <input
-                                                id="parking_from_date"
-                                                name="parking_from_date"
-                                                type="date"
-                                                class="form-select shadow-sm"
-                                                placeholder="Parking From"
-                                                onchange="updateTillDateMin()"
-                                                value="{{$fDate ?? ''}}"
-                                                data-placeholder="Parking From">
-                                            @error('parking_from_date')
+
+                                            <label class="wrapper">
+                                                <input
+                                                  type="date"
+                                                  required="required"
+                                                  class="form-control shadow-sm"
+                                                  id="parking_from_date"
+                                                  name="parking_from_date"
+                                                  onchange="updateTillDateMin()"
+                                                    value="{{$fDate ?? ''}}"
+                                                autofocus
+                                                />
+                                                <span class="date-label"></span>
+                                            </label>
+                                               @error('parking_from_date')
                                                 <div style="color:red">{{$message}}</div>
                                             @enderror
                                         </div>
-
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-3 col-md-3">
                                         <div class="mb-0">
                                             @php
                                                 // Generate hours (00 to 23)
@@ -143,8 +156,7 @@
                                                 // Determine the initial hour for the dropdown
                                                 $initialHour = $fHour ?? 00;
                                             @endphp
-                                            <label style="font-size:15px">Start Hour</label>
-                                            <select id="parking_from_hour" name="parking_from_hour" class="form-control">
+                                            <select id="parking_from_hour" name="parking_from_hour" class="form-control" required>
                                                 @foreach ($hourOptions as $hour)
                                                     <option value="{{ $hour }}" {{ $hour == $initialHour ? 'selected' : '' }}>{{ $hour }}</option>
                                                 @endforeach
@@ -156,7 +168,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-3 col-md-3">
                                         <div class="mb-0">
                                             @php
                                                 // Generate minutes (00 to 55 in increments of 5)
@@ -167,8 +179,8 @@
                                                 // Determine the initial minute for the dropdown
                                                 $initialMinute = $fMin ?? 00;
                                             @endphp
-                                            <label style="font-size:15px">Minute</label>
-                                            <select id="parking_from_min" name="parking_from_min" class="form-control">
+
+                                            <select id="parking_from_min" name="parking_from_min" class="form-control" required>
                                                 @foreach ($minuteOptions as $minute)
                                                     <option value="{{ $minute }}" {{ $minute == $initialMinute ? 'selected' : '' }}>{{ $minute }}</option>
                                                 @endforeach
@@ -179,17 +191,36 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row g-3 g-xl-2 mb-20">
-                                     <div class="col-12 col-md-8">
-                                         <label style="font-size:15px">End Date</label>
+                                  <div class="row mb-20">
+                                     <div class="col-6 col-md-6">
+                                    <label style="font-size:15px">Return Date</label>
+                                    </div>
+                                     <div class="col-6 col-md-6">
+                                          <label style="font-size:15px">Return Time</label>
+                                     </div>
+                                  </div>
+                                <div class="row mb-20">
+                                     <div class="col-6 col-md-6">
                                          <div class="mb-0">
-                                            <input id="parking_till_date" name="parking_till_date" type="date" class="form-select " placeholder="Parking Till" value="{{$tDate ?? ''}}">
+                                             <label class="wrapper">
+                                                <input
+                                                  type="date"
+                                                  required="required"
+                                                  class="form-control shadow-sm"
+                                                  id="parking_till_date"
+                                                  name="parking_till_date"
+                                                value="{{$tDate ?? ''}}"
+                                                autofocus
+                                                />
+                                                <span class="date-label"></span>
+                                            </label>
+                                              {{-- <input id="parking_till_date" name="parking_till_date" type="date" class="form-select shadow-sm" placeholder="Parking Till" value="{{$tDate ?? ''}}" required  style="height:50px"> --}}
                                              @error('parking_till_date')
                                             <div style="color:red">{{$message}}</div>
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-3 col-md-3">
                                         <div class="mb-0">
                                             @php
                                                 // Generate hours (00 to 23)
@@ -200,8 +231,7 @@
                                                 // Determine the initial hour for the dropdown
                                                 $initialHour = $tHour ?? 00;
                                             @endphp
-                                            <label style="font-size:15px">End Hour</label>
-                                            <select id="parking_till_hour" name="parking_till_hour" class="form-control">
+                                            <select id="parking_till_hour" name="parking_till_hour" class="form-control" required autofocus>
                                                 @foreach ($hourOptions as $hour)
                                                     <option value="{{ $hour }}" {{ $hour == $initialHour ? 'selected' : '' }}>{{ $hour }}</option>
                                                 @endforeach
@@ -211,7 +241,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-3 col-md-3">
                                         <div class="mb-0">
                                             @php
                                                 // Generate minutes (00 to 55 in increments of 5)
@@ -222,8 +252,7 @@
                                                 // Determine the initial minute for the dropdown
                                                 $initialMinute = $tMin ?? 00;
                                             @endphp
-                                            <label style="font-size:15px">Minute</label>
-                                            <select id="parking_till_min" name="parking_till_min" class="form-control">
+                                            <select id="parking_till_min" name="parking_till_min" class="form-control" required autofocus>
                                                 @foreach ($minuteOptions as $minute)
                                                     <option value="{{ $minute }}" {{ $minute == $initialMinute ? 'selected' : '' }}>{{ $minute }}</option>
                                                 @endforeach
@@ -231,17 +260,16 @@
                                             @error('parking_till_min')
                                                 <div style="color:red">{{ $message }}</div>
                                             @enderror
-                                             {{-- <input type="hidden" name="parking_end_time" id="parking_end_time"> --}}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row g-3 g-xl-2 mb-20" style="margin-bottom:20px">
                                      <div class="col-12">
-                                         <label style="font-size:15px"> Promo Code</label>
+                                         <label style="font-size:15px"> Discount Code</label>
                                          <div class="mb-0">
                                             <div class="input-icon-group">
                                                  <label class="input-icon hicon hicon-adults-line hicon-bold" for="txtCheckDate2"></label>
-                                                <input id="promocode" name="promocode" type="Text" class="form-control shadow-sm" placeholder="Promo code"  value="{{ $pCode ?? '' }}">
+                                                <input id="promocode" name="promocode" type="Text" class="form-control shadow-sm" placeholder="Discount code"  value="{{ $pCode ?? '' }}">
                                                   @error('promocode')
                                                 <div style="color:red">{{$message}}</div>
                                                 @enderror
@@ -367,25 +395,125 @@
     </section>
     <!-- /Tour types -->
      <div class="p-top-50 p-bottom-50 bg-gray-gradient" data-aos="fade">
+
+    <!-- Shopping cart -->
+    <section class="container" id="step1">
          <!-- Title -->
-        <div class="text-center mb-4">
-            <div class="block-title">
-                <h2 class="h1 title"></h2>
+         <div class="d-xl-flex align-items-xl-center pb-4">
+            <div class="block-title me-auto">
+                <h2 class="headingtitle undelinetitle">Trustpilot</h2>
             </div>
         </div>
         <!-- /Title -->
-        <!-- Shopping cart -->
-        <section class="container" id="step1">
-            <div class="row g-0 g-xl-8">                <!-- Form View Button (only visible on mobile) -->
-                    <div class="pe-xl-4 me-xl-2" >                          <!-- Terminal View (Card) -->
-                                <div class="row g-10 g-xl-8">
-                                    <div class="tour-grid">
-                                    </div>
+          <div class="row g-0 g-xl-8">                <!-- Form View Button (only visible on mobile) -->
+            <div class="pe-xl-4 me-xl-2" >                          <!-- Terminal View (Card) -->
+                <div class="row g-10 g-xl-8">
+                    <div class="tour-grid">
+                        <div id="carouselExampleControls" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                            <div class="card-wrapper container-sm d-flex  justify-content-around">
+                                <div class="col-12 col-xl-4 col-md-6">
+                                <div class="card border-0  " style="width: 100%; max-width: 20rem; margin: auto;">
+
+                                        <div class="card-body">
+                                            <h2 class="h3 ff-primary mb-0 text-body-emphasis" style="font-size:1rem;font-weight:600">Patrick Roche</h2>
+                                            <img src="https://cdn.trustpilot.net/brand-assets/4.1.0/stars/stars-5.svg" style="width:100px;height:50px">
+                                            <h2 style="font-size:1rem;font-weight:600">Excellent service</h2>
+                                            <p style="font-size:12px">
+                                            Excellent service. The road into Terminal 4 got shut for some reason. But the driver was able to avoid the terminal. </p>
+                                            <p style="font-size:12px"><strong >Date of experience: </strong>January 05, 2025</p>
+                                        </div>
                                 </div>
+                                </div>
+                                <div class="col-12 col-xl-4 col-md-6">
+                                <div class="card border-0" style="width: 100%; max-width: 20rem; margin: auto;">
+
+                                        <div class="card-body">
+                                            <h2 class="h3 ff-primary mb-0 text-body-emphasis" style="font-size:1rem;font-weight:600">Shay Maginelle</h2>
+                                            <img src="https://cdn.trustpilot.net/brand-assets/4.1.0/stars/stars-5.svg" style="width:100px;height:50px">
+                                            <h2 style="font-size:1rem;font-weight:600">Overall great service and…</h2>
+                                            <p style="font-size:12px">
+
+                                            Overall great service and communication.If they could get the drop off and pick up more on time that would be amazing,</p>
+                                            <p style="font-size:12px"><strong >Date of experience: </strong>December 31, 2024</p>
+                                        </div>
+                                </div>
+                                </div>
+                                <div class="col-12 col-xl-4 col-md-6">
+                                <div class="card border-0" style="width: 100%; max-width: 20rem; margin: auto;">
+                                    {{-- <img src="https://source.unsplash.com/collection/190727/1600x900" class="card-img-top" alt="..."> --}}
+                                        <div class="card-body">
+                                            <h2 class="h3 ff-primary mb-0 text-body-emphasis" style="font-size:1rem;font-weight:600">Cara Partridge</h2>
+                                            <img src="https://cdn.trustpilot.net/brand-assets/4.1.0/stars/stars-5.svg" style="width:100px;height:50px">
+                                            <h2 style="font-size:1rem;font-weight:600">Gave us the WRONG car...</h2>
+                                            <p style="font-size:12px">
+                                            After waiting for our car to be returned to us for almost an hour, they arrived. With the WRONG car, my partner drives a blue micra, </p>
+                                            <p style="font-size:12px"><strong >Date of experience: </strong>December 30, 2024</p>
+                                        </div>
+                                </div>
+                                </div>
+                            </div>
                         </div>
+                        <div class="carousel-item">
+                            <div class="card-wrapper container-sm d-flex   justify-content-around">
+                                <div class="col-12 col-xl-4 col-md-6">
+                                <div class="card border-0  " style="width: 100%; max-width: 20rem; margin: auto;">
+                                    {{-- <img src="https://source.unsplash.com/collection/190727/1600x900" class="card-img-top" alt="..."> --}}
+                                        <div class="card-body">
+                                            <h2 class="h3 ff-primary mb-0 text-body-emphasis" style="font-size:1rem;font-weight:600">Chloe</h2>
+                                            <img src="https://cdn.trustpilot.net/brand-assets/4.1.0/stars/stars-5.svg" style="width:100px;height:50px">
+                                            <h2 style="font-size:1rem;font-weight:600">Great service</h2>
+                                            <p style="font-size:12px">Great service, pick up and drop off was seamless. Great communication throughout.</p>
+                                            <p style="font-size:12px"><strong >Date of experience: </strong>January 05, 2025</p>
+                                        </div>
+                                </div>
+                                </div>
+                                <div class="col-12 col-xl-4 col-md-6">
+                                <div class="card border-0" style="width: 100%; max-width: 20rem; margin: auto;">
+                                    {{-- <img src="https://source.unsplash.com/collection/190727/1600x900" class="card-img-top" alt="..."> --}}
+                                        <div class="card-body">
+                                            <h2 class="h3 ff-primary mb-0 text-body-emphasis" style="font-size:1rem;font-weight:600">Mike England</h2>
+                                            <img src="https://cdn.trustpilot.net/brand-assets/4.1.0/stars/stars-5.svg" style="width:100px;height:50px">
+                                            <h2 style="font-size:1rem;font-weight:600">Excellent service,</h2>
+                                            <p style="font-size:12px">
+
+                                            Used these guys for the first time this week. Excellent. Great value ,
+                                            </p>
+                                            <p style="font-size:12px"><strong >Date of experience: </strong>November 21, 2024</p>
+                                        </div>
+                                </div>
+                                </div>
+                                <div class="col-12 col-xl-4 col-md-6">
+                                <div class="card border-0" style="width: 100%; max-width: 20rem; margin: auto;">
+                                    {{-- <img src="https://source.unsplash.com/collection/190727/1600x900" class="card-img-top" alt="..."> --}}
+                                        <div class="card-body">
+                                            <h2 class="h3 ff-primary mb-0 text-body-emphasis" style="font-size:1rem;font-weight:600">Sam W</h2>
+                                            <img src="https://cdn.trustpilot.net/brand-assets/4.1.0/stars/stars-5.svg" style="width:100px;height:50px">
+                                            <h2 style="font-size:1rem;font-weight:600">The drivers at…</h2>
+                                            <p style="font-size:12px">
+                                            The service provided by the drivers at pick up and collection was great!. </p>
+                                            <p style="font-size:12px"><strong >Date of experience: </strong>October 26, 2024</p>
+                                        </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
+                </div>
+
             </div>
-        </section>
+        </div>
+    </section>
         <!-- /Shopping cart -->
     </div>
     <!-- Why -->
@@ -436,6 +564,7 @@
                     </div>
                     <!-- /Contact Form -->
                 </div>
+
                 <br/>
                 <div class="col-12 col-xl-6 order-1 order-xl-0">
                       <!-- Content -->
@@ -540,25 +669,60 @@
                                     </small>
                                 </div>
                             </div>
-
-
                             <div style="margin-top:10px">Any questions? Just visit our <a href={{route('contactus')}} style="color:#FFD31C">Contact Us</a></div>
                         </div>
-
                     </div>
                     <!-- /Content -->
                 </div>
-
             </div>
         </div>
     </section>
+     <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document"> <!-- Added modal-lg -->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    @if($promoList !== null && count($promoList) > 0)
+                        <p style="font-size:30px;font-weight:600;text-align: center;">15% OFF on all bookings (Promo Code-{{$promoList[0]->promo_code}})</p>
+                    @elseif($promoList === null)
+                        <div class="header-topbar" style="display:none;"></div>
+                    @endif
+                    <form action="{{route('sendemail')}}" method="post">
+                        @csrf
+                        <div style="text-align: center;">
+                            <div class="row">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror shadow-sm" name="email" value="{{ old('email') }}" required autocomplete="email">
+                            </div>
+                            <div class="row" style="margin-top: 6px;">
+                                <button type="submit" class="btn btn-primary" style="width:100%">
+                                    <span>SUBSCRIBE</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- /Why -->
 </main>
 <!-- /Main -->
 @endsection
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('airport').focus(); // Focus on the input field
+            if (window.innerWidth <= 767) { // Check if the screen size is mobile (or smaller)
+                 document.getElementById('airport').focus();
+                 document.getElementById('parking_from_date').focus();
+                 document.getElementById('parking_till_date').focus();
+            }
+        });
+
         // Set minimum date for both inputs
         document.addEventListener('DOMContentLoaded', () => {
+
             const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
             const fromDateInput = document.getElementById('parking_from_date');
             const tillDateInput = document.getElementById('parking_till_date');
@@ -569,23 +733,32 @@
             }
         });
 
-        function updateTillDateMin() {
+         function updateTillDateMin() {
             const fromDateInput = document.getElementById('parking_from_date');
             const tillDateInput = document.getElementById('parking_till_date');
 
-            if (fromDateInput && tillDateInput) {
-                // Get selected "From Date"
-                const selectedFromDate = fromDateInput.value;
-
-                // Update the min attribute of "Till Date"
-                tillDateInput.min = selectedFromDate;
-
-                // Clear "Till Date" if it's earlier than the selected "From Date"
-                if (tillDateInput.value && tillDateInput.value < selectedFromDate) {
-                    tillDateInput.value = '';
-                }
+            if (fromDateInput.value) {
+              // Set the minimum date for the till date input
+              tillDateInput.min = fromDateInput.value;
+            } else {
+              // Clear the minimum date if no from date is selected
+              tillDateInput.min = "";
             }
-        }
+          }
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+          setTimeout(function () {
+            const myModal = new bootstrap.Modal(document.getElementById('myModal'));
+            myModal.show();
+          }, 6000); // 120000 milliseconds = 2 minutes
+        });
+
+
+
+
+
+
 
     </script>
 

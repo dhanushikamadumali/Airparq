@@ -87,7 +87,7 @@ class Booking extends Pivot
     public static  function getfilterincomebooking($today, $terminal)
     {
         return DB::table('booking')
-            ->select('booking.id', 'booking.booking_code', 'booking.parking_from_time', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
+            ->select('booking.id', 'booking.booking_code', 'booking.parking_from_hour', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
             ->join('customer', 'booking.customer_id', '=', 'customer.id')
             ->where('inbound_terminal', '=', $terminal)
             ->where('parking_from_date', '=', $today)
@@ -98,7 +98,7 @@ class Booking extends Pivot
     public static  function getfilteroutgoingbooking($today, $terminal)
     {
         return DB::table('booking')
-            ->select('booking.id', 'booking.booking_code', 'booking.parking_till_time', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
+            ->select('booking.id', 'booking.booking_code', 'booking.parking_till_hour', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
             ->join('customer', 'booking.customer_id', '=', 'customer.id')
             ->where('inbound_terminal', '=', $terminal)
             ->where('parking_till_date', '=', $today)
@@ -110,7 +110,7 @@ class Booking extends Pivot
     public static  function getfiltertodayregisterdbooking($today)
     {
         return DB::table('booking')
-            ->select('booking.id', 'booking.booking_code', 'booking.parking_from_time','booking.status','customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
+            ->select('booking.id', 'booking.booking_code', 'booking.parking_from_hour','booking.status','customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
             ->join('customer', 'booking.customer_id', '=', 'customer.id')
             ->whereDate('booking.created_at', '=', $today)
             ->orderByDesc('booking.created_at')
@@ -130,7 +130,7 @@ class Booking extends Pivot
     public static function todaybookingreport($today)
     {
         return DB::table('booking')
-            ->select('booking.id', 'booking.booking_code', 'booking.parking_from_time', 'booking.parking_till_date', 'booking.parking_till_time', 'booking.price','customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
+            ->select('booking.id', 'booking.booking_code', 'booking.parking_from_hour','booking.parking_from_min', 'booking.parking_till_date', 'booking.parking_till_hour','booking.parking_till_min', 'booking.price','customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
             ->join('customer', 'booking.customer_id', '=', 'customer.id')
             ->where('parking_from_date', '=', $today)
             ->orderByDesc('booking.id')
@@ -141,7 +141,7 @@ class Booking extends Pivot
     public static function todayoutgoingbookingreport($today)
     {
         return DB::table('booking')
-            ->select('booking.id', 'booking.booking_code', 'booking.parking_from_time', 'booking.parking_till_date', 'booking.parking_till_time', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
+            ->select('booking.id', 'booking.booking_code', 'booking.parking_from_hour','booking.parking_from_min', 'booking.parking_till_date', 'booking.parking_till_hour','booking.parking_till_min', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
             ->join('customer', 'booking.customer_id', '=', 'customer.id')
             ->where('parking_till_date', '=', $today)
             ->orderByDesc('booking.id')
@@ -151,7 +151,7 @@ class Booking extends Pivot
     public static function currentmonthbookingreport($startOfMonth, $today)
     {
         return DB::table('booking')
-            ->select('booking.id', 'booking.booking_code', 'booking.parking_from_time', 'booking.parking_till_date', 'booking.parking_till_time','booking.price', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
+            ->select('booking.id', 'booking.booking_code', 'booking.parking_from_hour','booking.parking_from_min', 'booking.parking_till_date', 'booking.parking_till_hour','booking.parking_till_min','booking.price', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
             ->join('customer', 'booking.customer_id', '=', 'customer.id')
             ->whereBetween('booking.parking_from_date', [$startOfMonth, $today])
             ->orderByDesc('booking.id')
@@ -161,7 +161,7 @@ class Booking extends Pivot
     public static function yearbookingreport($year)
     {
         return DB::table('booking')
-            ->select('booking.id', 'booking.booking_code', 'booking.parking_from_time', 'booking.parking_till_date', 'booking.parking_till_time','booking.price', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
+            ->select('booking.id', 'booking.booking_code', 'booking.parking_from_hour','booking.parking_from_min', 'booking.parking_till_date', 'booking.parking_till_hour','booking.parking_till_min','booking.price', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
             ->join('customer', 'booking.customer_id', '=', 'customer.id')
             ->whereYear('booking.parking_from_date', '=',$year)
             ->orderByDesc('booking.id')

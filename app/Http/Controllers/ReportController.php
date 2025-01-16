@@ -16,7 +16,6 @@ class ReportController extends Controller
     public function __construct(){
         $this->middleware(CompanySettings::class);
     }
-
     /**
      * Display a listing of the resource.
      */
@@ -24,10 +23,10 @@ class ReportController extends Controller
     public function todayreport()
     {
         $today = Carbon::today()->toDateString(); // Returns in 'Y-m-d' format
-        $todaybookinglists =Booking::todaybookingreport($today);
+
+        $todaybookinglists = Booking::todaybookingreport($today);
         return view('report.todayreport',compact('todaybookinglists'));
     }
-
      // Get today's  outgoing report
      public function todayoutgoingreport()
      {
@@ -42,7 +41,6 @@ class ReportController extends Controller
     // current month report
     public function currentmonthreport()
     {
-
         $startOfMonth = Carbon::now()->startOfMonth();
         $today = Carbon::today()->toDateString();
         $currentmonthbookinglists = Booking::currentmonthbookingreport($startOfMonth,$today);
@@ -75,7 +73,6 @@ class ReportController extends Controller
         ];
         $pdf = PDF::loadView('report.alltodayoutgoingreportpdf', $data);
         return $pdf->download('todayoutgoingbookinglists.pdf');
-
     }
      /**
      * Display a listing of the resource.

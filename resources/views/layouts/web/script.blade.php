@@ -1,8 +1,10 @@
 <script defer="" src="{{asset('account/js/theme-1.min.js')}}"></script>
 <script defer="" src="{{asset('account/js/theme-2.min.js')}}"></script>
 <script defer="" src="{{asset('account/js/theme-3.min.js')}}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-notify@1.0.4/dist/simple-notify.min.js"></script>
+  <!-- SweetAlert CSS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Add event listener to the "Next" button
@@ -122,19 +124,21 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelector('.editsearch').addEventListener('click', function() {
             // Collect form values
             let parkingFromDate = document.querySelector('#parking_from_date').value;
-            let fromTime = document.querySelector('#parking_from_time').value;
+            let parkingFromHour = document.querySelector('#parking_from_hour').value;
+            let parkingFromMin = document.querySelector('#parking_from_min').value;
             let parkingTillDate = document.querySelector('#parking_till_date').value;
-            let tillTime = document.querySelector('#parking_till_time').value;
+            let parkingTillHour = document.querySelector('#parking_till_hour').value;
+            let parkingTillMin = document.querySelector('#parking_till_min').value;
             let promoCode = document.querySelector('#promocode').value;
             let airport = document.querySelector('#airport').value;
-
-
             // Prepare data for the AJAX request
             let data = {
                 parking_from_date: parkingFromDate,
-                from_time: fromTime,
-                parking_till_date: parkingTillDate,
-                till_time: tillTime,
+                parking_from_hour: parkingFromHour,
+                parking_from_min: parkingFromMin,
+                parking_till_date:parkingTillDate,
+                parking_till_hour:parkingTillHour,
+                parking_till_min:parkingTillMin,
                 promocode: promoCode,
                 airport: airport,
                 _token: "{{ csrf_token() }}"  // CSRF token for security
@@ -244,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-      
+
 
 
 

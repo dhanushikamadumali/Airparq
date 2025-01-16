@@ -146,6 +146,11 @@
                     <span class="sub-item">Annual Revenue </span>
                   </a>
                 </li>
+                 <li>
+                  <a href="{{route('allemaill')}}">
+                    <span class="sub-item">All Email </span>
+                  </a>
+                </li>
               </ul>
             </div>
           </li>

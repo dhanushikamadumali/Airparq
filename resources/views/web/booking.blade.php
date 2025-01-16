@@ -43,34 +43,52 @@
                                             </div>
                                         @endif
                                         <input type="hidden" id="selected_terminal_id" name="selected_terminal_id">
+                                        <div  class="col-12 col-md-12" >Flying From</div>
                                         <div class="col-12">
-                                              <label style="font-size:15px">Select Airport</label>
                                             <div class="input-icon-group">
                                                 <label for="txtKeyword" class="input-icon hicon hicon-flights-pin"></label>
                                                 <div class="input-icon-group">
                                                      <select class="form-select dropdown-select shadow-sm" id="airport" name="airport">
+                                                       <option>Select Airport</option>
                                                         <option value="London Heathrow" {{ $airport == 'London Heathrow' ? 'selected' : '' }}>London Heathrow</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-12 col-md-12">Discount Code</div>
                                         <div class="col-12">
-                                             <label style="font-size:15px"> Promo Code</label>
                                             <div class="input-icon-group">
                                                 <label class="input-icon hicon hicon-child-line hicon-bold" for="txtCheckDate2"></label>
                                                     <div class="input-icon-group">
-                                                    <input id="promocode" name="promocode" type="Text" class="form-control shadow-sm" placeholder="Promo code" data-input="" value="{{ $pCode ?? '' }}">
+                                                    <input id="promocode" name="promocode" type="Text" class="form-control shadow-sm" placeholder="Discount code" data-input="" value="{{ $pCode ?? '' }}">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-md-6">
-                                                  <label style="font-size:15px">Start Date</label>
-                                                  <input id="parking_from_date" name="parking_from_date" type="date" class="form-select shadow-sm" placeholder="Parking From" value="{{$fDate ?? ''}}" onchange="updateTillDateMin()">
-                                             @error('parking_from_date')
-                                            <div style="color:red">{{$message}}</div>
-                                            @enderror
+
+                                             <div class="col-6 col-md-6 mb-20">
+                                            <label >Parking From</label>
+                                            </div>
+                                             <div class="col-6 col-md-6 mb-20">
+                                                  <label >Drop of Time</label>
+                                             </div>
+                                        <div class="col-6 col-md-6">
+                                                 <label class="bookingwrapper">
+                                                    <input
+                                                      type="date"
+                                                      required="required"
+                                                      class="form-control shadow-sm"
+                                                      id="parking_from_date"
+                                                      name="parking_from_date"
+                                                      onchange="updateTillDateMin()"
+                                                     value="{{$fDate ?? ''}}"
+                                                    />
+                                                    <span class="date-label"></span>
+                                                </label>
+                                                @error('parking_from_date')
+                                                    <div style="color:red">{{$message}}</div>
+                                                @enderror
                                         </div>
-                                        <div class="col-12 col-md-3">
+                                        <div class="col-3 col-md-3">
                                                @php
                                                 // Generate hours (00 to 23)
                                                 $hourOptions = [];
@@ -80,7 +98,7 @@
                                                 // Determine the initial hour for the dropdown
                                                 $initialHour = $fHour ?? 00;
                                             @endphp
-                                            <label style="font-size:15px">Start Hour</label>
+
                                             <select id="parking_from_hour" name="parking_from_hour" class="form-control">
                                                 @foreach ($hourOptions as $hour)
                                                     <option value="{{ $hour }}" {{ $hour == $initialHour ? 'selected' : '' }}>{{ $hour }}</option>
@@ -91,7 +109,7 @@
                                             @enderror
 
                                         </div>
-                                         <div class="col-12 col-md-3">
+                                         <div class="col-3 col-md-3">
                                             @php
                                                 // Generate minutes (00 to 55 in increments of 5)
                                                 $minuteOptions = [];
@@ -101,7 +119,7 @@
                                                 // Determine the initial minute for the dropdown
                                                 $initialMinute = $fMin ?? 00;
                                             @endphp
-                                            <label style="font-size:15px">Minute</label>
+
                                             <select id="parking_from_min" name="parking_from_min" class="form-control">
                                                 @foreach ($minuteOptions as $minute)
                                                     <option value="{{ $minute }}" {{ $minute == $initialMinute ? 'selected' : '' }}>{{ $minute }}</option>
@@ -111,14 +129,30 @@
                                                 <div style="color:red">{{ $message }}</div>
                                             @enderror
                                          </div>
-                                        <div class="col-12 col-md-6">
-                                             <label style="font-size:15px">End  Date</label>
-                                            <input id="parking_till_date" name="parking_till_date" type="date" class="form-select " placeholder="Parking Till" value="{{$tDate ?? ''}}">
-                                            @error('parking_till_date')
+
+                                             <div class="col-6 col-md-6 mb-20">
+                                            <label >Return Date</label>
+                                            </div>
+                                             <div class="col-6 col-md-6 mb-20">
+                                                  <label >Return Time</label>
+                                             </div>
+                                        <div class="col-6 col-md-6">
+                                             <label class="bookingwrapper">
+                                                <input
+                                                  type="date"
+                                                  required="required"
+                                                  class="form-control shadow-sm"
+                                                  id="parking_till_date"
+                                                  name="parking_till_date"
+                                                  value="{{$tDate ?? ''}}"
+                                                />
+                                                <span class="date-label"></span>
+                                            </label>
+                                             @error('parking_till_date')
                                             <div style="color:red">{{$message}}</div>
                                             @enderror
                                         </div>
-                                        <div class="col-12 col-md-3">
+                                        <div class="col-3 col-md-3">
                                               @php
                                                 // Generate hours (00 to 23)
                                                 $hourOptions = [];
@@ -128,7 +162,7 @@
                                                 // Determine the initial hour for the dropdown
                                                 $initialHour = $tHour ?? 00;
                                             @endphp
-                                            <label style="font-size:15px">End Hour</label>
+
                                             <select id="parking_till_hour" name="parking_till_hour" class="form-control">
                                                 @foreach ($hourOptions as $hour)
                                                     <option value="{{ $hour }}" {{ $hour == $initialHour ? 'selected' : '' }}>{{ $hour }}</option>
@@ -138,7 +172,7 @@
                                                 <div style="color:red">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        <div class="col-12 col-md-3">
+                                        <div class="col-3 col-md-3">
                                              @php
                                                 // Generate minutes (00 to 55 in increments of 5)
                                                 $minuteOptions = [];
@@ -148,7 +182,6 @@
                                                 // Determine the initial minute for the dropdown
                                                 $initialMinute = $tMin ?? 00;
                                             @endphp
-                                            <label style="font-size:15px">Minute</label>
                                             <select id="parking_till_min" name="parking_till_min" class="form-control">
                                                 @foreach ($minuteOptions as $minute)
                                                     <option value="{{ $minute }}" {{ $minute == $initialMinute ? 'selected' : '' }}>{{ $minute }}</option>

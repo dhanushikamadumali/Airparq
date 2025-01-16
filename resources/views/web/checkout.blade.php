@@ -66,7 +66,7 @@
                                                   <div class="col-12 col-md-6">
                                                     <div class="mb-2">
                                                         <label class="form-label" for="inbound_flightno"  style="font-size:1rem">Outbound  Terminal<span class="text-danger">*</span></label>
-                                                        <select class="form-select dropdown-select shadow-sm" id="outbound_terminal" name="outbound_terminal">
+                                                        <select class="form-select dropdown-select shadow-sm" id="outbound_terminal" name="outbound_terminal" required>
                                                           @foreach ($allterminallists as $allterminallist )
                                                          {{ (old('outbound_terminal') == $allterminallist->id || isset($selectedTerminal) && $selectedTerminal == $allterminallist->id) ? 'selected' : '' }}>
                                                          <option value="{{$allterminallist->id}}" selected="">{{$allterminallist->name}}</option>
@@ -86,152 +86,183 @@
                                                 <div class="col-12 col-md-6">
                                                     <div class="mb-2">
                                                         <label class="form-label" for="inbound_terminal"  style="font-size:1rem">Inbound Terminal<span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control shadow-sm"  value="{{$terminalname}}" readonly >
-                                                           {{-- <select class="form-select dropdown-select shadow-sm" id="outbound_terminal" name="outbound_terminal">
-                                                          @foreach ($allterminallists as $allterminallist )
-                                                         {{ (old('outbound_terminal') == $allterminallist->id || isset($selectedTerminal) && $selectedTerminal == $allterminallist->id) ? 'selected' : '' }}>
-                                                         <option value="{{$allterminallist->id}}" selected="">{{$allterminallist->name}}</option>
-                                                          @endforeach
-                                                         </select> --}}
+                                                        {{-- <input type="text" class="form-control shadow-sm"  value="{{$terminalname}}" readonly > --}}
+                                                           <select class="form-select dropdown-select shadow-sm" id="inbound_terminal" name="inbound_terminal" required>
+                                                              @foreach ($allterminallists as $allterminallist)
+                                                                <option value="{{ $allterminallist->id }}"
+                                                                    {{ (old('inbound_terminal') == $allterminallist->id || (isset($terminalid) && $terminalid == $allterminallist->id)) ? 'selected' : '' }}>
+                                                                    {{ $allterminallist->name }}
+                                                                </option>
+                                                            @endforeach
+                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-6">
                                                 <div class="mb-2">
                                                     <label class="form-label" for="inbound_flight_number"  style="font-size:1rem">Inbound Flight Number<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control shadow-sm" id="inbound_flight_number " name="inbound_flight_number" required  >
-                                                         <label style="font-size:1rem"><span >*</span> Important so we can monitor return flights to improve our service to you </label>                                                             @error('inbound_flight_number')
+                                                         <label style="font-size:1rem"><span >*</span> Important so we can monitor return flights to improve our service to you </label>
+                                                         @error('inbound_flight_number')
                                                         <div style="color:red">{{$message}}</div>
                                                         @enderror
                                                           </div>
                                                 </div>
-                                                
+
                                                   <div class="col-12 col-md-6">
                                                     <div class="mb-2">
-                                                        <label class="form-label" for="flight_departure_date"  style="font-size:1rem">Flight Departure Date</label>
-                                                         <div class="input-icon-group tour-date">
-                                                            <label class="input-icon hicon hicon-menu-calendar hicon-bold"></label>
-                                                            <input id="flight_departure_date" name="flight_departure_date" type="date" class="form-select shadow-sm"  data-input="">
+                                                        <label class="form-label" for="flight_departure_date"  style="font-size:1rem">Flight Departure Date<span class="text-danger">*</span></label>
+                                                        <div class="mb-0">
+                                                            <input
+                                                                id="flight_departure_date"
+                                                                name="flight_departure_date"
+                                                                type="date"
+                                                                class="form-select shadow-sm"
+                                                                placeholder="Parking From"
+                                                                onchange="updateTillDateMin()"
+                                                                value=""
+                                                                data-placeholder="Parking From"
+                                                                required
+                                                                >
+                                                             @error('flight_departure_date')
+                                                            <div style="color:red">{{$message}}</div>
+                                                            @enderror
                                                         </div>
-                                                         @error('flight_departure_date')
-                                                        <div style="color:red">{{$message}}</div>
-                                                        @enderror
                                                     </div>
                                                 </div>
                                                  <div class="col-12 col-md-6">
                                                     <div class="mb-2">
-                                                        <label class="form-label" for="flight_departure_time"  style="font-size:1rem">Flight Departure Time</label>
-                                                         @php
-                                                              use Carbon\Carbon;
-                                                            // Get the current time in London and add 2 hours
-                                                            $startTime = Carbon::now('Europe/London');
+                                                        <label class="form-label" for="flight_departure_time" style="font-size:1rem">
+                                                            Flight Departure Time<span class="text-danger">*</span>
+                                                        </label>
+                                                        @php
+                                                            use Carbon\Carbon;
+
+                                                            // Start time set to midnight (00:00)
+                                                            $startTime = Carbon::now('Europe/London')->startOfDay();
                                                             $timeOptions = [];
-                                                            // Generate time slots for the next 24 hours (every minute)
-                                                            for ($i = 0; $i < 1440; $i++) { // 24 hours * 60 minutes = 1440 minutes
-                                                                // Add one minute intervals
-                                                                $timeOptions[] = $startTime->copy()->addMinutes($i)->format('H:i'); // Format as hour:minute
+
+                                                            // Generate time slots for the next 24 hours in 5-minute increments
+                                                            for ($i = 0; $i < 288; $i++) { // 24 hours * (60 minutes / 5 minutes) = 288 increments
+                                                                // Add 5-minute intervals
+                                                                $timeOptions[] = $startTime->copy()->addMinutes($i * 5)->format('H:i'); // Format as hour:minute
                                                             }
+
                                                             // Determine the initial value for the dropdown
-                                                            $initialTime = $fTime ?? $startTime->format('H:i');
+                                                            $initialTime = $startTime->format('H:i');
                                                         @endphp
-                                                            <div class="input-icon-group tour-date">
-                                                            <label class="input-icon hicon hicon-time-clock hicon-bold"></label>
-                                                                  <select id="flight_departure_time" name="flight_departure_time" class="form-control">
-                                                                    <option value="">Select Till Time</option>
-                                                                    @foreach ($timeOptions as $time)
-                                                                     <option value="{{ $time }}" {{ $time == $initialTime ? 'selected' : '' }}>{{ $time }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        @error('flight_departure_time')
-                                                        <div style="color:red">{{$message}}</div>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                 <div class="col-12 col-md-6">
-                                                    <div class="mb-2">
-                                                        <label class="form-label" for="flight_arrival_date"  style="font-size:1rem">Flight Arrival Date</label>
                                                         <div class="input-icon-group tour-date">
-                                                            <label class="input-icon hicon hicon-menu-calendar hicon-bold"></label>
-                                                            <input id="flight_arrival_date" name="flight_arrival_date" type="date" class="form-select shadow-sm"  data-input="">
+                                                            <label class="input-icon hicon hicon-time-clock hicon-bold"></label>
+                                                            <select id="flight_departure_time" name="flight_departure_time" class="form-control">
+                                                                <option value="">Select Till Time</option>
+                                                                @foreach ($timeOptions as $time)
+                                                                    <option value="{{ $time }}" {{ $time == $initialTime ? 'selected' : '' }}>{{ $time }}</option>
+                                                                @endforeach
+                                                            </select>
                                                         </div>
-                                                         @error('flight_arrival_date')
-                                                        <div style="color:red">{{$message}}</div>
+                                                        @error('flight_departure_time')
+                                                        <div style="color:red">{{ $message }}</div>
                                                         @enderror
+
+
                                                     </div>
                                                 </div>
                                                  <div class="col-12 col-md-6">
                                                     <div class="mb-2">
-                                                        <label class="form-label" for="flight_arrival_time"  style="font-size:1rem">Flight Arrival Time</label>
-                                                         @php
-                                                            // Get the current time in London and add 2 hours
-                                                            $startTime = Carbon::now('Europe/London');
-                                                            $timeOptionsarrival = [];
-                                                            // Generate time slots for the next 24 hours (every minute)
-                                                            for ($i = 0; $i < 1440; $i++) { // 24 hours * 60 minutes = 1440 minutes
-                                                                // Add one minute intervals
-                                                                $timeOptionsarrival[] = $startTime->copy()->addMinutes($i)->format('H:i'); // Format as hour:minute
+                                                          <label class="form-label" for="flight_arrival_date"  style="font-size:1rem">Flight Arrival Date</label>
+                                                        <div class="mb-0">
+                                                            <input
+                                                                id="flight_arrival_date"
+                                                                name="flight_arrival_date"
+                                                                type="date"
+                                                                class="form-select shadow-sm"
+                                                                placeholder="Parking Till"
+                                                                onchange="updateTillDateMin()"
+                                                                data-placeholder="Parking Till"
+                                                                required
+                                                                >
+                                                             @error('flight_arrival_date')
+                                                            <div style="color:red">{{$message}}</div>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                 <div class="col-12 col-md-6">
+                                                    <div class="mb-2">
+                                                         <label class="form-label" for="flight_arrival_time" style="font-size:1rem">
+                                                            Flight Arrival Time<span class="text-danger">*</span>
+                                                        </label>
+                                                        @php
+                                                            // Start time set to midnight (00:00)
+                                                            $startTime = Carbon::now('Europe/London')->startOfDay();
+                                                            $timeOptions = [];
+
+                                                            // Generate time slots for the next 24 hours in 5-minute increments
+                                                            for ($i = 0; $i < 288; $i++) { // 24 hours * (60 minutes / 5 minutes) = 288 increments
+                                                                // Add 5-minute intervals
+                                                                $timeOptions[] = $startTime->copy()->addMinutes($i * 5)->format('H:i'); // Format as hour:minute
                                                             }
-                                                            // Determine the initial value for the dropdown
-                                                            $initialTime = $fTime ?? $startTime->format('H:i');
+
+                                                        // Determine the initial value for the dropdown
+                                                        $initialTime =  $startTime->format('H:i');
                                                         @endphp
-                                                            <div class="input-icon-group tour-date">
+                                                        <div class="input-icon-group tour-date">
                                                             <label class="input-icon hicon hicon-time-clock hicon-bold"></label>
-                                                                  <select id="flight_arrival_time" name="flight_arrival_time" class="form-control">
-                                                                    <option value="">Select Till Time</option>
-                                                                    @foreach ($timeOptionsarrival as $time)
-                                                                     <option value="{{ $time }}" {{ $time == $initialTime ? 'selected' : '' }}>{{ $time }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                          @error('flight_arrival_time')
-                                                        <div style="color:red">{{$message}}</div>
+                                                            <select id="flight_arrival_time" name="flight_arrival_time" class="form-control" required>
+                                                                <option value="">Select Till Time</option>
+                                                                @foreach ($timeOptions as $time)
+                                                                    <option value="{{ $time }}" {{ $time == $initialTime ? 'selected' : '' }}>{{ $time }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        @error('flight_arrival_time')
+                                                        <div style="color:red">{{ $message }}</div>
                                                         @enderror
                                                     </div>
                                                 </div>
 
                                             </div>
                                         </div>
-                                        <div class="border-bottom pb-4 mb-4">
-                                            <h3 class="h4 mb-4" style="font-size:1rem;font-weight:600">Vehicle Information</h3>
-                                            <div class="row g-3">
-                                                <div class="col-12 col-md-6">
-                                                    <div class="mb-2">
-                                                        <label class="form-label" for="vehicle_reg"  style="font-size:1rem">Vehicle Registration</label>
-                                                        <input type="text" class="form-control shadow-sm" id="vehicle_reg" name="vehicle_reg" >
-                                                          @error('vehicle_reg')
-                                                        <div style="color:red">{{$message}}</div>
-                                                        @enderror
-                                                    </div>
+                                    <div class="border-bottom pb-4 mb-4">
+                                        <h3 class="h4 mb-4" style="font-size:1rem;font-weight:600">Vehicle Information</h3>
+                                        <div class="row g-3">
+                                            <div class="col-12 col-md-6">
+                                                <div class="mb-2">
+                                                     <label>Vehicle Registration<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control shadow-sm" id="vehicle_reg" name="vehicle_reg" required >
+                                                      @error('vehicle_reg')
+                                                    <div style="color:red">{{$message}}</div>
+                                                    @enderror
                                                 </div>
-                                                <div class="col-12 col-md-6">
-                                                    <div class="mb-2">
-                                                        <label class="form-label" for="vehicle_manufacturer"  style="font-size:1rem">Vehicle Manufaturer</label>
-                                                        <input type="text" class="form-control shadow-sm" id="vehicle_manufacturer" name="vehicle_manufacturer"  >
-                                                          @error('vehicle_manufacturer')
-                                                        <div style="color:red">{{$message}}</div>
-                                                        @enderror
-                                                    </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="mb-2">
+                                                    <label>Vehicle Manufacturer<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control shadow-sm" id="vehicle_manufacturer" name="vehicle_manufacturer"  required >
+                                                      @error('vehicle_manufacturer')
+                                                    <div style="color:red">{{$message}}</div>
+                                                    @enderror
                                                 </div>
-                                                <div class="col-12 col-md-6">
-                                                    <div class="mb-2">
-                                                        <label class="form-label" for="vehicle_model"  style="font-size:1rem">Vehicle Model</label>
-                                                        <input type="text" class="form-control shadow-sm" id="vehicle_model"  name="vehicle_model" >
-                                                         @error('vehicle_model')
-                                                        <div style="color:red">{{$message}}</div>
-                                                        @enderror
-                                                    </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="mb-2">
+                                                    <label>Vehicle Model<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control shadow-sm" id="vehicle_model"  name="vehicle_model" required >
+                                                     @error('vehicle_model')
+                                                    <div style="color:red">{{$message}}</div>
+                                                    @enderror
                                                 </div>
-                                                <div class="col-12 col-md-6">
-                                                    <div class="mb-2">
-                                                        <label class="form-label" for="vehicle_color"  style="font-size:1rem">Vehicle Colour</label>
-                                                        <input type="text" class="form-control shadow-sm" id="vehicle_color" name="vehicle_color" >
-                                                        @error('vehicle_color')
-                                                        <div style="color:red">{{$message}}</div>
-                                                        @enderror
-                                                    </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="mb-2">
+                                                    <label>Vehicle Colour<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control shadow-sm" id="vehicle_color" name="vehicle_color" required >
+                                                    @error('vehicle_color')
+                                                    <div style="color:red">{{$message}}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
                                 </div>
                             </div>
                             <!-- /Booking & Payment -->

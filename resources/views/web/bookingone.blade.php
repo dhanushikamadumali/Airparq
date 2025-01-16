@@ -27,97 +27,169 @@
                                                     {{ session('success') }}
                                                 </div>
                                             @endif
+                                              <div class="col-12 col-md-12"> <label > Flying From</label></div>
                                             <div class="col-12">
-                                                  <label style="font-size:15px">Select Airport</label>
                                                 <div class="input-icon-group">
                                                       <label for="txtKeyword" class="input-icon hicon hicon-flights-pin"></label>
                                                          <div class="input-icon-group">
                                                          <select class="form-select dropdown-select shadow-sm" id="airport" name="airport">
+                                                         <option>Select Airport</option>
                                                             <option value="London Heathrow" {{ $airport == 'London Heathrow' ? 'selected' : '' }}>London Heathrow</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-12 col-md-12"> <label > Discount Code</label></div>
                                             <div class="col-12">
-                                                 <label style="font-size:15px"> Promo Code</label>
                                                 <div class="input-icon-group">
-                                                     <label class="input-icon hicon hicon-adults-line hicon-bold" for="txtCheckDate2"></label>
+
                                                      <div class="input-icon-group">
-                                                        <input id="promocode" name="promocode" type="Text" class="form-control shadow-sm" placeholder="Promo code" data-input="" value="{{ $pCode ?? '' }}">
-                                                         @error('promocode')
-                                                        <div style="color:red">{{$message}}</div>
-                                                        @enderror
+                                                        <label class="input-icon hicon hicon-child-line hicon-bold" for="txtCheckDate2"></label>
+                                                            <div class="input-icon-group">
+                                                            <input id="promocode" name="promocode" type="Text" class="form-control shadow-sm" placeholder="Discount code" data-input="" value="{{ $pCode ?? '' }}">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-12 col-md-6">
-                                                <label style="font-size:15px">Start Date</label>
-                                                <input id="parking_from_date" name="parking_from_date" type="date" class="form-select shadow-sm" placeholder="Parking From" value="{{$fDate ?? ''}}" onchange="updateTillDateMin()">
+
+                                                 <div class="col-6 col-md-6 mb-20">
+                                                <label>Parking From</label>
+                                                </div>
+                                                 <div class="col-6 col-md-6 mb-20">
+                                                      <label >Drop of Time</label>
+                                                 </div>
+
+                                             <div class="col-6 col-md-6">
+                                                 <label class="bookingwrapper">
+                                                    <input
+                                                      type="date"
+                                                      required="required"
+                                                      class="form-control shadow-sm"
+                                                      id="parking_from_date"
+                                                      name="parking_from_date"
+                                                      onchange="updateTillDateMin()"
+                                                     value="{{$fDate ?? ''}}"
+                                                    />
+                                                    <span class="date-label"></span>
+                                                </label>
                                                 @error('parking_from_date')
-                                                <div style="color:red">{{$message}}</div>
+                                                    <div style="color:red">{{$message}}</div>
                                                 @enderror
                                             </div>
-                                            <div class="col-12 col-md-6">
-                                                 @php
-                                                  use Carbon\Carbon;
-                                                    // Get the current time in London and add 2 hours
-                                                    $currentTime = Carbon::now('Europe/London')->addHours(2);
-                                                    // Round to the nearest 15 minutes
-                                                    $startTime = $currentTime->copy()->addMinutes(15 - ($currentTime->minute % 15))->startOfMinute();
-                                                    $timeOptions = [];
-                                                    // Generate time slots for the next 24 hours (every 15 minutes)
-                                                    for ($i = 0; $i < 96; $i++) { // 24 hours * 4 intervals per hour = 96 intervals
-                                                        $timeOptions[] = $startTime->copy()->addMinutes($i * 15)->format('H:i'); // Format as hour:minute
-                                                    }
-                                                    // Determine the initial value for the dropdown
-                                                    $initialTime = $fTime ?? $startTime->format('H:i');
-                                                @endphp
-                                                 <label style="font-size:15px">Start Time</label>
-                                                <div class="input-icon-group tour-date">
-                                                <label class="input-icon hicon hicon-time-clock hicon-bold"></label>
-                                                    <select id="parking_from_time" name="parking_from_time" class="form-control">
-                                                        <option value="">Select From Time</option>
-                                                        @foreach ($timeOptions as $time)
-                                                         <option value="{{ $time }}" {{ $time == $initialTime ? 'selected' : '' }}>{{ $time }}</option>
+                                            <div class="col-3 col-md-3">
+                                                <div class="mb-0">
+                                                    @php
+                                                        // Generate hours (00 to 23)
+                                                        $hourOptions = [];
+                                                        for ($hour = 0; $hour < 24; $hour++) {
+                                                            $hourOptions[] = str_pad($hour, 2, '0', STR_PAD_LEFT); // Pad single digits with leading zero
+                                                        }
+                                                        // Determine the initial hour for the dropdown
+                                                        $initialHour = $fHour ?? 00;
+                                                    @endphp
+
+                                                    <select id="parking_from_hour" name="parking_from_hour" class="form-control" required>
+                                                        @foreach ($hourOptions as $hour)
+                                                            <option value="{{ $hour }}" {{ $hour == $initialHour ? 'selected' : '' }}>{{ $hour }}</option>
                                                         @endforeach
                                                     </select>
+                                                    @error('parking_from_hour')
+                                                        <div style="color:red">{{ $message }}</div>
+                                                    @enderror
+                                                    {{-- <input type="hidden" name="parking_from_time" id="parking_from_time"> --}}
                                                 </div>
-                                                @error('parking_from_time')
-                                                    <div style="color:red">{{ $message }}</div>
-                                                @enderror
                                             </div>
-                                            <div class="col-12 col-md-6">
-                                                 <label style="font-size:15px">End Date</label>
-                                                <input id="parking_till_date" name="parking_till_date" type="date" class="form-select " placeholder="Parking Till" value="{{$tDate ?? ''}}">
+
+                                            <div class="col-3 col-md-3">
+                                                <div class="mb-0">
+                                                    @php
+                                                        // Generate minutes (00 to 55 in increments of 5)
+                                                        $minuteOptions = [];
+                                                        for ($minute = 0; $minute < 60; $minute += 5) {
+                                                            $minuteOptions[] = str_pad($minute, 2, '0', STR_PAD_LEFT); // Pad single digits with leading zero
+                                                        }
+                                                        // Determine the initial minute for the dropdown
+                                                        $initialMinute = $fMin ?? 00;
+                                                    @endphp
+
+                                                    <select id="parking_from_min" name="parking_from_min" class="form-control" required>
+                                                        @foreach ($minuteOptions as $minute)
+                                                            <option value="{{ $minute }}" {{ $minute == $initialMinute ? 'selected' : '' }}>{{ $minute }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('parking_from_min')
+                                                        <div style="color:red">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                                 <div class="col-6 col-md-6 mb-20">
+                                                <label >Return Date</label>
+                                                </div>
+                                                 <div class="col-6 col-md-6 mb-20">
+                                                      <label >Return Time</label>
+                                                 </div>
+
+
+                                            <div class="col-6 col-md-6">
+                                                <label class="bookingwrapper">
+                                                    <input
+                                                      type="date"
+                                                      required="required"
+                                                      class="form-control shadow-sm"
+                                                      id="parking_till_date"
+                                                      name="parking_till_date"
+                                                      value="{{$tDate ?? ''}}"
+                                                    />
+                                                    <span class="date-label"></span>
+                                                </label>
                                                  @error('parking_till_date')
                                                 <div style="color:red">{{$message}}</div>
                                                 @enderror
                                             </div>
-                                            <div class="col-12 col-md-6">
-                                                 @php
-                                                // Get the current time in London and add 2 hours
-                                                    $currentTime = Carbon::now('Europe/London');
-                                                    $startTime  = $currentTime->copy()->addMinutes(15 - ($currentTime->minute % 15))->startOfMinute();
-                                                    $timeOptions = [];
-                                                    // Generate time slots for the next 24 hours (every minute)
-                                                     for ($i = 0; $i < 96; $i++) { // 24 hours * 4 intervals per hour = 96 intervals
-                                                        $timeOptions[] = $startTime->copy()->addMinutes($i * 15)->format('H:i'); // Format as hour:minute
-                                                    }
-                                                    // Determine the initial value for the dropdown
-                                                    $initialTime = $tTime ?? $startTime->format('H:i');
-                                                @endphp
-                                                 <label style="font-size:15px">  End Time</label>
-                                                <div class="input-icon-group tour-date">
-                                                <label class="input-icon hicon hicon-time-clock hicon-bold"></label>
-                                                      <select id="parking_till_time" name="parking_till_time" class="form-control">
-                                                        @foreach ($timeOptions as $time)
-                                                         <option value="{{ $time }}" {{ $time == $initialTime ? 'selected' : '' }}>{{ $time }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                 <div class="col-3 col-md-3">
+                                                    <div class="mb-0">
+                                                        @php
+                                                            // Generate hours (00 to 23)
+                                                            $hourOptions = [];
+                                                            for ($hour = 0; $hour < 24; $hour++) {
+                                                                $hourOptions[] = str_pad($hour, 2, '0', STR_PAD_LEFT); // Pad single digits with leading zero
+                                                            }
+                                                            // Determine the initial hour for the dropdown
+                                                            $initialHour = $tHour ?? 00;
+                                                        @endphp
+                                                        <select id="parking_till_hour" name="parking_till_hour" class="form-control" required>
+                                                            @foreach ($hourOptions as $hour)
+                                                                <option value="{{ $hour }}" {{ $hour == $initialHour ? 'selected' : '' }}>{{ $hour }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('parking_till_hour')
+                                                            <div style="color:red">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
                                                 </div>
-                                                @error('parking_till_time')
-                                                    <div style="color:red">{{ $message }}</div>
-                                                @enderror
+                                                <div class="col-3 col-md-3">
+                                                    <div class="mb-0">
+                                                        @php
+                                                            // Generate minutes (00 to 55 in increments of 5)
+                                                            $minuteOptions = [];
+                                                            for ($minute = 0; $minute < 60; $minute += 5) {
+                                                                $minuteOptions[] = str_pad($minute, 2, '0', STR_PAD_LEFT); // Pad single digits with leading zero
+                                                            }
+                                                            // Determine the initial minute for the dropdown
+                                                            $initialMinute = $tMin ?? 00;
+                                                        @endphp
+                                                        <select id="parking_till_min" name="parking_till_min" class="form-control" required>
+                                                            @foreach ($minuteOptions as $minute)
+                                                                <option value="{{ $minute }}" {{ $minute == $initialMinute ? 'selected' : '' }}>{{ $minute }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('parking_till_min')
+                                                            <div style="color:red">{{ $message }}</div>
+                                                        @enderror
+                                                         {{-- <input type="hidden" name="parking_end_time" id="parking_end_time"> --}}
+                                                    </div>
+
                                             </div>
                                             <div class="col-12">
                                                 <div class="row">
@@ -150,7 +222,6 @@
         const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
         const fromDateInput = document.getElementById('parking_from_date');
         const tillDateInput = document.getElementById('parking_till_date');
-
         if (fromDateInput && tillDateInput) {
             // Set the min attribute to current date
             fromDateInput.min = currentDate;
@@ -172,6 +243,15 @@
             // Clear "Till Date" if it's earlier than the selected "From Date"
             if (tillDateInput.value && tillDateInput.value < selectedFromDate) {
                 tillDateInput.value = '';
+            }
+        }
+    }
+
+      function moveToNext(current) {
+        if (current.value.length >= current.maxLength) {
+            let next = current.nextElementSibling;
+            if (next && next.classList.contains('otp-input')) {
+                next.focus();
             }
         }
     }

@@ -4,9 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-use function Laravel\Prompts\password;
-
-class StoreCustomerRequest extends FormRequest
+class StoreSendEmailRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +22,7 @@ class StoreCustomerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
             'email' => 'required',
-            'password' =>'required|confirmed|min:8',
-            'phone_no' => 'required|string|digits:10',
         ];
     }
 }

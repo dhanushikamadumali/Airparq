@@ -41,6 +41,8 @@
         <i class="hicon hicon-thin-arrow-up"></i>
     </a>
     <!-- /Scroll top -->
+  
+
     {{-- js --}}
     @include('layouts.web.script')
     <script>

@@ -70,6 +70,9 @@ Route::prefix('account')->group(function () {
     Route::get('/guestsuccess', [App\Http\Controllers\BookingController::class, 'handleGuestPaymentSuccess'])->name('guestsuccess');
     Route::post('/returningcustomerlogin', [App\Http\Controllers\WebController::class, 'returningcustomerlogin'])->name('returningcustomerlogin');
 
+    // Route::post('/sendemail',[App\Http\Controllers\WebController::class,'send'])->name('sendemail');
+
+    Route::post('/sendemail',[App\Http\Controllers\BookingpriceController::class,'send'])->name('sendemail');
     // Guest routes (for customers who are not logged in)
     Route::middleware('guest:account')->group(function() {
         // Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])->name('customer.login');
@@ -214,9 +217,9 @@ Route::prefix('admin')->group(function(){
         Route::get('/allbookingprice',[App\Http\Controllers\BookingpriceController::class,'index'])->name('allbookingprice');
         Route::get('/createbookingprice',[App\Http\Controllers\BookingpriceController::class,'create'])->name('createbookingprice');
         Route::post('/storebookingprice',[App\Http\Controllers\BookingpriceController::class,'store'])->name('storebookingprice');
-        Route::get('/editbookingprice/{id}',[App\Http\Controllers\BookingpriceController::class,'edit'])->name('editbookingprice');
-        Route::put('/updatebookingprice',[App\Http\Controllers\BookingpriceController::class,'update'])->name('updatebookingprice');
-        Route::delete('/deletebookingprice/{id}',[App\Http\Controllers\BookingpriceController::class,'destroy'])->name('deletebookingprice');
+
+        Route::get('/allemaill',[App\Http\Controllers\SendEmailController::class,'index'])->name('allemaill');
+        Route::get('/allemailpdf',[App\Http\Controllers\SendEmailController::class,'getpdf'])->name('allemailpdf');
     });
 });
 

@@ -39,9 +39,9 @@
                 <td>{{ $booking->first_name }}</td>
                 <td>{{ $booking->email }}</td>
                 <td>{{ $booking->phone_no}}</td>
-                <td>{{ $booking->parking_from_time}}</td>
+                <td>{{ $booking->parking_from_hour}} :{{ $booking->parking_from_min}}</td>
                 <td>{{ $booking->parking_till_date}}</td>
-                <td>{{ $booking->parking_till_time}}</td>
+                <td>{{ $booking->parking_till_hour}}:{{ $booking->parking_till_min}}</td>
             </tr>
             @endforeach
         </tbody>

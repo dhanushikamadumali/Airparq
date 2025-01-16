@@ -1,19 +1,21 @@
 <!-- Header -->
 <header id="header">
     <!-- Header Topbar -->
-    @if($promoList !== null && count($promoList) > 0)
-       <div class="header-topbar" style="text-align:center">
-          <div class="container-fluid">
-            <div class="row g-0 justify-content-center">
-                <span style="color:white; font-size:14px;font-weight:600">
-                    15% OFF on all bookings (Promo Code "{{$promoList[0]->promo_code}}")
-                </span>
-            </div>
-          </div>
-       </div>
-    @elseif($promoList === null)
-       <div class="header-topbar" style="display:none;"></div>
-    @endif
+       {{-- <div class="header-topbar" style="text-align:center"> --}}
+          {{-- <div class="container-fluid"> --}}
+            {{-- <div class="row g-0 justify-content-center"> --}}
+                {{-- <span style="color:white; font-size:14px;font-weight:600"> --}}
+                    {{-- 15% OFF on all bookings (Promo Code "{{$promoList[0]->promo_code}}") --}}
+                     {{-- Email: contact@airparq.co.uk --}}
+                     {{-- @if($promoList !== null && count($promoList) > 0) --}}
+                       {{-- <input style="color:black" type="hidden" name="promocode" id="promocode" value="{{$promoList[0]->promo_code}}"> --}}
+                    {{-- @elseif($promoList === null) --}}
+                       {{-- <div class="header-topbar" style="display:none;"></div> --}}
+                    {{-- @endif --}}
+                {{-- </span> --}}
+            {{-- </div> --}}
+          {{-- </div> --}}
+       {{-- </div> --}}
     <!-- /Header Topbar -->
     <!-- Header Navbar -->
     <div class="header-navbar" style="background-color:#FFD31C">

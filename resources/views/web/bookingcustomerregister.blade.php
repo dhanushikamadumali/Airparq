@@ -19,14 +19,19 @@
                                      <input type="hidden" id="promocode" name="promocode" value="{{$pCode}}">
                                     <input type="hidden" id="airport" name="airport" value="{{$airport}}">
                                     <input type="hidden" class="form-control shadow-sm" id="parking_from_date" name="parking_from_date"  value={{$fDate}}>
-                                    <input type="hidden" class="form-control shadow-sm" id="parking_from_time" name="parking_from_time" value={{$fTime}}>
-                                    <input type="hidden" class="form-control shadow-sm" id="parking_till_time" name="parking_till_time" value={{$tTime}}>
+                                    {{-- <input type="hidden" class="form-control shadow-sm" id="parking_from_time" name="parking_from_time" value={{$fTime}}> --}}
+                                    {{-- <input type="hidden" class="form-control shadow-sm" id="parking_till_time" name="parking_till_time" value={{$tTime}}> --}}
                                     <input type="hidden" class="form-control shadow-sm" id="parking_till_date" name="parking_till_date"  value={{$tDate}}>
                                     <input type="hidden" class="form-control shadow-sm" id="bookingprice" name="bookingprice"  value={{$price}}>
                                     <input type="hidden" class="form-control shadow-sm" id="bookingdiscount" name="bookingdiscount"value={{$discount}}>
                                     <input type="hidden" class="form-control shadow-sm" id="price" name="price"  value={{ $tPrice}}>
                                     <input type="hidden" class="form-control shadow-sm" id="inbound_terminal" name="inbound_terminal"  value={{$terminalid}}>
                                     <input type="hidden" class="form-control shadow-sm" id="inbound_terminal_name" name="inbound_terminal_name"  value={{$terminalname}}>
+
+                                      <input type="hidden" class="form-control shadow-sm" id="parking_from_hour" name="parking_from_hour" value={{$fHour}}>
+                                     <input type="hidden" class="form-control shadow-sm" id="parking_from_min" name="parking_from_min" value={{$fMin}}>
+                                     <input type="hidden" class="form-control shadow-sm" id="parking_till_hour" name="parking_till_hour" value={{$tHour}}>
+                                     <input type="hidden" class="form-control shadow-sm" id="parking_till_min" name="parking_till_min" value={{$fMin}}>
                                     <div class="border-bottom pb-4">
                                         <div class="mb-4">
                                             <label>First Name<span class="text-danger">*</span></label>
@@ -59,6 +64,7 @@
                                         <div class="mb-4">
                                             <label>Phone No<span class="text-danger">*</span></label>
                                             <input id="phone_no" type="text" class="form-control shadow-sm @error('phone_no') is-invalid @enderror" name="phone_no" value="{{ old('phone_no') }}" required autocomplete="phone_no">
+                                              <label style="font-size:0.8rem"><span >*</span>Please Enter 10 digit number </label>
                                             @error('phone_no')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -68,6 +74,7 @@
                                         <div class="mb-4">
                                             <label>Password<span class="text-danger">*</span></label>
                                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror shadow-sm" name="password" required autocomplete="new-password">
+                                              <label style="font-size:0.8rem"><span >*</span>Please Enter 8 min character </label>
                                              @error('password')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

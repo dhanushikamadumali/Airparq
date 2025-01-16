@@ -20,11 +20,21 @@
                         <div class="row g-3">
                             <div class="d-flex flex-wrap align-items-center justify-content-between w-100">
                                 <!-- Add New Button on Right Side -->
-                                <div class="col-12 col-md-2 mb-2">
-                                    <a href="{{ asset('admin/createbookingprice') }}" class="btn page_btn w-100 d-flex align-items-center justify-content-center">
-                                        <i class="fa fa-plus me-1"></i> Add New
-                                    </a>
-                                </div>
+
+
+
+                                    <form action="{{ route('storebookingprice') }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center">
+                                        @csrf
+                                         <div class="col-10 col-md-6 mb-2">
+                                             <input type="file" name="csv_file" id="csv_file" required>
+                                         </div>
+                                         <div class="col-2 col-md-6 mb-2">
+                                            <button type="submit" href="{{ asset('admin/createbookingprice') }}" class="btn page_btn w-100 d-flex align-items-center justify-content-center">
+                                                Upload Csv
+                                            </button>
+                                         </div>
+                                    </form>
+                                
                                 <!-- Search Form on Left Side -->
                                 <form action="{{ route('allbookingprice') }}" method="GET" class="d-flex align-items-center">
                                     @csrf
@@ -32,7 +42,6 @@
                                     <div class="col-10 col-md-9 mb-2">
                                         <input type="text" class="form-control" name="search" id="search" placeholder="Search.." />
                                     </div>
-
                                     <!-- Search Button -->
                                     <div class="col-2 col-md-3 mb-2">
                                         <button type="submit" class="btn page_btn searchbtn" style="margin-left:13px">
@@ -40,6 +49,7 @@
                                         </button>
                                     </div>
                                 </form>
+
                             </div>
                         </div>
                     </div>
@@ -48,24 +58,15 @@
                         <table  class="display table table-striped table-hover">
                             <thead>
                             <tr>
-                                <th>Date Count</th>
-                                <th>Booking Price</th>
-                                <th>Action</th>
+                                <th style="text-align:center">Days</th>
+                                <th style="text-align:center">Meet and Greed outdoor(£)</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach ($bookingpricelists as $bookingpricelist)
                             <tr>
-                                <td>{{$bookingpricelist->datecount}}</td>
-                                <td>{{$bookingpricelist->booking_price	}}</td>
-                                <td>
-                                    <a href="{{ route('editbookingprice',Crypt::encryptString($bookingpricelist->id))}}">
-                                        <i class="fa fa-edit editbtn"></i>
-                                    </a>
-                                    <button class="btn p-0 delete" onclick="bookingpricedelete('{{Crypt::encryptString($bookingpricelist->id)}}')">
-                                    <i class="fa fa-times deletebtn"></i>
-                                    </button>
-                                </td>
+                                <td style="text-align:center">{{$bookingpricelist->datecount}}</td>
+                                <td style="text-align:center">£ {{$bookingpricelist->booking_price	}}</td>
                             </tr>
                             @endforeach
                             </tbody>

@@ -25,6 +25,9 @@ use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Middleware\CompanySettings;
 use App\Http\Middleware\AllPromoCode;
+use App\Notifications\sendmail;
+use Illuminate\Support\Facades\Notification;
+use App\Models\SendEmail;
 
 class WebController extends Controller
 {
@@ -87,6 +90,7 @@ class WebController extends Controller
             'password' => Hash::make($validatedData['password']),
         ]);
         Auth::guard('account')->login($account);
+        notify()->success('Register successfully.', 'Success');
         return Redirect::route('showlogin');
         // return redirect()->route('customer.dashboard');
     }
@@ -199,7 +203,6 @@ class WebController extends Controller
 
     public function bookingdetailstep2(Request $request)
     {
-
         $validatedData = $request->validate([
             'airport' => 'required|string',
             'parking_from_date' => 'required|date',
@@ -217,9 +220,13 @@ class WebController extends Controller
         $tillDate = Carbon::parse($request->input('parking_till_date'));
         // Calculate the difference in days and include the last day (+1)
         $dayscount = $fromDate->diffInDays($tillDate);
-        if ($dayscount > 32) {
-            session()->flash('error', 'Parking dates must be within 31 days');
+        if( $tillDate <= $fromDate){
+            session()->flash('error', 'Parking start date must be before the parking end date');
             return back(); // Stop further processing
+        }
+        if($fromDate == $tillDate ){
+            session()->flash('error', 'Please booking before 24 hours');
+                return back(); // Stop further processing
         }
         $bookingprice = Bookingprice::getbookingcount($dayscount);
         // Check if the booking price is null or empty
@@ -280,15 +287,14 @@ class WebController extends Controller
             return back();
         }
         $terminaldetails = Terminal::getterminaldetails($request->input('selected_terminal_id'));//get terminal details
-
          // Parse the dates using Carbon
          $fromDate = Carbon::parse($request->input('parking_from_date'));
          $tillDate = Carbon::parse($request->input('parking_till_date'));
         // Calculate the difference in days and include the last day (+1)
         $dayscount =  $fromDate->diffInDays($tillDate);
-        if($dayscount > 32){
-            notify()->error('Parking dates must be within 31 days', 'Error');
-            return back(); // Stop further processing
+        if($fromDate == $tillDate ){
+            session()->flash('error', 'Please booking before 24 hours');
+                return back(); // Stop further processing
         }
         $bookingprice = Bookingprice::getbookingcount($dayscount);
          // Check if the booking price is null or empty
@@ -339,11 +345,6 @@ class WebController extends Controller
          Session::put('airport', $request->input('airport'));
          Session::put('promocode', $promocode);
 
-        //  Session::put('fromHour',$fromHour);
-        //  Session::put('fromMin',$fromMin);
-        //  Session::put('tillHour',$tillHour);
-        //  Session::put('tillMin',$tillMin);
-
          return Redirect::route('showcheckout');
 
     }
@@ -370,9 +371,13 @@ class WebController extends Controller
         //  }
         $dayscount =  $fromDate->diffInDays($tillDate);
 
-        if($dayscount > 32){
-            notify()->error('Parking dates must be within 31 days', 'Error');
-            return back(); // Stop further processing
+        // if($dayscount > 32){
+        //     notify()->error('Parking dates must be within 31 days', 'Error');
+        //     return back(); // Stop further processing
+        // }
+        if($fromDate == $tillDate ){
+            session()->flash('error', 'Please booking before 24 hours');
+                return back(); // Stop further processing
         }
         $bookingprice = Bookingprice::getbookingcount($dayscount);
          // Check if the booking price is null or empty
@@ -526,8 +531,6 @@ class WebController extends Controller
             $cusemail = Session::get('cusemail');
             $cusphoneno = Session::get('cusphoneno');
         }
-        // return Redirect::route('showlogin');
-        // return redirect()->route('customer.dashboard');
         return view('web.checkout',compact('allterminallists','terminalid','fDate','fHour','fMin','tDate','tHour','tMin','tPrice','pCode','price','discount','cusfname','cuslname','cusemail','cusphoneno','terminalname','cusid','airport'));
     }
 
@@ -563,7 +566,6 @@ class WebController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
         // Attempt to log in the customer using the 'account' guard
         if (Auth::guard('account')->attempt(['email' => $request->email, 'password' => $request->password])) {
             // Fetch the authenticated customer
@@ -649,12 +651,11 @@ class WebController extends Controller
 
            // Calculate the difference in days and include the last day (+1)
            $dayscount =  $fromDate->diffInDays($tillDate);
-           if($dayscount > 32){
-                session()->flash('error', 'Parking dates must be within 31 days', 'Error');
+           if($fromDate == $tillDate ){
+            session()->flash('error', 'Please booking before 24 hours');
                 return back(); // Stop further processing
             }
            $bookingprice = Bookingprice::getbookingcount($dayscount);
-        //    dd($bookingprice);
 
               // Check if the booking price is null or empty
               if (empty($bookingprice) || $bookingprice->isEmpty()) {
@@ -663,7 +664,6 @@ class WebController extends Controller
             }
             // This will output the difference in days
             $price = $bookingprice[0]->booking_price;
-
             $promocode = $request->input('promocode');
 
             // Initialize the total price to the original price
@@ -806,5 +806,7 @@ class WebController extends Controller
      public function selectCustomer(){
         return view('web.selectcustomer');
     }
+
+
 
 }
