@@ -42,10 +42,11 @@ class ContactController extends Controller
     {
 
         try{
-          
+
             Contact::create($request->all());
+           
             // Notification::route('mail',  'admin@airparq.com')->notify(new Contactemail($request->all()));
-            Notification::route('mail',  'dhanushika76@gmail.com')->notify(new Customercontactconfirm($request->all()));
+            Notification::route('mail',  $request->input('email'))->notify(new Customercontactconfirm($request->all()));
 
             notify()->success('Successfully insert Contact!','Success!',[
                 'position' => 'bottom-right'

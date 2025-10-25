@@ -132,13 +132,13 @@ class WebController extends Controller
         $tHour =  Session::get('tillHour');
         $tMin =  Session::get('tillMin');
         $tPrice =  Session::get('totalPrice');
+        $terminalprice = Session::get('terminalprice');
         $pCode =  Session::get('promoCode');
         $airport =  Session::get('airport');
-        return view('web.booking',compact('allterminallists','fDate','fHour','fMin','tDate','tHour','tMin','tPrice','pCode','airport'));
+        return view('web.booking',compact('allterminallists' ,'terminalprice','fDate','fHour','fMin','tDate','tHour','tMin','tPrice','pCode','airport'));
     }
     //show bookingone page
     public function showbookingone(){
-
         $fDate =  Session::get('fromDate');
         $fHour =  Session::get('fromHour');
         $fMin =  Session::get('fromMin');
@@ -148,11 +148,11 @@ class WebController extends Controller
         $tPrice =  Session::get('totalPrice');
         $pCode =  Session::get('promoCode');
         $airport =  Session::get('airport');
-        return view('web.bookingone',compact('fDate','fHour','fMin','tDate','tHour','tMin','tPrice','pCode','airport'));
+        $terminalprice = Session::get('terminalprice');
+        return view('web.bookingone',compact('fDate', 'terminalprice', 'fHour','fMin','tDate','tHour','tMin','tPrice','pCode','airport'));
     }
     // show checkout page
     public function showcheckout(){
-
         $allterminallists = Terminal::all();
         $fDate =  Session::get('fromDate');
         $fHour =  Session::get('fromHour');
@@ -269,7 +269,8 @@ class WebController extends Controller
         session()->put('tillDate', $tillDate);
         session()->put('tillHour', $tillHour);
         session()->put('tillMin', $tillMin);
-        session()->put('totalPrice', $totalprice);
+        session()->put('terminalprice',$price);
+        session()->put('totalPrice',$totalprice);
         session()->put('promoCode', $promocode);
         session()->put('airport', $request->input('airport'));
         return Redirect::route('showbooking');
@@ -344,7 +345,6 @@ class WebController extends Controller
          Session::put('terminalname', $terminaldetails[0]->name);
          Session::put('airport', $request->input('airport'));
          Session::put('promocode', $promocode);
-
          return Redirect::route('showcheckout');
 
     }
@@ -692,19 +692,28 @@ class WebController extends Controller
                 $totalprice = $price;
             }
              $fromDate = Carbon::parse($request->input('parking_from_date'))->format('Y-m-d');
-             $fromTime = $request->input('from_time');
+            //  $fromTime = $request->input('from_time');
+             $fromHour = $request->input('parking_from_hour');
+             $fromMin = $request->input('parking_from_min');
+             $tillHour = $request->input('parking_till_hour');
+             $tillMin = $request->input('parking_till_min');
+
              $tillDate = $tillDate = Carbon::parse($request->input('parking_till_date'))->format('Y-m-d');
-             $tillTime = $request->input('till_time');
+            //  $tillTime = $request->input('till_time');
 
             // Perform the price calculations and session updates (your existing logic)
-             Session::put('totalPrice', $totalprice);
-             Session::put('discount', $discountamount ?? 0);
+            Session::put('totalPrice', $totalprice);
+            Session::put('terminalprice',$price);
+            Session::put('discount', $discountamount ?? 0);
              Session::put('airport', $request->input('airport'));
              Session::put('promoCode', $promocode);
              Session::put('fromDate', $fromDate);
-             Session::put('fromTime', $fromTime);
+             Session::put('fromHour', $fromHour);
+             Session::put('fromMin', $fromMin);
+             Session::put('tillHour', $tillHour);
+             Session::put('tillMin', $tillMin);
              Session::put('tillDate', $tillDate);
-             Session::put('tillTime', $tillTime);
+            
 
              notify()->success('Booking updated successfully.', 'Success');
             // Return a success response if everything is valid

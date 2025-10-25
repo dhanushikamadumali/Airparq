@@ -57,14 +57,14 @@
         <li class="nav-item">
             <a data-bs-toggle="collapse" href="#tables2">
               <i class="fas fa-layer-group"></i>
-              <p>Booking</p>
+              <p>Bookings</p>
               <span class="caret"></span>
             </a>
             <div class="collapse" id="tables2">
               <ul class="nav nav-collapse">
                 <li>
                   <a href="{{route('allbooking')}}">
-                    <span class="sub-item">All Booking</span>
+                    <span class="sub-item">All Bookings</span>
                   </a>
                 </li>
                   <li>
@@ -74,17 +74,17 @@
                 </li>
                 <li>
                   <a href="{{route('incomebooking')}}">
-                    <span class="sub-item">Today Incoming Bookings</span>
+                    <span class="sub-item">Today's Incoming Bookings</span>
                   </a>
                 </li>
                 <li>
                   <a href="{{route('outgoingbooking')}}">
-                    <span class="sub-item">Today Outcoming Bookings</span>
+                    <span class="sub-item">Today's Outcoming Bookings</span>
                   </a>
                 </li>
                 <li>
                   <a href="{{route('todayregisteredbooking')}}">
-                    <span class="sub-item">Today Registered Bookings</span>
+                    <span class="sub-item">Today's Registered Bookings</span>
                   </a>
                 </li>
               </ul>
@@ -99,13 +99,13 @@
           <li class="nav-item">
             <a  href="{{route('allterminal')}}">
               <i class="fas fa-dollar-sign"></i>
-              <p>Price</p>
+              <p>Prices</p>
             </a>
           </li>
            <li class="nav-item">
             <a  href="{{route('allbookingprice')}}">
               <i class="fas fa-wallet"></i>
-              <p>Booking Price</p>
+              <p>Booking Prices</p>
             </a>
           </li>
           <li class="nav-item">
@@ -118,12 +118,12 @@
               <ul class="nav nav-collapse">
                 <li>
                   <a href="{{route('todayreport')}}">
-                    <span class="sub-item">Today Incoming Bookings</span>
+                    <span class="sub-item">Today's Incoming Bookings</span>
                   </a>
                 </li>
                   <li>
                   <a href="{{route('todayoutgoingreport')}}">
-                    <span class="sub-item">Today Outgoing Bookings</span>
+                    <span class="sub-item">Today's Outgoing Bookings</span>
                   </a>
                 </li>
                 <li>
@@ -133,7 +133,7 @@
                 </li>
                 <li>
                   <a href="{{route('todayrevenuereport')}}">
-                    <span class="sub-item">Today Revenue </span>
+                    <span class="sub-item">Today's Revenue </span>
                   </a>
                 </li>
                 <li>
@@ -148,7 +148,7 @@
                 </li>
                  <li>
                   <a href="{{route('allemaill')}}">
-                    <span class="sub-item">All Email </span>
+                    <span class="sub-item">Sign-up Emails </span>
                   </a>
                 </li>
               </ul>
@@ -186,6 +186,11 @@
                     <li>
                       <a href="{{route('csetting')}}">
                         <span class="sub-item">Company</span>
+                      </a>
+                    </li>
+                     <li>
+                      <a href="{{route('printbooking')}}">
+                        <span class="sub-item">Print Bill</span>
                       </a>
                     </li>
                   </ul>

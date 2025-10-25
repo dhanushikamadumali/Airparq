@@ -3,7 +3,7 @@
 <div class="container">
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Today Revenue Report</h3>
+            <h3 class="fw-bold mb-3">Today's Revenue Report</h3>
                 <ul class="breadcrumbs mb-3">
                     <li class="separator">
                         <i class="icon-arrow-right"></i>
@@ -55,7 +55,7 @@
                                     <th></th>
                                     <th></th>
                                     <th></th>
-                                    <th style="font-size:20px">Today Revenue</th>
+                                    <th style="font-size:20px">Today's Revenue</th>
                                     <th style="font-size:20px">£ {{$todayallrevenue}}</th>
                                 </tr>
                              </table>

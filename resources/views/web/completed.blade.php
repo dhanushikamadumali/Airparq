@@ -12,10 +12,10 @@
                 <div class="card border-0 shadow-sm" data-aos="fade">
                     <div class="card-body">
                         <div class="border-bottom pb-4 mb-4">
-                            <h2 class="h3 ff-primary mb-0 text-body-emphasis">Booking Successfully</h2>
+                            <h2 class="h3 ff-primary mb-0 text-body-emphasis">Your Booking Is Complete</h2>
                         </div>
                         <p>
-                            Your booking was sent successfully. We will contact you very soon!
+                            Your Booking Is Complete. We will contact you very soon!
                             <br>
                             Thank you for your booking!
                         </p>

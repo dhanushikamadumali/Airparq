@@ -75,7 +75,7 @@
               </div>
               <div class="col col-stats ms-3 ms-sm-0">
                  <div class="numbers">
-                  <p class="card-category">Total Booking For The Month</p>
+                  <p class="card-category">Total Bookings For The Month</p>
                   <h4 class="card-title">{{$currentyearmonth}}</h4>
                 </div>
               </div>
@@ -151,11 +151,7 @@
                  <div class="numbers">
                   <p class="card-category">Repeat Customer Current Month </p>
                   <h4 class="card-title">
-                    @if($currentmonthrepeatecustomer == null || count($currentmonthrepeatecustomer) == 0)
-                        0
-                    @else
-                        {{$currentmonthrepeatecustomer[0]['total_count']}}
-                    @endif
+                      {{ $currentmonthrepeatecustomer ?? 0 }}
                   </h4>
                 </div>
               </div>

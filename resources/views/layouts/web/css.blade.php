@@ -430,6 +430,52 @@
         }
 
     }
+     /* For the parking from date */
+    input#flight_departure_date:invalid+span::after {
+        content: "flight departure date";
+        position: absolute;
+        left: 50px;
+        top: 10px;
+        color: gray; /* You can change this */
+
+
+        /* For mobile devices (max-width: 767px) */
+        @media (max-width: 767px) {
+             left: 20px;
+        }
+        /* For very small devices (max-width: 480px) */
+        @media (max-width: 480px) {
+             left: 20px;
+        }
+        /* For ultra-small devices (max-width: 320px) */
+        @media (max-width: 320px) {
+             left: 20px;
+        }
+
+
+    }
+    /* For the parking till date */
+    input#flight_arrival_date:invalid+span::after {
+        content: "flight arrival date";
+        position: absolute;
+        left: 50px;
+        top: 10px;
+        color: gray; /* You can change this */
+
+        /* For mobile devices (max-width: 767px) */
+        @media (max-width: 767px) {
+             left: 20px;
+        }
+        /* For very small devices (max-width: 480px) */
+        @media (max-width: 480px) {
+             left: 20px;
+        }
+        /* For ultra-small devices (max-width: 320px) */
+        @media (max-width: 320px) {
+             left: 20px;
+        }
+
+    }
     /* Hide the content when the input is focused and invalid */
     input[type="date"]:focus:invalid+span::after {
         display: none;

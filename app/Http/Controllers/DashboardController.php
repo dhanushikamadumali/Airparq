@@ -31,7 +31,8 @@ class DashboardController extends Controller
         $todayallrevenue =  number_format($todayrevenue->todayallrevenue, 2, '.', ',');
         $monthtodaterevenue = Booking::monthtodaterevenue($today, $startOfMonth); //month to date revenue
         $monthtodateallrevenue =  number_format($monthtodaterevenue->monthtodatellrevenue, 2, '.', ',');
-        $currentmonthrepeatecustomer = Booking::currentmonthrepeatecustomer($startOfMonth, $today); //current month repeate customer
+        $currentmonthrepeatecustomer = Booking::currentmonthrepeatecustomer($startOfMonth, $today);//current month repeate customer
+
         return view('dashboard.index', compact('todayincomebooking', 'currentyearmonth', 'todayoutgoingbooking', 'todayallrevenue', 'monthtodateallrevenue', 'monthcharacter','currentmonthrepeatecustomer'));
     }
 

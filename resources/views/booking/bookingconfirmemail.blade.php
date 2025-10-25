@@ -69,12 +69,12 @@ For what reason would it be advisable for me to think about business content? Th
                             </h2>
                         </td>
                     </tr>
-                    <tr>
+                     <tr>
                         <td align="left" style="padding: 35px; background-color: #ffffff;" bgcolor="#ffffff">
                             <table cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
                                     <td width="75%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;">
-                                        Booking Details
+                                        Customer Information
                                     </td>
                                     <td width="25%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;">
 
@@ -82,7 +82,7 @@ For what reason would it be advisable for me to think about business content? Th
                                 </tr>
                                 <tr>
                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">
-                                        Booking Code
+                                        Reservation number:
                                     </td>
                                     <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">
                                         {{$data['booking_code']}}
@@ -90,34 +90,109 @@ For what reason would it be advisable for me to think about business content? Th
                                 </tr>
                                 <tr>
                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
-                                        Parking From Date
+                                        First name and surname:
                                     </td>
                                     <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
-                                        {{$data['parking_from_date']}}
+                                         {{$data['first_name']}}  {{$data['last_name']}}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
-                                        Parking Till Date
+                                        Mobile phone number:
                                     </td>
                                     <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
-                                        {{$data['parking_till_date']}}
+                                        {{$data['phone_no']}}
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" style="padding: 35px; background-color: #ffffff;" bgcolor="#ffffff">
+                            <table cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td width="75%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;">
+                                        Booking Information:
+                                    </td>
+                                    <td width="25%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">
+                                        Vehicle Information:
+                                    </td>
+                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">
+                                        {{$data['vehicle_manufacturer']}} {{$data['vehicle_model']}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
+                                       Vehicle Number Plate:
+                                    </td>
+                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
+                                         {{$data['vehicle_reg']}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
+                                        Type of parking:
+                                    </td>
+                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
+                                        Meet and Greet
+                                    </td>
+                                </tr>
+                                <tr></tr>
+
+                                  <tr>
+                                    <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">
+                                         Flight number at departure:
+                                    </td>
+                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">
+                                        {{$data['outbound_flight_number']}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">
+                                        Date of departure from airport:
+                                    </td>
+                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">
+                                         {{\Carbon\Carbon::parse($data['parking_from_date'])->format('d-m-Y')}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
+                                       Time of delivery of car:
+                                    </td>
+                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
+                                         {{$data['parking_from_hour']}} {{$data['parking_from_min']}}
+                                    </td>
+                                </tr>
+                                 <tr></tr>
+
+                                <tr>
+                                    <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
+                                        Flight number at return:
+                                    </td>
+                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
+                                         {{$data['inbound_flight_number']}}
                                     </td>
                                 </tr>
                                  <tr>
                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
-                                         Vehicle Reg No
+                                        Reservation end date:
                                     </td>
                                     <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
-                                        {{$data['vehicle_reg']}}
+                                         {{\Carbon\Carbon::parse($data['parking_till_date'])->format('d-m-Y')}}
                                     </td>
                                 </tr>
                                  <tr>
                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
-                                         Promocode
+                                        Reservation end time:
                                     </td>
                                     <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
-                                        {{$data['promocode']}}
+                                         {{$data['parking_till_hour']}}  {{$data['parking_till_min']}}
                                     </td>
                                 </tr>
                             </table>
@@ -153,7 +228,7 @@ For what reason would it be advisable for me to think about business content? Th
                             <p>
                                  <p style="text-align:justify">Prices exclude airport access fees.Customer/owner has to bear the cost of paying the ULEZ if the vehicle does not meet the ULEZ standards. The customer has to pay ULEZ for both days (the day of dropoff and the day of collection)</p>
                                 <p style="text-align:justify">Beginning on August 29, 2023, the Ultra Low Emission Zone (ULEZ) in London has been extended to cover the entire Greater London area, Heathrow Airport included.This expansion, executed by Transport for London (TfL), seeks to mitigate air pollution across the city. As of this date, Heathrow Airport and its terminals (2, 3, 4, and 5) fall within the boundaries of ULEZ. Consequently, vehicles entering the airport are required to comply with specific emission criteria to avoid incurring a daily fee.To check if your car is ULEZ complaint please visit: https://tfl.gov.uk/modes/driving/check-your-vehicle/Please be aware that if your vehicle does not meet ULEZ compliance standards, you will be responsible for paying the daily charge on both the day of drop-off and pick-up. To pay this, please visit: https://tfl.gov.uk/modes/driving/pay-to-drive-in-london Once your holiday parking has been booked and confirmed via email you are ready to go. Please do call us on +44 7464 777258 or +44 7301 330702 when you are 30 minutes away so we can allocate a driver to collect your car. We have a designated AIRPARQ Parking desk located in the short stay car park with our friendly chauffeurs waiting to accept your car. Please note, if the phone lines are busy, make your way to our desk where our staff will meet you.</p>
-                                        <h4>Please see the drections for each Terminal we serve below.</h4>
+                                        <h4>Please see the directions for each Terminal we serve below.</h4>
                                         <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">Terminal 2 - sat-nav postcode: TW6 1EW</p>
                                         <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">Terminal 2 - Departure Instructions</p>
                                         <p style="text-align:justify">From the M25 exit at Junction 15, follow the signs for Terminals 1, 2 & 3 all the way round following onto the Western Perimeter Road:
@@ -178,7 +253,7 @@ For what reason would it be advisable for me to think about business content? Th
                                         Terminal 3 Return Instructions.On your return, once you have collected your luggage and are about to clear Customs, please call the number provided when your car was dropped off.
                                         As you arrive in the arrivals, just before the Exit door on the Right Hand Side, please take the lift to Level 4 Short Stay Car Park and your car will be ready and waiting for you in ROW A.</p>
                                         <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">Terminal 4 - sat-nav postcode: TW6 3XA</p>
-                                        <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">Terminal 3 - Departure Instructions</p>
+                                        <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">Terminal 4 - Departure Instructions</p>
                                         <p style="text-align:justify">Please follow directions to the Short Stay car park and then drive up to Level 2, Row F. Look for the "Off Airport Meet and Greet" sign, our desk is located in the lobby.
                                        Please follow directions to the Short Stay car park and then drive up to Level 2, Row F. Look for the "Off Airport Meet and Greet" sign, our desk is located in the lobby.
                                         Please have your email booking confirmation ready, together with your return flight details.
@@ -209,7 +284,7 @@ For what reason would it be advisable for me to think about business content? Th
                             <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">
                                 If you have any questions or require further assistance, please don't hesitate to contact us at contact@airparq.co.uk or +44 7464 777258.
                             </p>
-                            <p>Thank you for choosing Airpaq</p>
+                            <p>Thank you for choosing Airparq</p>
                         </td>
                     </tr>
                     <tr>

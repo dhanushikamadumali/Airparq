@@ -3,7 +3,7 @@
 <div class="container">
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">All Booking</h3>
+            <h3 class="fw-bold mb-3">All Bookings</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="separator">
                     <i class="icon-arrow-left"></i>
@@ -52,65 +52,67 @@
                         </form>
                         <hr/>
                         <div class="table-responsive">
-                        <table class="display table table-striped table-hover">
-                            <thead>
-                            <tr>
-                                <th>Code</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone No</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach ($allbookinglists as $allbookinglist)
-                            <tr>
-                                <td>{{$allbookinglist->booking_code}}</td>
-                                <td>{{$allbookinglist->customer->first_name}} </td>
-                                <td>{{$allbookinglist->customer->email}}</td>
-                                <td>{{$allbookinglist->customer->phone_no}}</td>
-                                 <td>
-                                 @if ($allbookinglist->status == 0)
-                                    <span class="badge badge-danger">Cancel</span>
-                                 @endif
-                                @if ($allbookinglist->status == 1)
-                                    <span class="badge badge-success">Success</span>
-                                @endif
-                                 </td>
-                                <td>
-                                    <a href="{{ route('editbooking',Crypt::encryptString($allbookinglist->id))}}">
-                                        <i class="fa fa-edit editbtn"></i>
-                                    </a>
-                                    <button class="open_camera btn p-0 camerabtn" data-row-id="{{$allbookinglist->id }}">
-                                        <i class="fas fa-camera"></i>
-                                    </button>
-                                    <a href="{{route('printbooking1',$allbookinglist->id)}}">
-                                    <i class="fas fa-print print"></i>
-                                    </a>
-                                     <a href="{{ route('viewbooking',Crypt::encryptString($allbookinglist->id))}}">
-                                        <i class="far fa-eye viewbtn"></i>
-                                    </a>
-                                      <button class="btn p-0 cancle" onclick="bookingdetailscancle('{{Crypt::encryptString($allbookinglist->id)}}')">
-                                    <i class="fas fa-ban canclebtn"></i>
-                                    </button>
-                                    <button class="btn p-0 delete" onclick="bookingdetailsdelete('{{Crypt::encryptString($allbookinglist->id)}}')">
-                                    <i class="fa fa-times deletebtn"></i>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        class="btn p-0"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#zoomImageModal"
-                                        onclick="loadZoomImage('{{ route('zoomimage', Crypt::encryptString($allbookinglist->id)) }}')">
-                                        <i class="fa-solid fa-image" style="color:#660066"></i>
-                                    </button>
+                            <table class="display table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone No</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach ($allbookinglists as $allbookinglist)
+                                <tr>
+                                    <td>{{$allbookinglist->booking_code}}</td>
+                                    <td>{{$allbookinglist->customer->first_name}} </td>
+                                    <td>{{$allbookinglist->customer->email}}</td>
+                                    <td>{{$allbookinglist->customer->phone_no}}</td>
+                                    <td>{{$allbookinglist->created_at->format('d-m-Y')}}</td>
+                                    <td>
+                                    @if ($allbookinglist->status == 0)
+                                        <span class="badge badge-danger">Cancel</span>
+                                    @endif
+                                    @if ($allbookinglist->status == 1)
+                                        <span class="badge badge-success">Success</span>
+                                    @endif
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('editbooking',Crypt::encryptString($allbookinglist->id))}}">
+                                            <i class="fa fa-edit editbtn"></i>
+                                        </a>
+                                        <button class="open_camera btn p-0 camerabtn" data-row-id="{{$allbookinglist->id }}">
+                                            <i class="fas fa-camera"></i>
+                                        </button>
+                                        <a href="{{route('printbooking1',$allbookinglist->id)}}">
+                                        <i class="fas fa-print print"></i>
+                                        </a>
+                                        <a href="{{ route('viewbooking',Crypt::encryptString($allbookinglist->id))}}">
+                                            <i class="far fa-eye viewbtn"></i>
+                                        </a>
+                                        <button class="btn p-0 cancle" onclick="bookingdetailscancle('{{Crypt::encryptString($allbookinglist->id)}}')">
+                                        <i class="fas fa-ban canclebtn"></i>
+                                        </button>
+                                        <button class="btn p-0 delete" onclick="bookingdetailsdelete('{{Crypt::encryptString($allbookinglist->id)}}')">
+                                        <i class="fa fa-times deletebtn"></i>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="btn p-0"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#zoomImageModal"
+                                            onclick="loadZoomImage('{{ route('zoomimage', Crypt::encryptString($allbookinglist->id)) }}')">
+                                            <i class="fa-solid fa-image" style="color:#660066"></i>
+                                        </button>
 
-                                </td>
-                            </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                                    </td>
+                                </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
                             {{ $allbookinglists->links() }}
                         </div>
                     </div>

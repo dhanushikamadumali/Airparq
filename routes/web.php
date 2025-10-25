@@ -125,7 +125,7 @@ Route::prefix('admin')->group(function(){
         //  Route::post('/getfiltertodayregisteredbooking',[App\Http\Controllers\BookingController::class,'getfiltertodayregisteredbooking'])->name('todayregisteredbooking');
         // print booking
          Route::get('/printbookingdetails/{id}',[App\Http\Controllers\ReportController::class,'printbookingdetails'])->name('printbookingdetails');
-         Route::get('/printbooking/{id}',[App\Http\Controllers\BookingController::class,'printbooking'])->name('printbooking');
+         Route::get('/printbooking',[App\Http\Controllers\BookingController::class,'printbooking'])->name('printbooking');
          Route::get('/printbooking1/{id}',[App\Http\Controllers\BookingController::class,'printbooking1'])->name('printbooking1');
          Route::get('/todayprintbookingdetails/{id}',[App\Http\Controllers\ReportController::class,'todayprintbookingdetails'])->name('todayprintbookingdetails');
          Route::get('/currentmonthprintbookingdetails/{id}',[App\Http\Controllers\ReportController::class,'currentmonthprintbookingdetails'])->name('currentmonthprintbookingdetails');
@@ -220,6 +220,12 @@ Route::prefix('admin')->group(function(){
 
         Route::get('/allemaill',[App\Http\Controllers\SendEmailController::class,'index'])->name('allemaill');
         Route::get('/allemailpdf',[App\Http\Controllers\SendEmailController::class,'getpdf'])->name('allemailpdf');
+
+
+        Route::get('/createemai',[App\Http\Controllers\SendEmailController::class,'create'])->name('createemail');
+        Route::get('/eeditemail',[App\Http\Controllers\SendEmailController::class,'edit'])->name('editemail');
+          Route::get('/updateemail',[App\Http\Controllers\SendEmailController::class,'update'])->name('updateemail');
+        Route::get('/deleteemail',[App\Http\Controllers\SendEmailController::class,'destroy'])->name('delateemail');
     });
 });
 

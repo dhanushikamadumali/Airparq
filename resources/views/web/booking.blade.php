@@ -226,7 +226,7 @@
                             <p style="text-align: justify;font-size:15px">{{$terminallist->description}}</p>
                              <div style="display: flex;align-items: center;width: 100%;">
                                 <div style="font-weight:bold;font-size:30px">
-                                    £{{ round($tPrice ?? 50.99, 2) }}
+                                    £{{ round($terminalprice ?? 50.99, 2) }}
                                 </div>
                                 <button type="button" class="btn btn-primary  choose-terminal1" style="font-size:12px;margin-left:50px" value="{{$terminallist->id}}">
                                     CHOOSE

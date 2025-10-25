@@ -38,10 +38,6 @@ class Contactemail extends Notification
         return (new MailMessage)
                     ->subject('AIRPARQ Contact Email')
                     ->view('contact.contactemail',['data'=>$this->data]);
-
-
-
-
     }
 
     /**

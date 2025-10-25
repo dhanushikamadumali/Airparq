@@ -4,6 +4,7 @@
   {{-- css --}}
    @include('layouts.main.css')
 
+
 <body>
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
@@ -24,14 +25,14 @@
                                <p>{{$bookingdetails[0]->email}}</p>
                                <p class="space_top">{{$bookingdetails[0]->vehicle_reg}}</p>
                                <p> {{$bookingdetails[0]->vehicle_manufacturer}}</p>
-                               <p class="space_top"> {{$bookingdetails[0]->parking_from_date}}{{$bookingdetails[0]->parking_from_time}}</p>
-                               <p> {{$bookingdetails[0]->parking_till_date}} {{$bookingdetails[0]->parking_till_time}}</p>
+                               <p class="space_top"> {{$bookingdetails[0]->parking_from_date}}{{$bookingdetails[0]->parking_from_hour}}:{{$bookingdetails[0]->parking_from_min}}</p>
+                               <p> {{$bookingdetails[0]->parking_till_date}} {{$bookingdetails[0]->parking_till_hour}}:{{$bookingdetails[0]->parking_till_min}}</p>
                            </div>
                             <div class="col-md-4 text-center">
                                <p > {{$bookingdetails[0]->parking_till_date}}</p>
                                <p style="margin-top: 30px;
                                         margin-bottom: 30px;">
-                                        {{$bookingdetails[0]->parking_till_time}}</p>
+                            {{$bookingdetails[0]->parking_till_hour}}:{{$bookingdetails[0]->parking_till_min}}</p>
                                <p style="""> {{$bookingdetails[0]->parking_till_date}}</p>
                                <p class="space_top"> {{$bookingdetails[0]->vehicle_reg}}</p>
                                <p>  {{$bookingdetails[0]->vehicle_manufacturer}}{{$bookingdetails[0]->vehicle_model}}</p>
@@ -39,7 +40,7 @@
                             <div class="col-md-4 text-center">
                                <p style="margin-top: 110px">{{$bookingdetails[0]->vehicle_reg}}</p>
                                <p> {{$bookingdetails[0]->vehicle_manufacturer}} {{$bookingdetails[0]->vehicle_model}}  {{$bookingdetails[0]->vehicle_color}}</p>
-                               <p>{{$bookingdetails[0]->parking_till_time}}  {{$bookingdetails[0]->parking_till_date}}</p>
+                               <p>{{$bookingdetails[0]->parking_till_hour}}:{{$bookingdetails[0]->parking_till_min}}  {{$bookingdetails[0]->parking_till_date}}</p>
                            </div>
                     </div>
                     </div>
@@ -49,7 +50,7 @@
             </div>
     </div>
      <!-- Cancel Button -->
-    <button class="btn btn-danger" onclick="cancelBooking()">Cancel</button>
+
     <input type="text" value="{{$bookingdetails[0]->id}}" name="ids" hidden="hidden">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
     <script>
@@ -57,11 +58,17 @@
             var printContents = document.getElementById('printableArea').innerHTML;
             var originalContents = document.body.innerHTML;
             document.body.innerHTML = printContents;
+
             window.print();
-            window.history.back();
+
+            // Delay going back to the previous page
+            setTimeout(function() {
+                window.history.back();
+            }, 1000); // 1-second delay; adjust if needed
         });
-            document.body.innerHTML = originalContents;
-            window.history.back();
+
+
+
     </script>
 </body>
 </html>

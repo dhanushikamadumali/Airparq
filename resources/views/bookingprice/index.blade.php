@@ -3,7 +3,7 @@
 <div class="container">
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">All Booking Price</h3>
+            <h3 class="fw-bold mb-3">All Booking Prices</h3>
                 <ul class="breadcrumbs mb-3">
                     <li class="separator">
                         <i class="icon-arrow-right"></i>
@@ -34,7 +34,7 @@
                                             </button>
                                          </div>
                                     </form>
-                                
+
                                 <!-- Search Form on Left Side -->
                                 <form action="{{ route('allbookingprice') }}" method="GET" class="d-flex align-items-center">
                                     @csrf

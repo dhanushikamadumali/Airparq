@@ -139,12 +139,15 @@ class BookingController extends Controller
                 $validatedData['price'] = $bookingData['price'];
                 $validatedData['flight_arrival_date'] = $bookingData['flight_arrival_date'];
                 $validatedData['flight_departure_date'] = $bookingData['flight_departure_date'];
+
+
+
                 Booking::create($validatedData);
                 // Send confirmation email
                 // $customer = Customer::FindOrFail($validatedData['customer_id']);
                 $users = [
                     $validatedData['email'],// Customer's email (assuming you store it in the booking model)
-                    "bookingsairparq@gmail.com"// Admin's email (set in the .env file)
+                    "bookingsairparq@gmail.com"
                 ];
                 Notification::route('mail', $users)->notify(new Confirmationemail($validatedData));
 
@@ -182,6 +185,8 @@ class BookingController extends Controller
             $customer = Auth::guard('account')->user();
             $cusid = $customer->id;
             $email = $customer->email;
+            $fname = $customer->first_name;
+            $lname = $customer->last_name;
 
             $flight_arrival_date = Carbon::parse($request->input('flight_arrival_date'));
             $flight_departure_date = Carbon::parse($request->input('flight_departure_date'));
@@ -222,6 +227,8 @@ class BookingController extends Controller
                     'customer_id' =>  $cusid,
                     'booking_code' => $bookingCode,
                     'price' => $roundno,
+                    'first_name'=>$fname,
+                    'last_name'=>$lname,
                     'flight_arrival_date' => $flight_arrival_date,
                     'flight_departure_date' => $flight_departure_date,
                     'validated_data' => $request->all(),
@@ -259,6 +266,8 @@ class BookingController extends Controller
                 $validatedData['price'] = $bookingData['price'];
                 $validatedData['flight_arrival_date'] = $bookingData['flight_arrival_date'];
                 $validatedData['flight_departure_date'] = $bookingData['flight_departure_date'];
+                $validatedData['first_name'] = $bookingData['first_name'];
+                $validatedData['last_name'] = $bookingData['last_name'];
 
                 Booking::create($validatedData);
                 // Send confirmation email
@@ -301,6 +310,7 @@ class BookingController extends Controller
     public function edit(Booking $booking,$id)
     {
         $booking = $booking::editbookingdetailsbyid(Crypt::decryptString($id));
+
         if (isset($booking[0]->image) && !empty($booking[0]->image)) {
             $images = json_decode($booking[0]->image, true);
         } else {
@@ -395,8 +405,10 @@ class BookingController extends Controller
      */
     public function  getfilterbookingdate(Request $request, Booking $booking)
     {
+
         $from_date = $request->input('from_date');
         $to_date = $request->input('to_date');
+
         $filterdata =Booking::getfilterdatedetails($from_date,$to_date);
         // Transform data into the format required by DataTables
         $data =  $filterdata->map(function($booking) {
@@ -476,7 +488,8 @@ class BookingController extends Controller
                 $booking->first_name." ". $booking->last_name,
                 $booking->email,
                 $booking->phone_no,
-                $booking->parking_from_time,
+                $booking->parking_from_hour,
+                $booking->parking_from_min,
             ];
         });
 
@@ -511,7 +524,8 @@ class BookingController extends Controller
                 $booking->first_name." ". $booking->last_name,
                 $booking->email,
                 $booking->phone_no,
-                $booking->parking_till_time,
+                $booking->parking_till_hour,
+                $booking->parking_till_min,
             ];
         });
 
@@ -528,10 +542,10 @@ class BookingController extends Controller
         $filterdata =Booking::getfiltertodayregisterdbooking($today);
         return view('booking.todayregisteredbooking',compact('filterdata'));
     }
-    public function printbooking(Booking $booking,$id){
+    public function printbooking(Booking $booking){
 
-        $bookingdetails = Booking::bookingdetailsbyid($id);
-        return view('booking.print',compact('bookingdetails'));
+        // $bookingdetails = Booking::bookingdetailsbyid($id);
+        return view('booking.print');
     }
     public function printbooking1(Booking $booking,$id){
 

@@ -3,7 +3,7 @@
     <div class="container">
         <div class="page-inner">
             <div class="page-header">
-                <h3 class="fw-bold mb-3">Today Registered Bookings List</h3>
+                <h3 class="fw-bold mb-3">Today's Registered Bookings List</h3>
                 <ul class="breadcrumbs mb-3">
                     <li class="separator">
                         <i class="icon-arrow-left"></i>
@@ -33,7 +33,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($filterdata as $data)
+                                     @foreach ($filterdata as $data)
+                                    <tr>
+
                                         <td>{{$data->booking_code}}</td>
                                         <td>{{$data->first_name}} </td>
                                         <td>{{$data->email}}</td>
@@ -74,15 +76,21 @@
                                                 <i class="fa-solid fa-image" style="color:#660066"></i>
                                             </button>
                                         </td>
-                                        @endforeach
+
+                                    </tr>
+                                           @endforeach
+
                                     </tbody>
                                 </table>
+
+
+
 
                             </div>
                         </div>
                       </div>
 
-                    </div>
+
                 </div>
             </div>
         </div>

@@ -521,8 +521,11 @@
     });
 
 
-      const table5 = $("#todayregisteredbookingrangetable").DataTable({
+    const table5 = $("#todayregisteredbookingrangetable").DataTable({
         pageLength: 5,
+        columnDefs: [
+            { type: "date", targets: 5 } // Ensure column index 5 is recognized as a date
+        ],
         initComplete: function () {
             this.api()
                 .columns()
@@ -534,24 +537,19 @@
                         .appendTo($(column.footer()).empty())
                         .on("change", function () {
                             var val = $.fn.dataTable.util.escapeRegex($(this).val());
-
-                            column
-                                .search(val ? "^" + val + "$" : "", true, false)
-                                .draw();
+                            column.search(val ? "^" + val + "$" : "", true, false).draw();
                         });
 
-                    column
-                        .data()
+                    column.data()
                         .unique()
                         .sort()
                         .each(function (d, j) {
-                            select.append(
-                                '<option value="' + d + '">' + d + "</option>"
-                            );
+                            select.append('<option value="' + d + '">' + d + "</option>");
                         });
                 });
         },
     });
+
 
 
 

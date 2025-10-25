@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Today Revenue</title>
+    <title>Today's Revenue</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 </head>
 <style>
@@ -44,7 +44,7 @@
             @endforeach
              <tfoot>
                   <tr>
-                    <td colspan="5" style="font-weight: bold;text-align:center">Today Revenue</td>
+                    <td colspan="5" style="font-weight: bold;text-align:center">Today's Revenue</td>
                     <td style="font-weight: bold">£ {{$allrevenue}}</td>
                   </tr>
             </tfoot>

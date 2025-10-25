@@ -76,10 +76,10 @@ class Booking extends Pivot
     public static  function getfilterdatedetails($from_date, $to_date)
     {
         return DB::table('booking')
-            ->select('booking.id', 'booking.booking_code','booking.status', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
+            ->select('booking.id', 'booking.booking_code','booking.status','customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
             ->join('customer', 'booking.customer_id', '=', 'customer.id')
-            ->whereDate('parking_from_date', '>=', $from_date)
-            ->whereDate('parking_till_date', '<=', $to_date)
+            ->whereDate('booking.created_at', '>=', $from_date)
+            ->whereDate('booking.created_at', '<=', $to_date)
             ->orderByDesc('booking.id')
             ->get();
     }
@@ -87,7 +87,7 @@ class Booking extends Pivot
     public static  function getfilterincomebooking($today, $terminal)
     {
         return DB::table('booking')
-            ->select('booking.id', 'booking.booking_code', 'booking.parking_from_hour', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
+            ->select('booking.id', 'booking.booking_code', 'booking.parking_from_hour','booking.parking_from_min', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
             ->join('customer', 'booking.customer_id', '=', 'customer.id')
             ->where('inbound_terminal', '=', $terminal)
             ->where('parking_from_date', '=', $today)
@@ -98,7 +98,7 @@ class Booking extends Pivot
     public static  function getfilteroutgoingbooking($today, $terminal)
     {
         return DB::table('booking')
-            ->select('booking.id', 'booking.booking_code', 'booking.parking_till_hour', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
+            ->select('booking.id', 'booking.booking_code', 'booking.parking_till_hour','booking.parking_till_min', 'customer.first_name', 'customer.last_name', 'customer.email', 'customer.phone_no')
             ->join('customer', 'booking.customer_id', '=', 'customer.id')
             ->where('inbound_terminal', '=', $terminal)
             ->where('parking_till_date', '=', $today)
@@ -171,7 +171,7 @@ class Booking extends Pivot
     // current month year booking count
     public static function currentmonthbookingcount($month, $year)
     {
-        return Booking::whereMonth('parking_from_date', '=', $month)->whereYear('parking_from_date', '=', $year)->count();
+        return Booking::whereMonth('created_at', '=', $month)->whereYear('created_at', '=', $year)->count();
     }
     // today incomming booking count
     public static function todaybookingcount($date)
@@ -186,10 +186,12 @@ class Booking extends Pivot
     // current month repeate customer
     public static function currentmonthrepeatecustomer($startOfMonth,$today)
     {
-        return Booking::whereBetween('parking_from_date', [$startOfMonth, $today])
-                        ->selectRaw('COUNT(*) as total_count')
-                        ->groupByRaw('DAY(parking_from_date), customer_id')
-                        ->get();
+        return Booking::whereBetween('created_at', [$startOfMonth, $today])
+                        ->selectRaw('customer_id, COUNT(*) as total_count')
+                        ->groupBy('customer_id')
+                        ->having('total_count', '>', 1)
+                        ->get()
+                        ->count();
 
     }
     // today revenue
@@ -200,7 +202,7 @@ class Booking extends Pivot
     // month to date revenue
      public static function monthtodaterevenue($date,$startOfMonth)
      {
-         return Booking::selectRaw('sum(price) as monthtodatellrevenue')->whereBetween('parking_from_date',[$startOfMonth,$date])->first();
+         return Booking::selectRaw('sum(price) as monthtodatellrevenue')->whereBetween('created_at',[$startOfMonth,$date])->first();
      }
       // year revenue
       public static function yearrevenue($year)

@@ -37,7 +37,7 @@ class Customercontactconfirm extends Notification
     {
 
         return (new MailMessage)
-                    ->subject('Airparq Contact Email')
+                    ->subject('AIRPARQ Contact Email')
                     ->view('contact.customerconfirmemail',['data'=>$this->data]);
     }
 

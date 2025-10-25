@@ -134,7 +134,7 @@
                                     <div class="col-md-6 col-lg-6">
                                         <div class="form-group">
                                             <label>Parking Form Time</label>
-                                            <input type="time" class="form-control" id="parking_from_time" name="parking_from_time" value="{{$booking[0]->parking_from_time}}" readonly/>
+                                            <input type="text" class="form-control" id="parking_from_time" name="parking_from_time" value="{{$booking[0]->parking_from_hour}}:{{$booking[0]->parking_from_min}}" readonly/>
                                         </div>
                                     </div>
                                 </div>
@@ -148,7 +148,7 @@
                                     <div class="col-md-6 col-lg-6">
                                         <div class="form-group">
                                             <label>Parking Till Time</label>
-                                             <input type="time" class="form-control" id="parking_till_time"  name="parking_till_time" value="{{$booking[0]->parking_till_time}}" readonly/>
+                                             <input type="text" class="form-control" id="parking_till_time"  name="parking_till_time" value="{{$booking[0]->parking_till_hour}}:{{$booking[0]->parking_till_min}}" readonly/>
                                         </div>
                                     </div>
                                 </div>
@@ -165,46 +165,6 @@
                                              <label>Outbound Terminal</label>
                                             <input type="text" class="form-control" id="inbound_terminal_name" name="inbound_terminal_name"
                                                value="{{ $selectedTerminalName ?? $booking[0]->outbound_terminal_name }}" readonly />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 col-lg-6">
-                                         <div class="form-group">
-                                            <label>Flight Arrival Date</label>
-                                             <input type="text" class="form-control" id="flight_arrival_date"  name="flight_arrival_date" value="{{$booking[0]->flight_arrival_date}}" readonly/>
-                                             @error('flight_arrival_date')
-                                            <div style="color:red">{{$message}}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-6">
-                                          <div class="form-group">
-                                            <label>Flight Arrival Time</label>
-                                              <input type="text" class="form-control" id="flight_arrival_time"  name="flight_arrival_time" value="{{$booking[0]->flight_arrival_time}}" readonly/>
-                                             @error('flight_arrival_time')
-                                            <div style="color:red">{{$message}}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                     <div class="col-md-6 col-lg-6">
-                                          <div class="form-group">
-                                            <label>Flight Departure Date</label>
-                                              <input type="text" class="form-control" id="flight_departure_date"  name="flight_departure_date" value="{{$booking[0]->flight_departure_date}}" readonly/>
-                                             @error('flight_departure_date')
-                                            <div style="color:red">{{$message}}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-6">
-                                         <div class="form-group">
-                                            <label>Flight Departure Time</label>
-                                             <input type="text" class="form-control" id="flight_departure_time"  name="flight_departure_time" value="{{$booking[0]->flight_departure_time}}" readonly/>
-                                             @error('flight_departure_time')
-                                            <div style="color:red">{{$message}}</div>
-                                            @enderror
                                         </div>
                                     </div>
                                 </div>

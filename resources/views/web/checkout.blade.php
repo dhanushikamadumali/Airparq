@@ -107,119 +107,6 @@
                                                         @enderror
                                                           </div>
                                                 </div>
-
-                                                  <div class="col-12 col-md-6">
-                                                    <div class="mb-2">
-                                                        <label class="form-label" for="flight_departure_date"  style="font-size:1rem">Flight Departure Date<span class="text-danger">*</span></label>
-                                                        <div class="mb-0">
-                                                            <input
-                                                                id="flight_departure_date"
-                                                                name="flight_departure_date"
-                                                                type="date"
-                                                                class="form-select shadow-sm"
-                                                                placeholder="Parking From"
-                                                                onchange="updateTillDateMin()"
-                                                                value=""
-                                                                data-placeholder="Parking From"
-                                                                required
-                                                                >
-                                                             @error('flight_departure_date')
-                                                            <div style="color:red">{{$message}}</div>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                 <div class="col-12 col-md-6">
-                                                    <div class="mb-2">
-                                                        <label class="form-label" for="flight_departure_time" style="font-size:1rem">
-                                                            Flight Departure Time<span class="text-danger">*</span>
-                                                        </label>
-                                                        @php
-                                                            use Carbon\Carbon;
-
-                                                            // Start time set to midnight (00:00)
-                                                            $startTime = Carbon::now('Europe/London')->startOfDay();
-                                                            $timeOptions = [];
-
-                                                            // Generate time slots for the next 24 hours in 5-minute increments
-                                                            for ($i = 0; $i < 288; $i++) { // 24 hours * (60 minutes / 5 minutes) = 288 increments
-                                                                // Add 5-minute intervals
-                                                                $timeOptions[] = $startTime->copy()->addMinutes($i * 5)->format('H:i'); // Format as hour:minute
-                                                            }
-
-                                                            // Determine the initial value for the dropdown
-                                                            $initialTime = $startTime->format('H:i');
-                                                        @endphp
-                                                        <div class="input-icon-group tour-date">
-                                                            <label class="input-icon hicon hicon-time-clock hicon-bold"></label>
-                                                            <select id="flight_departure_time" name="flight_departure_time" class="form-control">
-                                                                <option value="">Select Till Time</option>
-                                                                @foreach ($timeOptions as $time)
-                                                                    <option value="{{ $time }}" {{ $time == $initialTime ? 'selected' : '' }}>{{ $time }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        @error('flight_departure_time')
-                                                        <div style="color:red">{{ $message }}</div>
-                                                        @enderror
-
-
-                                                    </div>
-                                                </div>
-                                                 <div class="col-12 col-md-6">
-                                                    <div class="mb-2">
-                                                          <label class="form-label" for="flight_arrival_date"  style="font-size:1rem">Flight Arrival Date</label>
-                                                        <div class="mb-0">
-                                                            <input
-                                                                id="flight_arrival_date"
-                                                                name="flight_arrival_date"
-                                                                type="date"
-                                                                class="form-select shadow-sm"
-                                                                placeholder="Parking Till"
-                                                                onchange="updateTillDateMin()"
-                                                                data-placeholder="Parking Till"
-                                                                required
-                                                                >
-                                                             @error('flight_arrival_date')
-                                                            <div style="color:red">{{$message}}</div>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                 <div class="col-12 col-md-6">
-                                                    <div class="mb-2">
-                                                         <label class="form-label" for="flight_arrival_time" style="font-size:1rem">
-                                                            Flight Arrival Time<span class="text-danger">*</span>
-                                                        </label>
-                                                        @php
-                                                            // Start time set to midnight (00:00)
-                                                            $startTime = Carbon::now('Europe/London')->startOfDay();
-                                                            $timeOptions = [];
-
-                                                            // Generate time slots for the next 24 hours in 5-minute increments
-                                                            for ($i = 0; $i < 288; $i++) { // 24 hours * (60 minutes / 5 minutes) = 288 increments
-                                                                // Add 5-minute intervals
-                                                                $timeOptions[] = $startTime->copy()->addMinutes($i * 5)->format('H:i'); // Format as hour:minute
-                                                            }
-
-                                                        // Determine the initial value for the dropdown
-                                                        $initialTime =  $startTime->format('H:i');
-                                                        @endphp
-                                                        <div class="input-icon-group tour-date">
-                                                            <label class="input-icon hicon hicon-time-clock hicon-bold"></label>
-                                                            <select id="flight_arrival_time" name="flight_arrival_time" class="form-control" required>
-                                                                <option value="">Select Till Time</option>
-                                                                @foreach ($timeOptions as $time)
-                                                                    <option value="{{ $time }}" {{ $time == $initialTime ? 'selected' : '' }}>{{ $time }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        @error('flight_arrival_time')
-                                                        <div style="color:red">{{ $message }}</div>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-
                                             </div>
                                         </div>
                                     <div class="border-bottom pb-4 mb-4">
@@ -300,22 +187,30 @@
                                         </h3>
                                         <div class="mt-1">
                                             <div class="d-flex align-items-center justify-content-between">
-                                                <strong style="font-size:1rem">Price:</strong>
+                                                <strong style="font-size:1rem">Sub Total :</strong>
                                                 <span class="fw-semibold text-body-emphasis" style="font-size:1rem" >£<span id="price"  >{{$price}}</span></span>
                                             </div>
                                         </div>
                                         <div class="mt-1">
                                             <div class="d-flex align-items-center justify-content-between">
-                                                <strong >Discount:</strong>
-                                                <span class="fw-semibold text-body-emphasis"<span id="discount">{{$discount}}%</span></span>
+                                                <strong >Discount :</strong>
+                                                <span class="fw-semibold text-body-emphasis" style="font-size:1rem"><span id="discount"> {{$discount}}%
+                                            </div>
+                                        </div>
+                                         <div class="mt-1">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <strong >
+                                                Amount Saving :
+                                                </strong>
+                                                <span class="fw-semibold text-body-emphasis" style="font-size:1rem"><span id="discount"> £{{ number_format(($price * $discount) / 100, 2) }} </span></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="border-bottom pb-2 mb-4">
                                         <h3 class="h4 mb-4" style="font-size:1rem;font-weight:600">Payment method</h3>
                                         <div class="d-inline-flex align-items-center mb-3">
-                                            <strong class=" me-2">Total:</strong>
-                                            <span class="fw-semibold text-body-emphasis">£<span id="totalprice">{{ $tPrice}}</span></span>
+                                            <strong class=" me-2">Total to Pay After Discount :</strong>
+                                             <span class="fw-semibold text-body-emphasis">£<span id="totalprice">{{ number_format($tPrice, 2) }}
                                         </div>
                                     </div>
                                     <div style="display: flex; align-items: center;padding-bottom:18px">
@@ -343,4 +238,32 @@
     <!-- /Main -->
     @endsection
 
+<script>
 
+     // Set minimum date for both inputs
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+        const fromDateInput = document.getElementById('flight_departure_date');
+        const tillDateInput = document.getElementById('flight_arrival_date');
+        if (fromDateInput && tillDateInput) {
+            // Set the min attribute to current date
+            fromDateInput.min = currentDate;
+            tillDateInput.min = currentDate;
+        }
+
+    });
+     function updatedepartureTillDateMin() {
+        const fromDateInput = document.getElementById('flight_departure_date');
+        const tillDateInput = document.getElementById('flight_arrival_date');
+
+        if (fromDateInput.value) {
+          // Set the minimum date for the till date input
+          tillDateInput.min = fromDateInput.value;
+        } else {
+          // Clear the minimum date if no from date is selected
+          tillDateInput.min = "";
+        }
+      }
+
+</script>

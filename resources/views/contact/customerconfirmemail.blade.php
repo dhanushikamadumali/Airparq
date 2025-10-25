@@ -62,7 +62,7 @@ For what reason would it be advisable for me to think about business content? Th
                         <td align="center" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 25px;">
                             <img src="https://img.icons8.com/carbon-copy/100/000000/checked-checkbox.png" width="125" height="120" style="display: block; border: 0px;" /><br>
                             <h2 style="font-size: 30px; font-weight: 800; line-height: 36px; color: #333333; margin: 0;">
-                                Your request was send successfully!!
+                                Your request was sent successfully!
                             </h2>
                         </td>
                     </tr>

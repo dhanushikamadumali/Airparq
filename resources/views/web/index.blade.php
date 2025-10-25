@@ -103,7 +103,7 @@
                                        <label style="font-size:15px">Flying From</label>
                                          <div class="input-icon-group">
                                             <label for="txtKeyword" class="input-icon hicon hicon-flights-pin"></label>
-                                             <select class="form-select dropdown-select shadow-sm" id="airport" name="airport" required autofocus>
+                                             <select class="form-select dropdown-select shadow-sm" id="airport" name="airport" required autofocus="autofocus">
                                              <option>Select Airport</option>
                                                 <option value="London Heathrow" {{ $airport == 'London Heathrow' ? 'selected' : '' }}>London Heathrow</option>
                                                 {{-- <option value="London Gatwick" {{ $airport == 'London Gatwick' ? 'selected' : '' }} >London Gatwick</option> --}}
@@ -136,7 +136,7 @@
                                                   name="parking_from_date"
                                                   onchange="updateTillDateMin()"
                                                     value="{{$fDate ?? ''}}"
-                                                autofocus
+                                                autofocus="autofocus"
                                                 />
                                                 <span class="date-label"></span>
                                             </label>
@@ -156,7 +156,7 @@
                                                 // Determine the initial hour for the dropdown
                                                 $initialHour = $fHour ?? 00;
                                             @endphp
-                                            <select id="parking_from_hour" name="parking_from_hour" class="form-control" required>
+                                            <select id="parking_from_hour" name="parking_from_hour" class="form-control" required autofocus="autofocus">
                                                 @foreach ($hourOptions as $hour)
                                                     <option value="{{ $hour }}" {{ $hour == $initialHour ? 'selected' : '' }}>{{ $hour }}</option>
                                                 @endforeach
@@ -678,11 +678,12 @@
         </div>
     </section>
      <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document"> <!-- Added modal-lg -->
             <div class="modal-content">
                 <div class="modal-body">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <p style="font-size:25px;font-weight:400;text-align: center;">Sign-up Offer</p>
                     @if($promoList !== null && count($promoList) > 0)
                         <p style="font-size:30px;font-weight:600;text-align: center;">15% OFF on all bookings (Promo Code-{{$promoList[0]->promo_code}})</p>
                     @elseif($promoList === null)
@@ -704,6 +705,64 @@
                 </div>
             </div>
         </div>
+    </div> --}}
+
+    <!-- Offer Modal -->
+    <div class="modal fade" id="offerModal" tabindex="-1" role="dialog" aria-labelledby="offerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <p style="font-size:25px; font-weight:400; text-align: center;">Sign-up Offer</p>
+                    <p style="font-size:30px; font-weight:600; text-align: center;"> Get 15% off your first booking </p>
+                   <p style="font-size:20px;font-weight:400;text-align: center;">Sign up to marketing and receive 15% off your first AIRPARQ booking. Offer valid for new customers only. </p>
+
+                    <form id="signupForm">
+                        @csrf
+                        <div class="mb-3">
+                            <input id="email" type="email" class="form-control" name="email" required placeholder="Enter your email">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+                    </form>
+                      <p style="text-align: center;" >I accept Airparq <a href="{{route('termsandcondition')}}" style="font-weight: 400; text-decoration: underline;" >Terms of Use </a>and  <a href="{{route('privacypolicy')}}" style="font-weight: 400; text-decoration: underline;" > Privacy Policy </a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offer Details Modal -->
+    <div class="modal fade" id="offerDetailsModal" tabindex="-1" role="dialog" aria-labelledby="offerDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <p style="font-size:25px; font-weight:600; text-align: center;">Thank You for Subscribing!</p>
+                    <p style="font-size:25px; font-weight:400; text-align: center;">Promo code:</p>
+                     <div class="row g-3">
+                        <div class="col-md-3"></div>
+                        @if (!empty($promoList))
+
+                                <div class="col-md-6">
+                                    <div class="card shadow-sm">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ $promoList[0]->promo_code}}</h5>
+                                            <p class="card-text">
+                                                <strong>Discount:</strong> {{ $promoList[0]->discount_amount }}{{ $promoList[0]->discount_type === 'percent' ? '%' : '' }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                        @else
+                            <p class="text-center">No promo codes available.</p>
+                        @endif
+                         <div class="col-md-3"></div>
+                    </div>
+                    <br/>
+                    <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- /Why -->
@@ -711,17 +770,70 @@
 <!-- /Main -->
 @endsection
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('airport').focus(); // Focus on the input field
-            if (window.innerWidth <= 767) { // Check if the screen size is mobile (or smaller)
-                 document.getElementById('airport').focus();
-                 document.getElementById('parking_from_date').focus();
-                 document.getElementById('parking_till_date').focus();
-            }
-        });
-
         // Set minimum date for both inputs
         document.addEventListener('DOMContentLoaded', () => {
+            const delay = 6000;
+            setTimeout(() => {
+                const offerModal = new bootstrap.Modal(document.getElementById('offerModal'));
+                offerModal.show();
+
+                document.getElementById('signupForm').addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    const email = document.getElementById('email').value;
+
+                    fetch('{{ route("sendemail") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                        },
+                        body: JSON.stringify({ email }),
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.json().then(data => {
+                                    throw new Error(data.message || 'Failed to subscribe.');
+                                });
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                offerModal.hide();
+
+                                const offerDetailsModal = new bootstrap.Modal(document.getElementById('offerDetailsModal'));
+                                offerDetailsModal.show();
+
+                                // Show success notification
+                                Swal.fire({
+                                     icon: 'success',
+                                    title: 'Success',
+                                    text: data.message,
+                                    showConfirmButton: true, // Display the "OK" button
+                                    confirmButtonText: 'Close', // Display the button with "Close"
+                                    customClass: {
+                                        confirmButton: 'btn btn-success', // Apply Bootstrap success button styles
+                                    },
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            // Show error notification
+                             Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: error.message,
+                                showConfirmButton: true, // Display the "OK" button
+                                confirmButtonText: 'Close', // Display the button with "Close"
+                                customClass: {
+                                    confirmButton: 'btn btn-danger', // Apply Bootstrap danger button styles
+                                },
+                            });
+                        });
+                });
+            }, delay);
+
+            //get parking from date and till date
 
             const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
             const fromDateInput = document.getElementById('parking_from_date');
@@ -731,12 +843,12 @@
                 fromDateInput.min = currentDate;
                 tillDateInput.min = currentDate;
             }
-        });
 
+        });
+        //display none parking till date
          function updateTillDateMin() {
             const fromDateInput = document.getElementById('parking_from_date');
             const tillDateInput = document.getElementById('parking_till_date');
-
             if (fromDateInput.value) {
               // Set the minimum date for the till date input
               tillDateInput.min = fromDateInput.value;
@@ -745,21 +857,6 @@
               tillDateInput.min = "";
             }
           }
-
-
-        document.addEventListener("DOMContentLoaded", function () {
-          setTimeout(function () {
-            const myModal = new bootstrap.Modal(document.getElementById('myModal'));
-            myModal.show();
-          }, 6000); // 120000 milliseconds = 2 minutes
-        });
-
-
-
-
-
-
-
     </script>
 
 

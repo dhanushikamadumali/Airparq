@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\SendEmail;
+use Illuminate\Support\Facades\Log;
 
 
 
@@ -155,24 +156,38 @@ class BookingpriceController extends Controller
 
     public function send(Request $request)
     {
-        // try{
-        //     Notification::route('mail', $request->input('email'))->notify(new sendmail());
-        //     notify()->success('Sucessfully Updated bookingprice!');
-        // }catch(Exception $e){
-        //     notify()->error('Failed to Update bookingprice');
-        // }
-        // return Redirect::route('allbookingprice');
-        try{
-            SendEmail::create($request->all());
-            notify()->success('Successfully insert','Success!',[
-                'position' => 'bottom-right'
+
+        try {
+            // Validate the email
+            $request->validate([
+                'email' => 'required|email',
             ]);
-        }catch(Exception $e){
-            notify()->error('Failed to insert.', 'Error', [
-                'position' => 'top-right' // Change this to your desired position
+
+            // Check if the email already exists
+            if (SendEmail::where('email', $request->email)->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Your email is already subscribed.',
+                ], 400);
+            }
+
+            // If email doesn't exist, save it
+            SendEmail::create(['email' => $request->email]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Subscription successful.',
             ]);
+        } catch (\Exception $e) {
+            // Log error for debugging
+            Log::error('Error during subscription: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'An unexpected error occurred. Please try again.',
+            ], 500);
         }
-        return back();
+
     }
 
 }

@@ -97,7 +97,7 @@ div[style*="margin: 16px 0;"] { margin: 0 !important; }
                                 <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">
                                     If you have any questions or require further assistance, please don't hesitate to contact us at contact@airparq.co.uk or +44 7464 777258.
                                 </p>
-                                <p>Thank you for choosing Airpaq</p>
+                                <p>Thank you for choosing Airparq</p>
                             </td>
                         </tr>
                     </table>

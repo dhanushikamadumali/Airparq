@@ -28,7 +28,7 @@ class StoreCustomerRequest extends FormRequest
             'last_name' => 'required|string|max:255',
             'email' => 'required',
             'password' =>'required|confirmed|min:8',
-            'phone_no' => 'required|string|digits:10',
+            'phone_no' => 'required|string|digits:11',
         ];
     }
 }

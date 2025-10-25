@@ -274,8 +274,8 @@
                                         <div class="mt-3 mb-3">
                                             <h5 class="coloring mb-2">Present This Voucher On Your Return</h5>
                                                  <p style="text-align:justify">
-                                                     AIRPARQ will only charge for car parking for a maximum of 15 minutes for vehicle delivery. For any changes while you are abroad, please email <br>
-                                                  <br>
+                                                     {{-- AIRPARQ will only charge for car parking for a maximum of 15 minutes for vehicle delivery. For any changes while you are abroad, please email <br> --}}
+                                                 
                                                      Please note that there will be extra charges for any amendments and extra parking at £20.00 per day.
                                                      <br>
                                                      <b>NO CASH collections taken,<br>
@@ -297,7 +297,7 @@
             </div>
         </div>
     </div>
-    <input type="text" value="{{$bookingdetails[0]->id}}" name="ids" hidden="hidden">
+    {{-- <input type="text" value="{{$bookingdetails[0]->id}}" name="ids" hidden="hidden"> --}}
     <script>
           window.print();  // Automatically trigger print dialog
 

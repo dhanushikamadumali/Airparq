@@ -140,12 +140,55 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-lg-6">
+                                    <div class="col-md-3 col-lg-3">
                                         <div class="form-group">
-                                            <label>Parking Form Time</label>
-                                            <input type="time" class="form-control" id="parking_from_time" name="parking_from_time" value="{{$booking[0]->parking_from_time}}"/>
-                                            @error('parking_from_time')
-                                            <div style="color:red">{{$message}}</div>
+                                            <label>Parking Form hour</label>
+                                            @php
+                                                // Generate hours (00 to 23)
+                                                $hourOptions = [];
+                                                for ($hour = 0; $hour < 24; $hour++) {
+                                                    $hourOptions[] = str_pad($hour, 2, '0', STR_PAD_LEFT); // Pad single digits with leading zero
+                                                }
+
+                                                // Get the initial hour from the booking array
+                                                $initialHour = $booking[0]->parking_from_hour ?? '00'; // Default to '00' if not set
+                                            @endphp
+
+                                            <!-- Dropdown for parking_from_hour -->
+                                            <select id="parking_from_hour" name="parking_from_hour" class="form-control" required autofocus="autofocus">
+                                                @foreach ($hourOptions as $hour)
+                                                    <option value="{{ $hour }}" {{ $hour == $initialHour ? 'selected' : '' }}>
+                                                        {{ $hour }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+
+                                            <!-- Error message -->
+                                            @error('parking_from_hour')
+                                                <div style="color:red">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                     <div class="col-md-3 col-lg-3">
+                                        <div class="form-group">
+                                            <label>Parking From Min</label>
+                                              @php
+                                                // Generate minutes (00 to 55 in increments of 5)
+                                                $minuteOptions = [];
+                                                for ($minute = 0; $minute < 60; $minute += 5) {
+                                                    $minuteOptions[] = str_pad($minute, 2, '0', STR_PAD_LEFT); // Pad single digits with leading zero
+                                                }
+                                                // Determine the initial minute for the dropdown
+                                                $initialMinute = $booking[0]->parking_from_min ?? '00';
+                                            @endphp
+
+                                            <select id="parking_from_min" name="parking_from_min" class="form-control" required>
+                                                @foreach ($minuteOptions as $minute)
+                                                    <option value="{{ $minute }}" {{ $minute == $initialMinute ? 'selected' : '' }}>{{ $minute }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('parking_from_min')
+                                                <div style="color:red">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
@@ -160,12 +203,47 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-lg-6">
+                                    <div class="col-md-3 col-lg-3">
                                         <div class="form-group">
-                                            <label>Parking Till Time</label>
-                                             <input type="time" class="form-control" id="parking_till_time"  name="parking_till_time" value="{{$booking[0]->parking_till_time}}"/>
-                                             @error('parking_till_time')
-                                            <div style="color:red">{{$message}}</div>
+                                            <label>Parking Till Hour</label>
+                                             @php
+                                                // Generate hours (00 to 23)
+                                                $hourOptions = [];
+                                                for ($hour = 0; $hour < 24; $hour++) {
+                                                    $hourOptions[] = str_pad($hour, 2, '0', STR_PAD_LEFT); // Pad single digits with leading zero
+                                                }
+                                                // Determine the initial hour for the dropdown
+                                                $initialHour = $booking[0]->parking_till_hour ?? '00';
+                                            @endphp
+                                            <select id="parking_till_hour" name="parking_till_hour" class="form-control" required autofocus>
+                                                @foreach ($hourOptions as $hour)
+                                                    <option value="{{ $hour }}" {{ $hour == $initialHour ? 'selected' : '' }}>{{ $hour }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('parking_till_hour')
+                                                <div style="color:red">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3">
+                                        <div class="form-group">
+                                            <label>Parking Till Min</label>
+                                             @php
+                                                // Generate minutes (00 to 55 in increments of 5)
+                                                $minuteOptions = [];
+                                                for ($minute = 0; $minute < 60; $minute += 5) {
+                                                    $minuteOptions[] = str_pad($minute, 2, '0', STR_PAD_LEFT); // Pad single digits with leading zero
+                                                }
+                                                // Determine the initial minute for the dropdown
+                                                $initialMinute = $booking[0]->parking_till_min ?? '00';
+                                            @endphp
+                                            <select id="parking_till_min" name="parking_till_min" class="form-control" required autofocus>
+                                                @foreach ($minuteOptions as $minute)
+                                                    <option value="{{ $minute }}" {{ $minute == $initialMinute ? 'selected' : '' }}>{{ $minute }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('parking_till_min')
+                                                <div style="color:red">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
